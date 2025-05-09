@@ -1,0 +1,116 @@
+# Roblox Game PRD & Roadmap
+
+## Game Title:
+
+**Roblox Infinite Canvas** (placeholder name)
+
+## Vision:
+
+Create a continuously growing Roblox world inspired by the Million Dollar Homepage, allowing players to purchase and place objects on an infinite map. The experience is fun, creative, safe for all ages, and encourages long-term engagement.
+
+## Gameplay Overview:
+
+* Players can purchase predefined or mystery Roblox items to place on a permanent map.
+* Items, once placed, become fixed unless players pay Robux to move or remove them.
+* Continuous, never-resetting gameplay ensuring players' contributions persist indefinitely.
+
+## Core Features:
+
+### Object Marketplace:
+
+* **Predefined Objects:**
+
+  * Basic blocks
+  * Bricks
+  * Building materials
+  * Decorative objects (plants, lamps, furniture, etc.)
+* **Mystery Objects:**
+
+  * Random age-appropriate items fetched from Roblox store.
+* **Pricing Model:**
+
+  * Buy: 5-10 Robux per item
+  * Clone, Move, or Remove: Additional Robux (3-5 Robux per action)
+* **Bulk Purchase:** Simple interface allowing multiple item purchases at once.
+
+### Player Inventory:
+
+* Players have limited inventory slots for purchased, unplaced items.
+* Inventory persists across game sessions.
+
+### Persistent World:
+
+* Objects placed remain indefinitely.
+* Continuous saving of map data and player inventories.
+
+### Engaging Game Elements:
+
+* Randomly spawning free objects periodically.
+* Fun tools like Spring Jumps, Magic Carpets, and Cars for exploration.
+* Daily rewards and bonuses for continued player engagement.
+
+### User Interface (UI):
+
+* Clear and easy-to-use item marketplace.
+* Simple inventory management.
+* Intuitive placement mechanics (drag and drop, rotate, grid snapping).
+
+### Economy & Monetization:
+
+* Robux-based economy for object interaction and purchases.
+* Regular special promotions or limited-time objects.
+* Additional revenue potential from player-created special object packs.
+
+## Technical Requirements:
+
+* Robust server-side storage for map and inventory persistence.
+* Real-time object interaction updates.
+* Scalable backend database to track object placement coordinates and player data.
+
+## Safety and Compliance:
+
+* All objects and content to be age-appropriate, strictly non-violent.
+* Moderation tools to monitor and manage inappropriate placements or player interactions.
+
+## Roadmap:
+
+### Phase 1: Planning & Design (Month 1)
+
+* Detailed game mechanics design.
+* Define initial set of predefined models.
+* Develop concept art and basic UI layout.
+
+### Phase 2: Prototype Development (Month 2-3)
+
+* Build core inventory and purchasing system.
+* Initial object placement and persistence testing.
+* Create core gameplay mechanics prototype.
+
+### Phase 3: Alpha Release & Feedback (Month 4)
+
+* Limited alpha release for internal testing.
+* Gather player feedback on gameplay mechanics.
+* Adjust based on feedback.
+
+### Phase 4: Beta Release & Community Engagement (Month 5-6)
+
+* Open Beta for public player base.
+* Implement engaging elements (random spawns, daily rewards).
+* Community-driven event and special object releases.
+
+### Phase 5: Official Launch (Month 7)
+
+* Full public launch with marketing campaign.
+* Continuous game updates based on player engagement and feedback.
+
+### Post-Launch (Ongoing):
+
+* Regular content updates (new items, seasonal events).
+* Continuous improvement of user experience and interface.
+* Expanded engagement tools (leaderboards, special achievements).
+
+## Additional Features (Future Considerations):
+
+* Player-generated content submissions.
+* Thematic and seasonal expansions.
+* Social integration for sharing player-created areas.

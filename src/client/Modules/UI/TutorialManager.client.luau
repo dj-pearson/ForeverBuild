@@ -3,8 +3,9 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local SoundService = game:GetService("SoundService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+local Shared = require(ReplicatedStorage.shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
 
 local TutorialManager = {}
 

@@ -1,0 +1,81 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- Load shared modules
+local Shared = require(ReplicatedStorage.shared)
+local Logger = require(ReplicatedStorage.shared.Modules.Logger)
+local ModuleManager = require(ReplicatedStorage.shared.Modules.ModuleManager)
+
+-- Load client modules
+local ClientManager = require(script.Parent.Modules.ClientManager)
+local AdminCommandHandler = require(script.Parent.Modules.Admin.AdminCommandHandler)
+local ReportUI = require(script.Parent.Modules.UI.ReportUI)
+local AdminReportUI = require(script.Parent.Modules.Admin.AdminReport)
+local ReportContextMenu = require(script.Parent.Modules.Admin.ReportContextMenu)
+local TutorialManager = require(script.Parent.Modules.UI.TutorialManager)
+local InventoryUI = require(script.Parent.Modules.UI.InventoryUI)
+local MarketplaceUI = require(script.Parent.Modules.UI.MarketplaceUI)
+local DailyRewardsUI = require(script.Parent.Modules.UI.DailyRewardsUI)
+local ObjectInteractionManager = require(script.Parent.Modules.UI.ObjectInteractionManager)
+local LeaderboardUI = require(script.Parent.Modules.UI.LeaderboardUI)
+local AchievementUI = require(script.Parent.Modules.UI.AchievementUI)
+local FriendsUI = require(script.Parent.Modules.UI.FriendsUI)
+local SocialHubUI = require(script.Parent.Modules.UI.SocialHubUI)
+local SocialInteractionUI = require(script.Parent.Modules.UI.SocialInteractionUI)
+local PlayerProfileUI = require(script.Parent.Modules.UI.PlayerProfileUI)
+local SocialMediaUI = require(script.Parent.Modules.UI.SocialMediaUI)
+local BuildingToolsUI = require(script.Parent.Modules.UI.BuildingToolsUI)
+local BuildingTemplateUI = require(script.Parent.Modules.UI.BuildingTemplateUI)
+local BuildingChallengeUI = require(script.Parent.Modules.UI.BuildingChallengeUI)
+
+-- Register modules with their dependencies
+ModuleManager.registerModule("ClientManager", ClientManager)
+ModuleManager.registerModule("AdminCommandHandler", AdminCommandHandler, { "ClientManager" })
+ModuleManager.registerModule("ReportUI", ReportUI, { "ClientManager" })
+ModuleManager.registerModule("AdminReportUI", AdminReportUI, { "ClientManager", "ReportUI" })
+ModuleManager.registerModule("ReportContextMenu", ReportContextMenu, { "ClientManager", "ReportUI" })
+ModuleManager.registerModule("TutorialManager", TutorialManager, { "ClientManager" })
+ModuleManager.registerModule("InventoryUI", InventoryUI, { "ClientManager" })
+ModuleManager.registerModule("MarketplaceUI", MarketplaceUI, { "ClientManager" })
+ModuleManager.registerModule("DailyRewardsUI", DailyRewardsUI, { "ClientManager" })
+ModuleManager.registerModule("ObjectInteractionManager", ObjectInteractionManager, { "ClientManager" })
+ModuleManager.registerModule("LeaderboardUI", LeaderboardUI, { "ClientManager" })
+ModuleManager.registerModule("AchievementUI", AchievementUI, { "ClientManager" })
+ModuleManager.registerModule("FriendsUI", FriendsUI, { "ClientManager" })
+ModuleManager.registerModule("SocialHubUI", SocialHubUI, { "ClientManager" })
+ModuleManager.registerModule("SocialInteractionUI", SocialInteractionUI, { "ClientManager" })
+ModuleManager.registerModule("PlayerProfileUI", PlayerProfileUI, { "ClientManager" })
+ModuleManager.registerModule("SocialMediaUI", SocialMediaUI, { "ClientManager" })
+ModuleManager.registerModule("BuildingToolsUI", BuildingToolsUI, { "ClientManager" })
+ModuleManager.registerModule("BuildingTemplateUI", BuildingTemplateUI, { "ClientManager" })
+ModuleManager.registerModule("BuildingChallengeUI", BuildingChallengeUI, { "ClientManager" })
+
+-- Initialize all modules
+local success = ModuleManager.initializeAll()
+if not success then
+    Logger.fatal("Client initialization failed", {
+        moduleStatuses = ModuleManager.getAllModuleStatuses()
+    })
+    error("Client initialization failed - check logs for details")
+end
+
+Logger.info("Client initialized successfully", {
+    moduleStatuses = ModuleManager.getAllModuleStatuses()
+})
+
+-- Initialize UI modules
+InventoryUI.init()
+MarketplaceUI.init()
+DailyRewardsUI.init()
+ObjectInteractionManager.init()
+LeaderboardUI.init()
+AchievementUI.init()
+TutorialManager.init()
+FriendsUI.init()
+SocialHubUI.init()
+SocialInteractionUI.init()
+PlayerProfileUI.init()
+SocialMediaUI.init()
+BuildingToolsUI.init()
+BuildingTemplateUI.init()
+BuildingChallengeUI.init() 

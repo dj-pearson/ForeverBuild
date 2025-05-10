@@ -1,4 +1,3 @@
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 local Players = game:GetService("Players")
@@ -7,7 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Constants = require(ReplicatedStorage.Shared.Constants)
 local Types = require(ReplicatedStorage.Shared.Types)
 local ObjectManager = require(ReplicatedStorage.Modules.ObjectManager)
-local DataStoreManager = require(ReplicatedStorage.Modules.DataStoreManager)
+local DataStoreManager = require(ServerScriptService.Server.Modules.Data.DataStoreManager)
 local SpawnManager = require(ReplicatedStorage.Modules.SpawnManager)
 local ToolsManager = require(ReplicatedStorage.Modules.ToolsManager)
 local DailyRewardsManager = require(ReplicatedStorage.Modules.DailyRewardsManager)
@@ -99,21 +98,8 @@ end
 
 -- Initialize player data
 local function initPlayerData(player)
-    playerData[player.UserId] = {
-        coins = Constants.STARTING_COINS,
-        inventory = {},
-        placedObjects = {},
-        tools = {},
-        lastRewardClaim = nil,
-        rewardStreak = 0,
-        tutorialCompleted = false
-    }
-    
-    -- Load data from DataStore
-    local savedData = DataStoreManager.loadPlayerData(player.UserId)
-    if savedData then
-        playerData[player.UserId] = savedData
-    end
+    local data = DataStoreManager.LoadPlayerData(player)
+    playerData[player.UserId] = data
 end
 
 -- Player joined
@@ -135,8 +121,7 @@ end)
 
 -- Player leaving
 Players.PlayerRemoving:Connect(function(player)
-    -- Save player data
-    DataStoreManager.savePlayerData(player.UserId, playerData[player.UserId])
+    DataStoreManager.SavePlayerData(player)
     playerData[player.UserId] = nil
 end)
 
@@ -677,8 +662,34 @@ completeTutorialEvent.OnServerEvent:Connect(function(player)
     GameManager.updatePlayerStats(player, data)
 end)
 
+-- Add world objects saving/loading
+local function loadWorldObjects()
+    local worldObjects = DataStoreManager.LoadWorldObjects()
+    for _, objectData in ipairs(worldObjects) do
+        local object = ObjectManager.createObject(objectData.type)
+        if object then
+            object:SetPrimaryPartCFrame(CFrame.new(objectData.position))
+            object.Parent = workspace
+        end
+    end
+end
+
+local function saveWorldObjects()
+    local worldObjects = {}
+    for _, object in ipairs(workspace:GetChildren()) do
+        if object:IsA("Model") then
+            table.insert(worldObjects, {
+                type = object.Name,
+                position = object:GetPrimaryPartCFrame().Position
+            })
+        end
+    end
+    DataStoreManager.SetWorldObjects(worldObjects, true)
+end
+
 -- Initialize
 function GameManager.init()
+    loadWorldObjects()
     SpawnManager.init()
     LeaderboardManager.init()
     AchievementManager.init()
@@ -709,5 +720,10 @@ function GameManager.updatePlayerStats(player, data)
         uniqueShares = data.uniqueShares or 0
     })
 end
+
+-- Call saveWorldObjects in shutdown
+game:BindToClose(function()
+    saveWorldObjects()
+end)
 
 return GameManager

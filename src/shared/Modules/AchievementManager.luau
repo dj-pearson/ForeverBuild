@@ -1,191 +1,288 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
--- Remove unused services and modules
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+local Constants = require(ReplicatedStorage.Shared.Constants)
+local Types = require(ReplicatedStorage.Shared.Types)
 
 local AchievementManager = {}
 
+-- Local state
+local playerAchievements = {} -- Player achievement progress
+
 -- Achievement definitions
 local ACHIEVEMENTS = {
-    FIRST_PURCHASE = {
-        id = "first_purchase",
-        name = "First Purchase",
-        description = "Purchase your first object",
-        reward = 50,
-        icon = "rbxassetid://1234567890", -- Replace with actual asset ID
+    -- Building achievements
+    {
+        id = "first_building",
+        name = "First Steps",
+        description = "Place your first building",
+        category = "Building",
+        icon = "🏗️",
+        xpReward = 100,
+        requirements = {
+            type = "building_count",
+            count = 1
+        }
     },
-    COLLECTOR = {
-        id = "collector",
-        name = "Collector",
-        description = "Place 10 different types of objects",
-        reward = 100,
-        icon = "rbxassetid://1234567891",
-    },
-    MASTER_BUILDER = {
+    {
         id = "master_builder",
         name = "Master Builder",
-        description = "Place 50 objects in total",
-        reward = 200,
-        icon = "rbxassetid://1234567892",
+        description = "Place 100 buildings",
+        category = "Building",
+        icon = "🏛️",
+        xpReward = 1000,
+        requirements = {
+            type = "building_count",
+            count = 100
+        }
     },
-    DAILY_CHAMPION = {
-        id = "daily_champion",
-        name = "Daily Champion",
-        description = "Maintain a 7-day streak",
-        reward = 150,
-        icon = "rbxassetid://1234567893",
+    {
+        id = "creative_architect",
+        name = "Creative Architect",
+        description = "Use 10 different building templates",
+        category = "Building",
+        icon = "🎨",
+        xpReward = 500,
+        requirements = {
+            type = "template_usage",
+            count = 10
+        }
     },
-    COIN_COLLECTOR = {
-        id = "coin_collector",
-        name = "Coin Collector",
-        description = "Accumulate 1000 coins",
-        reward = 300,
-        icon = "rbxassetid://1234567894",
+
+    -- Collection achievements
+    {
+        id = "first_collection",
+        name = "Collector's Start",
+        description = "Collect your first item",
+        category = "Collection",
+        icon = "📦",
+        xpReward = 100,
+        requirements = {
+            type = "collection_count",
+            count = 1
+        }
     },
-    SOCIAL_BUTTERFLY = {
+    {
+        id = "treasure_hunter",
+        name = "Treasure Hunter",
+        description = "Collect 50 items",
+        category = "Collection",
+        icon = "💎",
+        xpReward = 500,
+        requirements = {
+            type = "collection_count",
+            count = 50
+        }
+    },
+    {
+        id = "rare_collector",
+        name = "Rare Collector",
+        description = "Collect 10 rare items",
+        category = "Collection",
+        icon = "🌟",
+        xpReward = 1000,
+        requirements = {
+            type = "rare_collection_count",
+            count = 10
+        }
+    },
+
+    -- Social achievements
+    {
+        id = "first_friend",
+        name = "Making Friends",
+        description = "Add your first friend",
+        category = "Social",
+        icon = "👋",
+        xpReward = 100,
+        requirements = {
+            type = "friend_count",
+            count = 1
+        }
+    },
+    {
         id = "social_butterfly",
         name = "Social Butterfly",
-        description = "Share your creation with 5 different players",
-        reward = 100,
-        icon = "rbxassetid://1234567895",
+        description = "Add 10 friends",
+        category = "Social",
+        icon = "🦋",
+        xpReward = 500,
+        requirements = {
+            type = "friend_count",
+            count = 10
+        }
+    },
+    {
+        id = "community_leader",
+        name = "Community Leader",
+        description = "Receive 100 likes on your buildings",
+        category = "Social",
+        icon = "👑",
+        xpReward = 1000,
+        requirements = {
+            type = "building_likes",
+            count = 100
+        }
     }
 }
-
--- Local state
-local playerAchievements = {}
-local playerData = {}
 
 -- Initialize achievement system
 function AchievementManager.init()
     -- Create remote events
     local remotes = ReplicatedStorage:WaitForChild("Remotes")
     
-    local getAchievementsEvent = Instance.new("RemoteFunction")
+    local getAchievementsEvent = Instance.new("RemoteEvent")
     getAchievementsEvent.Name = "GetAchievements"
     getAchievementsEvent.Parent = remotes
     
-    local unlockAchievementEvent = Instance.new("RemoteEvent")
-    unlockAchievementEvent.Name = "UnlockAchievement"
-    unlockAchievementEvent.Parent = remotes
+    local checkAchievementEvent = Instance.new("RemoteEvent")
+    checkAchievementEvent.Name = "CheckAchievement"
+    checkAchievementEvent.Parent = remotes
     
     -- Set up event handlers
-    getAchievementsEvent.OnServerInvoke = function(player)
-        return AchievementManager.getPlayerAchievements(player)
-    end
+    getAchievementsEvent.OnServerEvent:Connect(function(player)
+        AchievementManager.getAchievements(player)
+    end)
     
-    unlockAchievementEvent.OnServerEvent:Connect(function(player, achievementId)
-        AchievementManager.unlockAchievement(player, achievementId)
+    checkAchievementEvent.OnServerEvent:Connect(function(player, achievementId)
+        AchievementManager.checkAchievement(player, achievementId)
+    end)
+    
+    -- Set up player connection/disconnection handlers
+    Players.PlayerAdded:Connect(function(player)
+        AchievementManager.handlePlayerJoin(player)
+    end)
+    
+    Players.PlayerRemoving:Connect(function(player)
+        AchievementManager.handlePlayerLeave(player)
     end)
 end
 
--- Check and unlock achievements
-function AchievementManager.checkAchievements(player, data)
+-- Handle player joining
+function AchievementManager.handlePlayerJoin(player)
+    -- Initialize player's achievement data
     local userId = player.UserId
-    if not playerAchievements[userId] then
-        playerAchievements[userId] = {}
-    end
     
-    -- Check first purchase
-    if data.totalPurchases == 1 then
-        AchievementManager.unlockAchievement(player, "first_purchase")
-    end
+    playerAchievements[userId] = playerAchievements[userId] or {
+        unlocked = {},
+        progress = {}
+    }
     
-    -- Check collector
-    if data.uniqueObjectsPlaced >= 10 then
-        AchievementManager.unlockAchievement(player, "collector")
-    end
-    
-    -- Check master builder
-    if data.totalObjectsPlaced >= 50 then
-        AchievementManager.unlockAchievement(player, "master_builder")
-    end
-    
-    -- Check daily champion
-    if data.dailyStreak >= 7 then
-        AchievementManager.unlockAchievement(player, "daily_champion")
-    end
-    
-    -- Check coin collector
-    if data.totalCoinsEarned >= 1000 then
-        AchievementManager.unlockAchievement(player, "coin_collector")
-    end
-    
-    -- Check social butterfly
-    if data.uniqueShares >= 5 then
-        AchievementManager.unlockAchievement(player, "social_butterfly")
+    -- Initialize progress tracking for all achievements
+    for _, achievement in ipairs(ACHIEVEMENTS) do
+        if not playerAchievements[userId].progress[achievement.id] then
+            playerAchievements[userId].progress[achievement.id] = 0
+        end
     end
 end
 
--- Unlock achievement
-function AchievementManager.unlockAchievement(player, achievementId)
+-- Handle player leaving
+function AchievementManager.handlePlayerLeave(player)
+    -- Clean up player's achievement data
     local userId = player.UserId
-    if not playerAchievements[userId] then
-        playerAchievements[userId] = {}
-    end
-    
-    -- Check if already unlocked
-    if playerAchievements[userId][achievementId] then
-        return
-    end
-    
-    -- Get achievement data
-    local achievement = ACHIEVEMENTS[achievementId]
-    if not achievement then return end
-    
-    -- Unlock achievement
-    playerAchievements[userId][achievementId] = {
-        unlockedAt = os.time(),
-        reward = achievement.reward
-    }
-    
-    -- Give reward
-    local data = playerData[userId]
-    if data then
-        data.coins = data.coins + achievement.reward
-    end
-    
-    -- Notify client
-    local remotes = ReplicatedStorage:WaitForChild("Remotes")
-    local unlockEvent = remotes:WaitForChild("UnlockAchievement")
-    unlockEvent:FireClient(player, achievement)
+    playerAchievements[userId] = nil
 end
 
 -- Get player achievements
-function AchievementManager.getPlayerAchievements(player)
+function AchievementManager.getAchievements(player)
     local userId = player.UserId
-    if not playerAchievements[userId] then
-        return {}
-    end
+    local achievements = playerAchievements[userId]
     
-    local achievements = {}
-    for id, data in pairs(playerAchievements[userId]) do
-        local achievement = ACHIEVEMENTS[id]
-        if achievement then
-            table.insert(achievements, {
-                id = id,
-                name = achievement.name,
-                description = achievement.description,
-                reward = achievement.reward,
-                icon = achievement.icon,
-                unlockedAt = data.unlockedAt
-            })
+    if not achievements then return false, "Player data not found" end
+    
+    return true, {
+        unlocked = achievements.unlocked,
+        progress = achievements.progress
+    }
+end
+
+-- Update achievement progress
+function AchievementManager.updateProgress(player, type, amount)
+    local userId = player.UserId
+    local achievements = playerAchievements[userId]
+    
+    if not achievements then return false, "Player data not found" end
+    
+    -- Update progress for relevant achievements
+    for _, achievement in ipairs(ACHIEVEMENTS) do
+        if achievement.requirements.type == type then
+            achievements.progress[achievement.id] = achievements.progress[achievement.id] + amount
+            
+            -- Check if achievement is completed
+            if achievements.progress[achievement.id] >= achievement.requirements.count then
+                AchievementManager.unlockAchievement(player, achievement)
+            end
         end
     end
     
-    return achievements
+    return true, "Progress updated successfully"
 end
 
--- Get all achievements
-function AchievementManager.getAllAchievements()
-    local achievements = {}
-    for id, data in pairs(ACHIEVEMENTS) do
-        table.insert(achievements, {
-            id = id,
-            name = data.name,
-            description = data.description,
-            reward = data.reward,
-            icon = data.icon
-        })
+-- Unlock achievement
+function AchievementManager.unlockAchievement(player, achievement)
+    local userId = player.UserId
+    local achievements = playerAchievements[userId]
+    
+    if not achievements then return false, "Player data not found" end
+    
+    -- Check if already unlocked
+    if achievements.unlocked[achievement.id] then
+        return false, "Achievement already unlocked"
     end
-    return achievements
+    
+    -- Unlock achievement
+    achievements.unlocked[achievement.id] = true
+    
+    -- Award XP
+    local ProgressionManager = require(ReplicatedStorage.Shared.Modules.ProgressionManager)
+    ProgressionManager.addXP(player, achievement.xpReward)
+    
+    -- Notify achievement unlock
+    AchievementManager.notifyAchievementUnlock(player, achievement)
+    
+    return true, "Achievement unlocked successfully"
+end
+
+-- Check specific achievement
+function AchievementManager.checkAchievement(player, achievementId)
+    local userId = player.UserId
+    local achievements = playerAchievements[userId]
+    
+    if not achievements then return false, "Player data not found" end
+    
+    -- Find achievement
+    local achievement = nil
+    for _, a in ipairs(ACHIEVEMENTS) do
+        if a.id == achievementId then
+            achievement = a
+            break
+        end
+    end
+    
+    if not achievement then return false, "Achievement not found" end
+    
+    -- Check if already unlocked
+    if achievements.unlocked[achievementId] then
+        return false, "Achievement already unlocked"
+    end
+    
+    -- Check progress
+    if achievements.progress[achievementId] >= achievement.requirements.count then
+        return AchievementManager.unlockAchievement(player, achievement)
+    end
+    
+    return false, "Achievement requirements not met"
+end
+
+-- Notify achievement unlock
+function AchievementManager.notifyAchievementUnlock(player, achievement)
+    -- TODO: Implement achievement notification
+    -- This could include:
+    -- - In-game notification
+    -- - UI update
+    -- - Sound effect
+    -- - Particle effect
 end
 
 return AchievementManager 

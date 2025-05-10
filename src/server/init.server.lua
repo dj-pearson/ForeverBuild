@@ -24,6 +24,7 @@ local BuildingToolsManager = require(script.Parent.Modules.Building.BuildingTool
 local BuildingTemplateManager = require(script.Parent.Modules.Building.BuildingTemplateManager)
 local BuildingChallengeManager = require(script.Parent.Modules.Building.BuildingChallengeManager)
 local ProgressionManager = require(script.Parent.Modules.ProgressionManager)
+local AchievementManager = require(script.Parent.Modules.AchievementManager)
 
 -- Initialize Logger first
 Logger.init()
@@ -49,6 +50,7 @@ ModuleManager.registerModule("BuildingToolsManager", BuildingToolsManager, { "Ga
 ModuleManager.registerModule("BuildingTemplateManager", BuildingTemplateManager, { "GameManager", "SecurityManager" })
 ModuleManager.registerModule("BuildingChallengeManager", BuildingChallengeManager, { "GameManager", "SecurityManager" })
 ModuleManager.registerModule("ProgressionManager", ProgressionManager, { "GameManager", "SecurityManager" })
+ModuleManager.registerModule("AchievementManager", AchievementManager, { "GameManager", "SecurityManager", "ProgressionManager" })
 
 -- Initialize all modules
 ModuleManager.initializeAll()
@@ -75,5 +77,6 @@ BuildingToolsManager.init()
 BuildingTemplateManager.init()
 BuildingChallengeManager.init()
 ProgressionManager.init()
+AchievementManager.init()
 
 Logger.info("Server initialization completed") 

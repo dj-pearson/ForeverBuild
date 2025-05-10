@@ -2,9 +2,13 @@ local DataStoreService = game:GetService("DataStoreService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Types module is imported but not used, so removing it
 
 local DataStoreManager = {}
+
+-- Cache for player data and placed objects
+local playerData = {}
+local placedObjects = {}
 
 -- Initialize DataStores
 local playerDataStore = DataStoreService:GetDataStore(Constants.DATASTORE_KEYS.PLAYER_INVENTORY)
@@ -21,6 +25,9 @@ function DataStoreManager.savePlayerData(userId, data)
         return false
     end
     
+    -- Update the cache
+    playerData[userId] = data
+    
     return true
 end
 
@@ -34,6 +41,9 @@ function DataStoreManager.loadPlayerData(userId)
         warn("Failed to load player data for user", userId, ":", data)
         return nil
     end
+    
+    -- Update the cache
+    playerData[userId] = data
     
     return data
 end
@@ -49,6 +59,9 @@ function DataStoreManager.savePlacedObjects(objects)
         return false
     end
     
+    -- Update the cache
+    placedObjects = objects
+    
     return true
 end
 
@@ -63,7 +76,10 @@ function DataStoreManager.loadPlacedObjects()
         return {}
     end
     
-    return data or {}
+    -- Update the cache
+    placedObjects = data or {}
+    
+    return placedObjects
 end
 
 -- Auto-save system

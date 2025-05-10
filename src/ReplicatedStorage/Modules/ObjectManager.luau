@@ -1,8 +1,4 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ServerStorage = game:GetService("ServerStorage")
-
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
 
 local ObjectManager = {}
 
@@ -111,12 +107,11 @@ local OBJECT_MODELS = {
         color = Color3.fromRGB(255, 192, 203),
         price = 7,
         previewImage = "rbxassetid://1234567900",
-    },
-    arch_1 = {
+    },    arch_1 = {
         id = "arch_1",
         name = "Stone Arch",
         size = Vector3.new(8, 8, 4),
-        material = Enum.Material.Stone,
+        material = Enum.Material.Concrete,
         color = Color3.fromRGB(180, 180, 180),
         price = 18,
         previewImage = "rbxassetid://1234567901",

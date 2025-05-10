@@ -1,4 +1,27 @@
-local Constants = {}
+local Constants = {
+    -- Game Settings
+    MAX_PLAYERS = 50,
+    GAME_VERSION = "1.0.0",
+    
+    -- Admin Settings
+    ADMIN_RANKS = {
+        "Owner",
+        "Admin",
+        "Moderator"
+    },
+    
+    -- Command Settings
+    COMMAND_PREFIX = "/",
+    COMMAND_COOLDOWN = 1, -- seconds
+    
+    -- Report Settings
+    MAX_REPORTS_PER_PLAYER = 5,
+    REPORT_COOLDOWN = 300, -- seconds
+    
+    -- UI Settings
+    UI_FADE_TIME = 0.3,
+    UI_RESPONSE_DURATION = 3
+}
 
 -- Game Settings
 Constants.GAME_NAME = "Roblox Infinite Canvas"
@@ -9,6 +32,21 @@ Constants.FREE_OBJECT_SPAWN_INTERVAL = 300 -- 5 minutes
 Constants.MAX_PLACED_OBJECTS = 1000
 Constants.OBJECT_SPAWN_RADIUS = 100
 Constants.OBJECT_SPAWN_HEIGHT = 10
+
+-- Random Drop Settings
+Constants.RANDOM_DROP = {
+    SPAWN_INTERVAL = 600, -- 10 minutes
+    MAX_ACTIVE_DROPS = 5,
+    PICKUP_RADIUS = 10,
+    GLOW = {
+        COLOR = Color3.fromRGB(255, 215, 0), -- Gold color
+        TRANSPARENCY = 0.5,
+        SIZE = Vector3.new(2, 2, 2),
+        PULSE_SPEED = 1,
+        PULSE_MIN = 0.3,
+        PULSE_MAX = 0.7
+    }
+}
 
 -- Object Types
 Constants.OBJECT_TYPES = {

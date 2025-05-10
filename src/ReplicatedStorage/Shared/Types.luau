@@ -1,4 +1,30 @@
-local Types = {}
+local Types = {
+    -- Report Types
+    REPORT_TYPES = {
+        "Inappropriate Content",
+        "Harassment",
+        "Exploitation",
+        "Other"
+    },
+    
+    -- Command Types
+    COMMAND_TYPES = {
+        "help",
+        "ban",
+        "kick",
+        "warn",
+        "remove",
+        "teleport"
+    },
+    
+    -- Admin Action Types
+    ADMIN_ACTIONS = {
+        "Remove Object",
+        "Warn Player",
+        "Kick Player",
+        "Ban Player"
+    }
+}
 
 -- Object Types
 export type PlacedObject = {

@@ -1,8 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Remove unused services and modules
 
 local AchievementManager = {}
 
@@ -54,6 +51,7 @@ local ACHIEVEMENTS = {
 
 -- Local state
 local playerAchievements = {}
+local playerData = {}
 
 -- Initialize achievement system
 function AchievementManager.init()

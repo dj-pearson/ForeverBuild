@@ -12,6 +12,7 @@ local ToolsManager = require(ReplicatedStorage.Modules.ToolsManager)
 local DailyRewardsManager = require(ReplicatedStorage.Modules.DailyRewardsManager)
 local LeaderboardManager = require(ReplicatedStorage.Modules.LeaderboardManager)
 local AchievementManager = require(ReplicatedStorage.Modules.AchievementManager)
+local RandomDropManager = require(ReplicatedStorage.Modules.RandomDropManager)
 
 local GameManager = {}
 
@@ -115,7 +116,7 @@ local function initPlayerData(player)
 end
 
 -- Player joined
-game.Players.PlayerAdded:Connect(function(player)
+Players.PlayerAdded:Connect(function(player)
     initPlayerData(player)
     
     -- Load placed objects
@@ -129,10 +130,10 @@ game.Players.PlayerAdded:Connect(function(player)
     
     -- Send marketplace items to player
     getMarketplaceItemsEvent:Invoke(player)
-end
+end)
 
 -- Player leaving
-game.Players.PlayerRemoving:Connect(function(player)
+Players.PlayerRemoving:Connect(function(player)
     -- Save player data
     DataStoreManager.savePlayerData(player.UserId, playerData[player.UserId])
     playerData[player.UserId] = nil
@@ -155,7 +156,7 @@ purchaseObjectEvent.OnServerEvent:Connect(function(player, objectType)
         
         table.insert(data.inventory, {
             type = objectType,
-            purchaseTime = os.time(),
+            purchaseTime = os.time()
         })
         
         -- Update stats
@@ -194,7 +195,7 @@ bulkPurchaseObjectEvent.OnServerEvent:Connect(function(player, objectTypes, quan
             for i = 1, quantity do
                 table.insert(data.inventory, {
                     type = objectType,
-                    purchaseTime = os.time(),
+                    purchaseTime = os.time()
                 })
             end
         end
@@ -234,7 +235,7 @@ placeObjectEvent.OnServerEvent:Connect(function(player, objectType, position)
         -- Add to placed objects
         table.insert(data.placedObjects, {
             type = objectType,
-            position = position,
+            position = position
         })
         
         -- Remove from inventory
@@ -284,7 +285,7 @@ purchaseToolEvent.OnServerEvent:Connect(function(player, toolType)
             tool.Parent = player.Backpack
             table.insert(data.tools, {
                 type = toolType,
-                purchaseTime = os.time(),
+                purchaseTime = os.time()
             })
             
             -- Set up tool activation
@@ -320,7 +321,7 @@ claimDailyRewardEvent.OnServerEvent:Connect(function(player)
         claimDailyRewardEvent:FireClient(player, true, {
             reward = result,
             nextDay = DailyRewardsManager.getNextRewardDay(data),
-            streak = data.rewardStreak,
+            streak = data.rewardStreak
         })
     else
         claimDailyRewardEvent:FireClient(player, false, result)
@@ -336,7 +337,7 @@ getDailyRewardInfoEvent.OnServerInvoke = function(player)
         canClaim = DailyRewardsManager.canClaimReward(data),
         nextDay = DailyRewardsManager.getNextRewardDay(data),
         streak = data.rewardStreak,
-        rewards = DailyRewardsManager.getAllRewards(),
+        rewards = DailyRewardsManager.getAllRewards()
     }
 end
 
@@ -428,7 +429,7 @@ cloneObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         table.insert(data.placedObjects, {
             type = object:GetAttribute("ObjectType"),
             position = newPosition,
-            path = clone:GetFullName(),
+            path = clone:GetFullName()
         })
         
         -- Only deduct coins if not admin
@@ -680,7 +681,13 @@ function GameManager.init()
     SpawnManager.init()
     LeaderboardManager.init()
     AchievementManager.init()
+    RandomDropManager.init()
     print("GameManager initialized")
+end
+
+-- Get player data
+function GameManager.getPlayerData(player)
+    return playerData[player.UserId]
 end
 
 -- Update player stats
@@ -702,4 +709,4 @@ function GameManager.updatePlayerStats(player, data)
     })
 end
 
-return GameManager 
+return GameManager

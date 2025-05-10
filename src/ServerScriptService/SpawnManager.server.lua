@@ -28,10 +28,15 @@ end
 local function isValidSpawnPosition(position)
     -- Check if there's already an object nearby
     local radius = 10 -- Minimum distance between objects
-    local parts = workspace:GetPartsInPart(Instance.new("Part", {
-        Size = Vector3.new(radius * 2, 1, radius * 2),
-        Position = position
-    }))
+    local part = Instance.new("Part")
+    part.Size = Vector3.new(radius * 2, 1, radius * 2)
+    part.Position = position
+    part.Anchored = true
+    part.CanCollide = false
+    part.Transparency = 1
+    
+    local parts = workspace:GetPartsInPart(part)
+    part:Destroy()
     
     return #parts == 0
 end
@@ -51,13 +56,13 @@ function SpawnManager.spawnRandomObject()
         warn("Could not find valid spawn position after 10 attempts")
         return nil
     end
-    
-    -- Get random object type
+      -- Get random object type
     local objectType = ObjectManager.getRandomObjectType()
     
     -- Create object
-    local model = ObjectManager.createObject(objectType, position, Vector3.new(0, 0, 0))
+    local model = ObjectManager.createObject(objectType)
     if model then
+        model:SetPrimaryPartCFrame(CFrame.new(position))
         model.Parent = workspace
         return model
     end
@@ -66,12 +71,12 @@ function SpawnManager.spawnRandomObject()
 end
 
 -- Start random spawning
-function SpawnManager.startRandomSpawning()
-    while true do
+function SpawnManager.startRandomSpawning()    while true do
         wait(Constants.FREE_OBJECT_SPAWN_INTERVAL)
         
         -- Spawn multiple objects
-        for i = 1, math.random(1, Constants.MAX_FREE_OBJECTS_PER_SPAWN) do
+        local objectCount = math.random(1, Constants.MAX_FREE_OBJECTS_PER_SPAWN)
+        for _ = 1, objectCount do
             task.spawn(function()
                 SpawnManager.spawnRandomObject()
             end)

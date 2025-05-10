@@ -6,9 +6,6 @@
       "$className": "ReplicatedStorage",
       "shared": {
         "$path": "src/shared"
-      },
-      "DataStoreManagerPro": {
-        "$path": "DataStorePlugin"
       }
     },
     "ServerScriptService": {

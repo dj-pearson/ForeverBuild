@@ -5,19 +5,16 @@
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
       "shared": {
-        "$path": "src/ReplicatedStorage"
+        "$path": "src/shared"
+      },
+      "DataStoreManagerPro": {
+        "$path": "DataStorePlugin"
       }
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
       "server": {
-        "$path": "src/ServerScriptService"
-      }
-    },
-    "StarterGui": {
-      "$className": "StarterGui",
-      "Gui": {
-        "$path": "src/StarterGui"
+        "$path": "src/server"
       }
     },
     "StarterPlayer": {
@@ -25,7 +22,7 @@
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
         "client": {
-          "$path": "src/StarterPlayer/StarterPlayerScripts"
+          "$path": "src/client"
         }
       }
     }

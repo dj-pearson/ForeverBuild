@@ -1,5 +1,5 @@
-local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 
 -- Create necessary folders if they don't exist
@@ -15,8 +15,9 @@ end
 
 -- Ensure required folders exist
 local modulesFolder = ensureFolder(ServerScriptService, "Modules")
-local sharedFolder = ensureFolder(ReplicatedStorage, "Shared")
-local remotesFolder = ensureFolder(ReplicatedStorage, "Remotes")
+local dataFolder = ensureFolder(modulesFolder, "Data")
+local securityFolder = ensureFolder(modulesFolder, "Security")
+local tutorialFolder = ensureFolder(modulesFolder, "Tutorial")
 
 -- Helper function to safely require modules
 local function safeRequire(modulePath)
@@ -37,107 +38,74 @@ local function safeRequire(modulePath)
     end
 end
 
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
+local Logger = Shared.Logger
+
 -- Initialize core modules
 local function initializeCoreModules()
-    -- First initialize DataStoreManager as other modules depend on it
-    local dataStoreManager = safeRequire(modulesFolder.Data.DataStoreManager)
-    if not dataStoreManager then
-        warn("Failed to load DataStoreManager - this will affect other modules")
-        return nil
+    -- Load DataStoreManager first as it's a dependency
+    local DataStoreManager = safeRequire(dataFolder.DataStoreManager)
+    if not DataStoreManager then
+        Logger:error("Failed to load DataStoreManager - this will affect other modules")
+        return false
     end
-
-    -- Then initialize SecurityManager as it's used by many modules
-    local securityManager = safeRequire(modulesFolder.Security.SecurityManager)
-    if not securityManager then
-        warn("Failed to load SecurityManager - this will affect other modules")
-        return nil
+    
+    -- Load SecurityManager
+    local SecurityManager = safeRequire(securityFolder.SecurityManager)
+    if not SecurityManager then
+        Logger:error("Failed to load SecurityManager")
+        return false
     end
-
-    -- Initialize remaining modules
-    local coreModules = {
-        -- Security and Performance
-        SecurityManager = securityManager,
-        PerformanceManager = safeRequire(modulesFolder.Performance.PerformanceManager),
-        
-        -- State and Network
-        StateManager = safeRequire(modulesFolder.State.StateManager),
-        NetworkManager = safeRequire(modulesFolder.Network.NetworkManager),
-        
-        -- Game Systems
-        GameManager = safeRequire(modulesFolder.Game.GameManager),
-        SpawnManager = safeRequire(modulesFolder.Game.SpawnManager),
-        
-        -- Social Systems
-        FriendManager = safeRequire(modulesFolder.Social.FriendManager),
-        SocialHubManager = safeRequire(modulesFolder.Social.SocialHubManager),
-        SocialInteractionManager = safeRequire(modulesFolder.Social.SocialInteractionManager),
-        PlayerProfileManager = safeRequire(modulesFolder.Social.PlayerProfileManager),
-        SocialMediaManager = safeRequire(modulesFolder.Social.SocialMediaManager),
-        
-        -- Building Systems
-        BuildingToolsManager = safeRequire(modulesFolder.Building.BuildingToolsManager),
-        BuildingTemplateManager = safeRequire(modulesFolder.Building.BuildingTemplateManager),
-        BuildingChallengeManager = safeRequire(modulesFolder.Building.BuildingChallengeManager),
-        
-        -- Progression Systems
-        ProgressionManager = safeRequire(modulesFolder.Progression.ProgressionManager),
-        AchievementManager = safeRequire(modulesFolder.Achievement.AchievementManager),
-        
-        -- Data Systems
-        DataStoreManager = dataStoreManager,
-        
-        -- Tutorial System
-        TutorialHandler = safeRequire(modulesFolder.Tutorial.TutorialHandler)
-    }
+    
+    -- Load TutorialHandler
+    local TutorialHandler = safeRequire(tutorialFolder.TutorialHandler)
+    if not TutorialHandler then
+        Logger:error("Failed to load TutorialHandler")
+        return false
+    end
     
     -- Initialize modules in dependency order
-    for name, module in pairs(coreModules) do
-        if module and module.Initialize then
-            local success, result = pcall(function()
-                return module:Initialize()
-            end)
-            if not success then
-                warn("Failed to initialize module:", name, "-", result)
-            end
-        end
+    if not DataStoreManager.Initialize() then
+        Logger:error("Failed to initialize DataStoreManager")
+        return false
     end
     
-    return coreModules
+    if not SecurityManager.Initialize() then
+        Logger:error("Failed to initialize SecurityManager")
+        return false
+    end
+    
+    if not TutorialHandler.Initialize() then
+        Logger:error("Failed to initialize TutorialHandler")
+        return false
+    end
+    
+    Logger:info("Core modules initialized successfully")
+    return true
 end
 
 -- Initialize the system
 local function initialize()
-    -- Create necessary remote events
-    local remotes = {
-        "ReportObject",
-        "AdminCommand",
-        "CompleteTutorial",
-        "GetTutorialStatus"
-    }
-    
-    for _, remoteName in ipairs(remotes) do
-        local remote = Instance.new("RemoteEvent")
-        remote.Name = remoteName
-        remote.Parent = remotesFolder
-    end
-    
-    local coreModules = initializeCoreModules()
-    if not coreModules then
-        warn("Failed to initialize core modules")
+    -- Initialize core modules
+    if not initializeCoreModules() then
+        Logger:error("Failed to initialize core modules")
         return nil
     end
     
-    print("Core modules initialized successfully")
-    return coreModules
+    Logger:info("Server system initialized successfully")
+    return true
 end
 
 -- Start initialization
-local modules = initialize()
+local success = initialize()
+if not success then
+    Logger:error("Failed to initialize server system")
+end
 
--- Return the initialized server system
 return {
-    Initialize = initialize,
-    getModule = function(moduleName)
-        return modules and modules[moduleName]
-    end
+    Initialize = initialize
 } 

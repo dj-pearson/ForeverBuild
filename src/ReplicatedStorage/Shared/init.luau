@@ -1,39 +1,113 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+-- Create necessary folders
+local function ensureFolder(parent, name)
+    local folder = parent:FindFirstChild(name)
+    if not folder then
+        folder = Instance.new("Folder")
+        folder.Name = name
+        folder.Parent = parent
+    end
+    return folder
+end
+
+-- Ensure required folders exist
+local remotesFolder = ensureFolder(ReplicatedStorage, "Remotes")
+
+-- Create remote events
+local function createRemoteEvent(name)
+    local remote = remotesFolder:FindFirstChild(name)
+    if not remote then
+        remote = Instance.new("RemoteEvent")
+        remote.Name = name
+        remote.Parent = remotesFolder
+    end
+    return remote
+end
+
+-- Create remote functions
+local function createRemoteFunction(name)
+    local remote = remotesFolder:FindFirstChild(name)
+    if not remote then
+        remote = Instance.new("RemoteFunction")
+        remote.Name = name
+        remote.Parent = remotesFolder
+    end
+    return remote
+end
+
+-- Create all required remotes
+local remotes = {
+    ReportObject = createRemoteEvent("ReportObject"),
+    AdminCommand = createRemoteEvent("AdminCommand"),
+    CompleteTutorial = createRemoteEvent("CompleteTutorial"),
+    ReportResponse = createRemoteEvent("ReportResponse"),
+    GetTutorialStatus = createRemoteFunction("GetTutorialStatus")
+}
+
 -- Load shared modules
 local Types = require(script.Types)
 local Constants = require(script.Constants)
 
 -- Create RemoteManager
 local RemoteManager = {
-    _remotes = {},
+    _remotes = remotes,
     _callbacks = {}
 }
 
 function RemoteManager:onServerEvent(eventName, callback)
     local remote = self._remotes[eventName]
     if not remote then
-        remote = ReplicatedStorage.Remotes:WaitForChild(eventName, 10)
-        if not remote then
-            warn("Failed to find remote event:", eventName)
-            return
-        end
-        self._remotes[eventName] = remote
+        warn("Remote event not found:", eventName)
+        return
     end
     remote.OnServerEvent:Connect(callback)
+end
+
+function RemoteManager:onClientEvent(eventName, callback)
+    local remote = self._remotes[eventName]
+    if not remote then
+        warn("Remote event not found:", eventName)
+        return
+    end
+    remote.OnClientEvent:Connect(callback)
+end
+
+function RemoteManager:fireServer(eventName, ...)
+    local remote = self._remotes[eventName]
+    if not remote then
+        warn("Remote event not found:", eventName)
+        return
+    end
+    remote:FireServer(...)
+end
+
+function RemoteManager:fireClient(eventName, ...)
+    local remote = self._remotes[eventName]
+    if not remote then
+        warn("Remote event not found:", eventName)
+        return
+    end
+    remote:FireClient(...)
 end
 
 function RemoteManager:setServerCallback(functionName, callback)
     local remote = self._remotes[functionName]
     if not remote then
-        remote = ReplicatedStorage.Remotes:WaitForChild(functionName, 10)
-        if not remote then
-            warn("Failed to find remote function:", functionName)
-            return
-        end
-        self._remotes[functionName] = remote
+        warn("Remote function not found:", functionName)
+        return
     end
     self._callbacks[functionName] = callback
+    remote.OnServerInvoke = callback
+end
+
+function RemoteManager:invokeServer(functionName, ...)
+    local remote = self._remotes[functionName]
+    if not remote then
+        warn("Remote function not found:", functionName)
+        return nil
+    end
+    return remote:InvokeServer(...)
 end
 
 -- Create Logger
@@ -89,5 +163,5 @@ return {
     Constants = Constants,
     RemoteManager = RemoteManager,
     Logger = Logger
-}
-end 
+} 
+end

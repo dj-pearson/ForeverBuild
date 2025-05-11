@@ -1,250 +1,255 @@
-  23:40:19.085  Failed to load module: DataStoreManager - Attempted to call require with invalid argument(s).  -  Server - init:35
-  23:40:19.086  Failed to load DataStoreManager - this will affect other modules  -  Server - init:45
-  23:40:19.086  Failed to initialize core modules  -  Server - init:126
-  23:40:19.086  Attempted to call require with invalid argument(s).  -  Server - TutorialHandler:6
-  23:40:19.086  Stack Begin  -  Studio
-  23:40:19.087  Script 'ServerScriptService.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
-  23:40:19.087  Stack End  -  Studio
-  23:40:19.087  Attempted to call require with invalid argument(s).  -  Server - DataStoreManager:8
-  23:40:19.087  Stack Begin  -  Studio
-  23:40:19.088  Script 'ServerScriptService.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
-  23:40:19.088  Stack End  -  Studio
-  23:40:19.088  Attempted to call require with invalid argument(s).  -  Server - SecurityManager:7
-  23:40:19.088  Stack Begin  -  Studio
-  23:40:19.088  Script 'ServerScriptService.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
-  23:40:19.088  Stack End  -  Studio
-  23:40:19.089  Attempted to call require with invalid argument(s).  -  Server - TutorialHandler:6
-  23:40:19.089  Stack Begin  -  Studio
-  23:40:19.089  Script 'ServerScriptService.init.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
-  23:40:19.089  Stack End  -  Studio
-  23:40:19.089  Attempted to call require with invalid argument(s).  -  Server - SecurityManager:7
-  23:40:19.090  Stack Begin  -  Studio
-  23:40:19.090  Script 'ServerScriptService.init.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
-  23:40:19.090  Stack End  -  Studio
-  23:40:19.090  Attempted to call require with invalid argument(s).  -  Server - DataStoreManager:8
-  23:40:19.090  Stack Begin  -  Studio
-  23:40:19.090  Script 'ServerScriptService.init.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
-  23:40:19.091  Stack End  -  Studio
-  23:40:19.192  Tutorial is not a valid member of Folder "Players.Xdjpearsonx.PlayerScripts.Modules"  -  Client - StarterPlayerScripts:115
-  23:40:19.192  Stack Begin  -  Studio
-  23:40:19.192  Script 'Players.Xdjpearsonx.PlayerScripts.init.StarterPlayerScripts', Line 115 - function initializeCoreModules  -  Studio - StarterPlayerScripts:115
-  23:40:19.192  Script 'Players.Xdjpearsonx.PlayerScripts.init.StarterPlayerScripts', Line 147 - function initialize  -  Studio - StarterPlayerScripts:147
-  23:40:19.192  Script 'Players.Xdjpearsonx.PlayerScripts.init.StarterPlayerScripts', Line 167  -  Studio - StarterPlayerScripts:167
-  23:40:19.192  Stack End  -  Studio
-  23:40:19.192  Attempted to call require with invalid argument(s).  -  Client - TutorialManager:5
-  23:40:19.193  Stack Begin  -  Studio
-  23:40:19.193  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.TutorialManager', Line 5  -  Studio - TutorialManager:5
-  23:40:19.193  Stack End  -  Studio
-  23:40:19.193  ReportUI is not a valid member of ServerScriptService "ServerScriptService"  -  Client - ReportContextMenu:8
-  23:40:19.193  Stack Begin  -  Studio
-  23:40:19.193  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.Admin.ReportContextMenu', Line 8  -  Studio - ReportContextMenu:8
-  23:40:19.194  Stack End  -  Studio
-  23:40:19.194  Attempted to call require with invalid argument(s).  -  Client - ReportUI:5
-  23:40:19.194  Stack Begin  -  Studio
-  23:40:19.194  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.Admin.ReportUI', Line 5  -  Studio - ReportUI:5
-  23:40:19.194  Stack End  -  Studio
-  23:40:19.194  Attempted to call require with invalid argument(s).  -  Client - TutorialManager:7
-  23:40:19.195  Stack Begin  -  Studio
-  23:40:19.195  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.UI.TutorialManager', Line 7  -  Studio - TutorialManager:7
-  23:40:19.195  Stack End  -  Studio
-  23:40:19.195  Attempted to call require with invalid argument(s).  -  Client - init:5
-  23:40:19.195  Stack Begin  -  Studio
-  23:40:19.195  Script 'Players.Xdjpearsonx.PlayerScripts.init', Line 5  -  Studio - init:5
-  23:40:19.195  Stack End  -  Studio
-  23:40:19.213  Attempted to call require with invalid argument(s).  -  Client - TutorialManager:5
-  23:40:19.214  Stack Begin  -  Studio
-  23:40:19.214  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.TutorialManager', Line 5  -  Studio - TutorialManager:5
-  23:40:19.214  Stack End  -  Studio
-  23:40:19.214  ReportUI is not a valid member of ServerScriptService "ServerScriptService"  -  Client - ReportContextMenu:8
-  23:40:19.215  Stack Begin  -  Studio
-  23:40:19.215  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.Admin.ReportContextMenu', Line 8  -  Studio - ReportContextMenu:8
-  23:40:19.215  Stack End  -  Studio
-  23:40:19.216  Attempted to call require with invalid argument(s).  -  Client - ReportUI:5
-  23:40:19.217  Stack Begin  -  Studio
-  23:40:19.217  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.Admin.ReportUI', Line 5  -  Studio - ReportUI:5
-  23:40:19.217  Stack End  -  Studio
-  23:40:19.217  Attempted to call require with invalid argument(s).  -  Client - TutorialManager:7
-  23:40:19.217  Stack Begin  -  Studio
-  23:40:19.218  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.UI.TutorialManager', Line 7  -  Studio - TutorialManager:7
-  23:40:19.218  Stack End  -  Studio
-  23:40:19.862  Attempted to call require with invalid argument(s).  -  Client - Gui:5
-  23:40:19.863  Stack Begin  -  Studio
-  23:40:19.863  Script 'Players.Xdjpearsonx.PlayerGui.Gui', Line 5  -  Studio - Gui:5
-  23:40:19.863  Stack End  -  Studio
-  23:40:19.863  Attempted to call require with invalid argument(s).  -  Client - InventoryUI:4
-  23:40:19.863  Stack Begin  -  Studio
-  23:40:19.863  Script 'Players.Xdjpearsonx.PlayerGui.MainUI.InventoryUI', Line 4  -  Studio - InventoryUI:4
-  23:40:19.863  Stack End  -  Studio
-  23:40:19.864  Attempted to call require with invalid argument(s).  -  Client - MarketplaceUI:4
-  23:40:19.864  Stack Begin  -  Studio
-  23:40:19.864  Script 'Players.Xdjpearsonx.PlayerGui.MainUI.MarketplaceUI', Line 4  -  Studio - MarketplaceUI:4
-  23:40:19.864  Stack End  -  Studio
-  23:40:19.864  Attempted to call require with invalid argument(s).  -  Client - AchievementUI:6
-  23:40:19.865  Stack Begin  -  Studio
-  23:40:19.865  Script 'Players.Xdjpearsonx.PlayerGui.AchievementUI', Line 6  -  Studio - AchievementUI:6
-  23:40:19.865  Stack End  -  Studio
-  23:40:19.865  Attempted to call require with invalid argument(s).  -  Client - AmmoUI:6
-  23:40:19.865  Stack Begin  -  Studio
-  23:40:19.866  Script 'Players.Xdjpearsonx.PlayerGui.AmmoUI', Line 6  -  Studio - AmmoUI:6
-  23:40:19.866  Stack End  -  Studio
-  23:40:19.866  Attempted to call require with invalid argument(s).  -  Client - BuildingChallengeUI:6
-  23:40:19.866  Stack Begin  -  Studio
-  23:40:19.867  Script 'Players.Xdjpearsonx.PlayerGui.BuildingChallengeUI', Line 6  -  Studio - BuildingChallengeUI:6
-  23:40:19.867  Stack End  -  Studio
-  23:40:19.868  Attempted to call require with invalid argument(s).  -  Client - BuildingTemplateUI:6
-  23:40:19.868  Stack Begin  -  Studio
-  23:40:19.868  Script 'Players.Xdjpearsonx.PlayerGui.BuildingTemplateUI', Line 6  -  Studio - BuildingTemplateUI:6
-  23:40:19.868  Stack End  -  Studio
-  23:40:19.868  Attempted to call require with invalid argument(s).  -  Client - BuildingToolsUI:6
-  23:40:19.868  Stack Begin  -  Studio
-  23:40:19.869  Script 'Players.Xdjpearsonx.PlayerGui.BuildingToolsUI', Line 6  -  Studio - BuildingToolsUI:6
-  23:40:19.869  Stack End  -  Studio
-  23:40:19.869  Attempted to call require with invalid argument(s).  -  Client - ChatUI:7
-  23:40:19.869  Stack Begin  -  Studio
-  23:40:19.869  Script 'Players.Xdjpearsonx.PlayerGui.ChatUI', Line 7  -  Studio - ChatUI:7
-  23:40:19.869  Stack End  -  Studio
-  23:40:19.870  Attempted to call require with invalid argument(s).  -  Client - ConfirmationUI:6
-  23:40:19.870  Stack Begin  -  Studio
-  23:40:19.870  Script 'Players.Xdjpearsonx.PlayerGui.ConfirmationUI', Line 6  -  Studio - ConfirmationUI:6
-  23:40:19.870  Stack End  -  Studio
-  23:40:19.870  Attempted to call require with invalid argument(s).  -  Client - CrosshairUI:7
-  23:40:19.870  Stack Begin  -  Studio
-  23:40:19.870  Script 'Players.Xdjpearsonx.PlayerGui.CrosshairUI', Line 7  -  Studio - CrosshairUI:7
-  23:40:19.871  Stack End  -  Studio
-  23:40:19.871  Attempted to call require with invalid argument(s).  -  Client - DailyRewardsUI:4
-  23:40:19.871  Stack Begin  -  Studio
-  23:40:19.871  Script 'Players.Xdjpearsonx.PlayerGui.DailyRewardsUI', Line 4  -  Studio - DailyRewardsUI:4
-  23:40:19.871  Stack End  -  Studio
-  23:40:19.871  Attempted to call require with invalid argument(s).  -  Client - EndUI:6
-  23:40:19.872  Stack Begin  -  Studio
-  23:40:19.872  Script 'Players.Xdjpearsonx.PlayerGui.EndUI', Line 6  -  Studio - EndUI:6
-  23:40:19.872  Stack End  -  Studio
-  23:40:19.872  Attempted to call require with invalid argument(s).  -  Client - ErrorUI:6
-  23:40:19.872  Stack Begin  -  Studio
-  23:40:19.872  Script 'Players.Xdjpearsonx.PlayerGui.ErrorUI', Line 6  -  Studio - ErrorUI:6
-  23:40:19.873  Stack End  -  Studio
-  23:40:19.873  Attempted to call require with invalid argument(s).  -  Client - FriendsUI:5
-  23:40:19.873  Stack Begin  -  Studio
-  23:40:19.873  Script 'Players.Xdjpearsonx.PlayerGui.FriendsUI', Line 5  -  Studio - FriendsUI:5
-  23:40:19.873  Stack End  -  Studio
-  23:40:19.873  Attempted to call require with invalid argument(s).  -  Client - HealthUI:6
-  23:40:19.873  Stack Begin  -  Studio
-  23:40:19.874  Script 'Players.Xdjpearsonx.PlayerGui.HealthUI', Line 6  -  Studio - HealthUI:6
-  23:40:19.874  Stack End  -  Studio
-  23:40:19.874  Attempted to call require with invalid argument(s).  -  Client - HelpUI:6
-  23:40:19.874  Stack Begin  -  Studio
-  23:40:19.874  Script 'Players.Xdjpearsonx.PlayerGui.HelpUI', Line 6  -  Studio - HelpUI:6
-  23:40:19.874  Stack End  -  Studio
-  23:40:19.874  Attempted to call require with invalid argument(s).  -  Client - InputUI:6
-  23:40:19.875  Stack Begin  -  Studio
-  23:40:19.875  Script 'Players.Xdjpearsonx.PlayerGui.InputUI', Line 6  -  Studio - InputUI:6
-  23:40:19.875  Stack End  -  Studio
-  23:40:19.875  Attempted to call require with invalid argument(s).  -  Client - InventoryUI:6
-  23:40:19.875  Stack Begin  -  Studio
-  23:40:19.875  Script 'Players.Xdjpearsonx.PlayerGui.InventoryUI', Line 6  -  Studio - InventoryUI:6
-  23:40:19.875  Stack End  -  Studio
-  23:40:19.876  Attempted to call require with invalid argument(s).  -  Client - KillFeedUI:6
-  23:40:19.876  Stack Begin  -  Studio
-  23:40:19.876  Script 'Players.Xdjpearsonx.PlayerGui.KillFeedUI', Line 6  -  Studio - KillFeedUI:6
-  23:40:19.876  Stack End  -  Studio
-  23:40:19.876  Attempted to call require with invalid argument(s).  -  Client - LeaderboardUI:6
-  23:40:19.876  Stack Begin  -  Studio
-  23:40:19.877  Script 'Players.Xdjpearsonx.PlayerGui.LeaderboardUI', Line 6  -  Studio - LeaderboardUI:6
-  23:40:19.877  Stack End  -  Studio
-  23:40:19.877  Attempted to call require with invalid argument(s).  -  Client - LoadingUI:6
-  23:40:19.877  Stack Begin  -  Studio
-  23:40:19.877  Script 'Players.Xdjpearsonx.PlayerGui.LoadingUI', Line 6  -  Studio - LoadingUI:6
-  23:40:19.877  Stack End  -  Studio
-  23:40:19.877  Attempted to call require with invalid argument(s).  -  Client - Marketplace:5
-  23:40:19.877  Stack Begin  -  Studio
-  23:40:19.878  Script 'Players.Xdjpearsonx.PlayerGui.Marketplace', Line 5  -  Studio - Marketplace:5
-  23:40:19.878  Stack End  -  Studio
-  23:40:19.878  Attempted to call require with invalid argument(s).  -  Client - MenuUI:7
-  23:40:19.878  Stack Begin  -  Studio
-  23:40:19.878  Script 'Players.Xdjpearsonx.PlayerGui.MenuUI', Line 7  -  Studio - MenuUI:7
-  23:40:19.878  Stack End  -  Studio
-  23:40:19.878  Attempted to call require with invalid argument(s).  -  Client - MinimapUI:7
-  23:40:19.878  Stack Begin  -  Studio
-  23:40:19.879  Script 'Players.Xdjpearsonx.PlayerGui.MinimapUI', Line 7  -  Studio - MinimapUI:7
-  23:40:19.879  Stack End  -  Studio
-  23:40:19.879  Attempted to call require with invalid argument(s).  -  Client - NotificationUI:6
-  23:40:19.879  Stack Begin  -  Studio
-  23:40:19.879  Script 'Players.Xdjpearsonx.PlayerGui.NotificationUI', Line 6  -  Studio - NotificationUI:6
-  23:40:19.879  Stack End  -  Studio
-  23:40:19.880  Attempted to call require with invalid argument(s).  -  Client - PauseUI:7
-  23:40:19.880  Stack Begin  -  Studio
-  23:40:19.880  Script 'Players.Xdjpearsonx.PlayerGui.PauseUI', Line 7  -  Studio - PauseUI:7
-  23:40:19.880  Stack End  -  Studio
-  23:40:19.880  Attempted to call require with invalid argument(s).  -  Client - PlayerProfileUI:5
-  23:40:19.880  Stack Begin  -  Studio
-  23:40:19.880  Script 'Players.Xdjpearsonx.PlayerGui.PlayerProfileUI', Line 5  -  Studio - PlayerProfileUI:5
-  23:40:19.880  Stack End  -  Studio
-  23:40:19.881  Attempted to call require with invalid argument(s).  -  Client - ProgressionUI:6
-  23:40:19.881  Stack Begin  -  Studio
-  23:40:19.881  Script 'Players.Xdjpearsonx.PlayerGui.ProgressionUI', Line 6  -  Studio - ProgressionUI:6
-  23:40:19.881  Stack End  -  Studio
-  23:40:19.881  Attempted to call require with invalid argument(s).  -  Client - RoundUI:6
-  23:40:19.882  Stack Begin  -  Studio
-  23:40:19.882  Script 'Players.Xdjpearsonx.PlayerGui.RoundUI', Line 6  -  Studio - RoundUI:6
-  23:40:19.882  Stack End  -  Studio
-  23:40:19.882  Attempted to call require with invalid argument(s).  -  Client - ScoreUI:6
-  23:40:19.882  Stack Begin  -  Studio
-  23:40:19.882  Script 'Players.Xdjpearsonx.PlayerGui.ScoreUI', Line 6  -  Studio - ScoreUI:6
-  23:40:19.882  Stack End  -  Studio
-  23:40:19.883  Attempted to call require with invalid argument(s).  -  Client - ScoreboardUI:7
-  23:40:19.883  Stack Begin  -  Studio
-  23:40:19.883  Script 'Players.Xdjpearsonx.PlayerGui.ScoreboardUI', Line 7  -  Studio - ScoreboardUI:7
-  23:40:19.883  Stack End  -  Studio
-  23:40:19.883  Attempted to call require with invalid argument(s).  -  Client - SettingsUI:6
-  23:40:19.883  Stack Begin  -  Studio
-  23:40:19.883  Script 'Players.Xdjpearsonx.PlayerGui.SettingsUI', Line 6  -  Studio - SettingsUI:6
-  23:40:19.883  Stack End  -  Studio
-  23:40:19.884  Attempted to call require with invalid argument(s).  -  Client - ShopUI:6
-  23:40:19.884  Stack Begin  -  Studio
-  23:40:19.884  Script 'Players.Xdjpearsonx.PlayerGui.ShopUI', Line 6  -  Studio - ShopUI:6
-  23:40:19.884  Stack End  -  Studio
-  23:40:19.884  Attempted to call require with invalid argument(s).  -  Client - SocialHubUI:5
-  23:40:19.884  Stack Begin  -  Studio
-  23:40:19.885  Script 'Players.Xdjpearsonx.PlayerGui.SocialHubUI', Line 5  -  Studio - SocialHubUI:5
-  23:40:19.885  Stack End  -  Studio
-  23:40:19.885  Attempted to call require with invalid argument(s).  -  Client - SocialInteractionUI:5
-  23:40:19.885  Stack Begin  -  Studio
-  23:40:19.886  Script 'Players.Xdjpearsonx.PlayerGui.SocialInteractionUI', Line 5  -  Studio - SocialInteractionUI:5
-  23:40:19.886  Stack End  -  Studio
-  23:40:19.886  Attempted to call require with invalid argument(s).  -  Client - SocialMediaUI:4
-  23:40:19.886  Stack Begin  -  Studio
-  23:40:19.887  Script 'Players.Xdjpearsonx.PlayerGui.SocialMediaUI', Line 4  -  Studio - SocialMediaUI:4
-  23:40:19.887  Stack End  -  Studio
-  23:40:19.887  Attempted to call require with invalid argument(s).  -  Client - SpectatorUI:7
-  23:40:19.887  Stack Begin  -  Studio
-  23:40:19.887  Script 'Players.Xdjpearsonx.PlayerGui.SpectatorUI', Line 7  -  Studio - SpectatorUI:7
-  23:40:19.887  Stack End  -  Studio
-  23:40:19.888  Attempted to call require with invalid argument(s).  -  Client - TeamScoreUI:6
-  23:40:19.888  Stack Begin  -  Studio
-  23:40:19.888  Script 'Players.Xdjpearsonx.PlayerGui.TeamScoreUI', Line 6  -  Studio - TeamScoreUI:6
-  23:40:19.888  Stack End  -  Studio
-  23:40:19.888  Attempted to call require with invalid argument(s).  -  Client - TeamUI:6
-  23:40:19.888  Stack Begin  -  Studio
-  23:40:19.889  Script 'Players.Xdjpearsonx.PlayerGui.TeamUI', Line 6  -  Studio - TeamUI:6
-  23:40:19.889  Stack End  -  Studio
-  23:40:19.889  Attempted to call require with invalid argument(s).  -  Client - WeaponUI:6
-  23:40:19.889  Stack Begin  -  Studio
-  23:40:19.889  Script 'Players.Xdjpearsonx.PlayerGui.WeaponUI', Line 6  -  Studio - WeaponUI:6
-  23:40:19.889  Stack End  -  Studio
-  23:40:24.197  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
-  23:40:24.197  Stack Begin  -  Studio
-  23:40:24.197  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.Admin.AdminReport', Line 10  -  Studio - AdminReport:10
-  23:40:24.197  Stack End  -  Studio
-  23:40:24.197  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
-  23:40:24.197  Stack Begin  -  Studio
-  23:40:24.197  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.UI.ReportUI', Line 10  -  Studio - ReportUI:10
-  23:40:24.197  Stack End  -  Studio
-  23:40:24.213  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
-  23:40:24.213  Stack Begin  -  Studio
-  23:40:24.213  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.Admin.AdminReport', Line 10  -  Studio - AdminReport:10
-  23:40:24.213  Stack End  -  Studio
-  23:40:24.228  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
-  23:40:24.228  Stack Begin  -  Studio
-  23:40:24.229  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.UI.ReportUI', Line 10  -  Studio - ReportUI:10
-  23:40:24.229  Stack End  -  Studio
-  23:40:33.018  Disconnect from ::ffff:127.0.0.1|58095  -  Studio
+  23:44:58.470  Attempted to call require with invalid argument(s).  -  Server - Shared:4
+  23:44:58.470  Stack Begin  -  Studio
+  23:44:58.470  Script 'ReplicatedStorage.Shared', Line 4  -  Studio - Shared:4
+  23:44:58.470  Stack End  -  Studio
+  23:44:58.471  Requested module experienced an error while loading  -  Server - DataStoreManager:8
+  23:44:58.471  Stack Begin  -  Studio
+  23:44:58.471  Script 'ServerScriptService.init.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
+  23:44:58.471  Stack End  -  Studio
+  23:44:58.471  Requested module experienced an error while loading  -  Server - TutorialHandler:6
+  23:44:58.471  Stack Begin  -  Studio
+  23:44:58.472  Script 'ServerScriptService.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
+  23:44:58.472  Stack End  -  Studio
+  23:44:58.472  Failed to load module: DataStoreManager - Attempted to call require with invalid argument(s).  -  Server - init:35
+  23:44:58.472  Failed to load DataStoreManager - this will affect other modules  -  Server - init:45
+  23:44:58.472  Failed to initialize core modules  -  Server - init:126
+  23:44:58.473  Requested module experienced an error while loading  -  Server - SecurityManager:7
+  23:44:58.473  Stack Begin  -  Studio
+  23:44:58.473  Script 'ServerScriptService.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
+  23:44:58.473  Stack End  -  Studio
+  23:44:58.473  Requested module experienced an error while loading  -  Server - TutorialHandler:6
+  23:44:58.474  Stack Begin  -  Studio
+  23:44:58.474  Script 'ServerScriptService.init.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
+  23:44:58.474  Stack End  -  Studio
+  23:44:58.474  Requested module experienced an error while loading  -  Server - SecurityManager:7
+  23:44:58.474  Stack Begin  -  Studio
+  23:44:58.475  Script 'ServerScriptService.init.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
+  23:44:58.475  Stack End  -  Studio
+  23:44:58.475  Requested module experienced an error while loading  -  Server - DataStoreManager:8
+  23:44:58.475  Stack Begin  -  Studio
+  23:44:58.475  Script 'ServerScriptService.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
+  23:44:58.475  Stack End  -  Studio
+  23:44:58.591  Attempted to call require with invalid argument(s).  -  Client - Shared:4
+  23:44:58.592  Stack Begin  -  Studio
+  23:44:58.592  Script 'ReplicatedStorage.Shared', Line 4  -  Studio - Shared:4
+  23:44:58.592  Stack End  -  Studio
+  23:44:58.592  Requested module experienced an error while loading  -  Client - StarterPlayerScripts:42
+  23:44:58.592  Stack Begin  -  Studio
+  23:44:58.592  Script 'Players.Xdjpearsonx.PlayerScripts.init.StarterPlayerScripts', Line 42  -  Studio - StarterPlayerScripts:42
+  23:44:58.593  Stack End  -  Studio
+  23:44:58.593  Requested module experienced an error while loading  -  Client - TutorialManager:5
+  23:44:58.593  Stack Begin  -  Studio
+  23:44:58.593  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.TutorialManager', Line 5  -  Studio - TutorialManager:5
+  23:44:58.594  Stack End  -  Studio
+  23:44:58.594  Requested module experienced an error while loading  -  Client - ReportUI:5
+  23:44:58.594  Stack Begin  -  Studio
+  23:44:58.594  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.Admin.ReportUI', Line 5  -  Studio - ReportUI:5
+  23:44:58.595  Stack End  -  Studio
+  23:44:58.595  ReportUI is not a valid member of ServerScriptService "ServerScriptService"  -  Client - ReportContextMenu:8
+  23:44:58.595  Stack Begin  -  Studio
+  23:44:58.596  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.Admin.ReportContextMenu', Line 8  -  Studio - ReportContextMenu:8
+  23:44:58.596  Stack End  -  Studio
+  23:44:58.596  Requested module experienced an error while loading  -  Client - TutorialManager:7
+  23:44:58.596  Stack Begin  -  Studio
+  23:44:58.597  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.UI.TutorialManager', Line 7  -  Studio - TutorialManager:7
+  23:44:58.597  Stack End  -  Studio
+  23:44:58.597  Requested module experienced an error while loading  -  Client - init:5
+  23:44:58.597  Stack Begin  -  Studio
+  23:44:58.597  Script 'Players.Xdjpearsonx.PlayerScripts.init', Line 5  -  Studio - init:5
+  23:44:58.598  Stack End  -  Studio
+  23:44:58.599  Requested module experienced an error while loading  -  Client - TutorialManager:5
+  23:44:58.599  Stack Begin  -  Studio
+  23:44:58.599  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.TutorialManager', Line 5  -  Studio - TutorialManager:5
+  23:44:58.599  Stack End  -  Studio
+  23:44:58.600  Requested module experienced an error while loading  -  Client - TutorialManager:7
+  23:44:58.600  Stack Begin  -  Studio
+  23:44:58.600  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.UI.TutorialManager', Line 7  -  Studio - TutorialManager:7
+  23:44:58.600  Stack End  -  Studio
+  23:44:58.601  Requested module experienced an error while loading  -  Client - ReportUI:5
+  23:44:58.601  Stack Begin  -  Studio
+  23:44:58.601  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.Admin.ReportUI', Line 5  -  Studio - ReportUI:5
+  23:44:58.601  Stack End  -  Studio
+  23:44:58.602  ReportUI is not a valid member of ServerScriptService "ServerScriptService"  -  Client - ReportContextMenu:8
+  23:44:58.602  Stack Begin  -  Studio
+  23:44:58.602  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.Admin.ReportContextMenu', Line 8  -  Studio - ReportContextMenu:8
+  23:44:58.602  Stack End  -  Studio
+  23:44:59.247  Requested module experienced an error while loading  -  Client - Gui:5
+  23:44:59.248  Stack Begin  -  Studio
+  23:44:59.248  Script 'Players.Xdjpearsonx.PlayerGui.Gui', Line 5  -  Studio - Gui:5
+  23:44:59.248  Stack End  -  Studio
+  23:44:59.249  Attempted to call require with invalid argument(s).  -  Client - InventoryUI:4
+  23:44:59.249  Stack Begin  -  Studio
+  23:44:59.249  Script 'Players.Xdjpearsonx.PlayerGui.MainUI.InventoryUI', Line 4  -  Studio - InventoryUI:4
+  23:44:59.249  Stack End  -  Studio
+  23:44:59.249  Attempted to call require with invalid argument(s).  -  Client - MarketplaceUI:4
+  23:44:59.250  Stack Begin  -  Studio
+  23:44:59.250  Script 'Players.Xdjpearsonx.PlayerGui.MainUI.MarketplaceUI', Line 4  -  Studio - MarketplaceUI:4
+  23:44:59.250  Stack End  -  Studio
+  23:44:59.250  Requested module experienced an error while loading  -  Client - AchievementUI:6
+  23:44:59.250  Stack Begin  -  Studio
+  23:44:59.250  Script 'Players.Xdjpearsonx.PlayerGui.AchievementUI', Line 6  -  Studio - AchievementUI:6
+  23:44:59.250  Stack End  -  Studio
+  23:44:59.250  Requested module experienced an error while loading  -  Client - AmmoUI:6
+  23:44:59.251  Stack Begin  -  Studio
+  23:44:59.251  Script 'Players.Xdjpearsonx.PlayerGui.AmmoUI', Line 6  -  Studio - AmmoUI:6
+  23:44:59.251  Stack End  -  Studio
+  23:44:59.251  Requested module experienced an error while loading  -  Client - BuildingChallengeUI:6
+  23:44:59.251  Stack Begin  -  Studio
+  23:44:59.251  Script 'Players.Xdjpearsonx.PlayerGui.BuildingChallengeUI', Line 6  -  Studio - BuildingChallengeUI:6
+  23:44:59.252  Stack End  -  Studio
+  23:44:59.252  Requested module experienced an error while loading  -  Client - BuildingTemplateUI:6
+  23:44:59.252  Stack Begin  -  Studio
+  23:44:59.252  Script 'Players.Xdjpearsonx.PlayerGui.BuildingTemplateUI', Line 6  -  Studio - BuildingTemplateUI:6
+  23:44:59.252  Stack End  -  Studio
+  23:44:59.252  Requested module experienced an error while loading  -  Client - BuildingToolsUI:6
+  23:44:59.252  Stack Begin  -  Studio
+  23:44:59.252  Script 'Players.Xdjpearsonx.PlayerGui.BuildingToolsUI', Line 6  -  Studio - BuildingToolsUI:6
+  23:44:59.252  Stack End  -  Studio
+  23:44:59.253  Requested module experienced an error while loading  -  Client - ChatUI:7
+  23:44:59.253  Stack Begin  -  Studio
+  23:44:59.253  Script 'Players.Xdjpearsonx.PlayerGui.ChatUI', Line 7  -  Studio - ChatUI:7
+  23:44:59.253  Stack End  -  Studio
+  23:44:59.253  Requested module experienced an error while loading  -  Client - ConfirmationUI:6
+  23:44:59.254  Stack Begin  -  Studio
+  23:44:59.254  Script 'Players.Xdjpearsonx.PlayerGui.ConfirmationUI', Line 6  -  Studio - ConfirmationUI:6
+  23:44:59.254  Stack End  -  Studio
+  23:44:59.254  Requested module experienced an error while loading  -  Client - CrosshairUI:7
+  23:44:59.254  Stack Begin  -  Studio
+  23:44:59.254  Script 'Players.Xdjpearsonx.PlayerGui.CrosshairUI', Line 7  -  Studio - CrosshairUI:7
+  23:44:59.255  Stack End  -  Studio
+  23:44:59.255  Attempted to call require with invalid argument(s).  -  Client - DailyRewardsUI:4
+  23:44:59.255  Stack Begin  -  Studio
+  23:44:59.256  Script 'Players.Xdjpearsonx.PlayerGui.DailyRewardsUI', Line 4  -  Studio - DailyRewardsUI:4
+  23:44:59.256  Stack End  -  Studio
+  23:44:59.256  Requested module experienced an error while loading  -  Client - EndUI:6
+  23:44:59.256  Stack Begin  -  Studio
+  23:44:59.256  Script 'Players.Xdjpearsonx.PlayerGui.EndUI', Line 6  -  Studio - EndUI:6
+  23:44:59.256  Stack End  -  Studio
+  23:44:59.256  Requested module experienced an error while loading  -  Client - ErrorUI:6
+  23:44:59.257  Stack Begin  -  Studio
+  23:44:59.257  Script 'Players.Xdjpearsonx.PlayerGui.ErrorUI', Line 6  -  Studio - ErrorUI:6
+  23:44:59.257  Stack End  -  Studio
+  23:44:59.257  Requested module experienced an error while loading  -  Client - FriendsUI:5
+  23:44:59.257  Stack Begin  -  Studio
+  23:44:59.257  Script 'Players.Xdjpearsonx.PlayerGui.FriendsUI', Line 5  -  Studio - FriendsUI:5
+  23:44:59.257  Stack End  -  Studio
+  23:44:59.257  Requested module experienced an error while loading  -  Client - HealthUI:6
+  23:44:59.257  Stack Begin  -  Studio
+  23:44:59.257  Script 'Players.Xdjpearsonx.PlayerGui.HealthUI', Line 6  -  Studio - HealthUI:6
+  23:44:59.258  Stack End  -  Studio
+  23:44:59.258  Requested module experienced an error while loading  -  Client - HelpUI:6
+  23:44:59.258  Stack Begin  -  Studio
+  23:44:59.258  Script 'Players.Xdjpearsonx.PlayerGui.HelpUI', Line 6  -  Studio - HelpUI:6
+  23:44:59.259  Stack End  -  Studio
+  23:44:59.259  Requested module experienced an error while loading  -  Client - InputUI:6
+  23:44:59.259  Stack Begin  -  Studio
+  23:44:59.259  Script 'Players.Xdjpearsonx.PlayerGui.InputUI', Line 6  -  Studio - InputUI:6
+  23:44:59.259  Stack End  -  Studio
+  23:44:59.259  Requested module experienced an error while loading  -  Client - InventoryUI:6
+  23:44:59.259  Stack Begin  -  Studio
+  23:44:59.260  Script 'Players.Xdjpearsonx.PlayerGui.InventoryUI', Line 6  -  Studio - InventoryUI:6
+  23:44:59.260  Stack End  -  Studio
+  23:44:59.260  Requested module experienced an error while loading  -  Client - KillFeedUI:6
+  23:44:59.260  Stack Begin  -  Studio
+  23:44:59.260  Script 'Players.Xdjpearsonx.PlayerGui.KillFeedUI', Line 6  -  Studio - KillFeedUI:6
+  23:44:59.260  Stack End  -  Studio
+  23:44:59.261  Requested module experienced an error while loading  -  Client - LeaderboardUI:6
+  23:44:59.261  Stack Begin  -  Studio
+  23:44:59.261  Script 'Players.Xdjpearsonx.PlayerGui.LeaderboardUI', Line 6  -  Studio - LeaderboardUI:6
+  23:44:59.261  Stack End  -  Studio
+  23:44:59.262  Requested module experienced an error while loading  -  Client - LoadingUI:6
+  23:44:59.262  Stack Begin  -  Studio
+  23:44:59.262  Script 'Players.Xdjpearsonx.PlayerGui.LoadingUI', Line 6  -  Studio - LoadingUI:6
+  23:44:59.262  Stack End  -  Studio
+  23:44:59.263  Requested module experienced an error while loading  -  Client - Marketplace:5
+  23:44:59.263  Stack Begin  -  Studio
+  23:44:59.263  Script 'Players.Xdjpearsonx.PlayerGui.Marketplace', Line 5  -  Studio - Marketplace:5
+  23:44:59.263  Stack End  -  Studio
+  23:44:59.263  Requested module experienced an error while loading  -  Client - MenuUI:7
+  23:44:59.263  Stack Begin  -  Studio
+  23:44:59.263  Script 'Players.Xdjpearsonx.PlayerGui.MenuUI', Line 7  -  Studio - MenuUI:7
+  23:44:59.264  Stack End  -  Studio
+  23:44:59.264  Requested module experienced an error while loading  -  Client - MinimapUI:7
+  23:44:59.264  Stack Begin  -  Studio
+  23:44:59.264  Script 'Players.Xdjpearsonx.PlayerGui.MinimapUI', Line 7  -  Studio - MinimapUI:7
+  23:44:59.264  Stack End  -  Studio
+  23:44:59.264  Requested module experienced an error while loading  -  Client - NotificationUI:6
+  23:44:59.264  Stack Begin  -  Studio
+  23:44:59.264  Script 'Players.Xdjpearsonx.PlayerGui.NotificationUI', Line 6  -  Studio - NotificationUI:6
+  23:44:59.265  Stack End  -  Studio
+  23:44:59.265  Requested module experienced an error while loading  -  Client - PauseUI:7
+  23:44:59.265  Stack Begin  -  Studio
+  23:44:59.265  Script 'Players.Xdjpearsonx.PlayerGui.PauseUI', Line 7  -  Studio - PauseUI:7
+  23:44:59.265  Stack End  -  Studio
+  23:44:59.265  Requested module experienced an error while loading  -  Client - PlayerProfileUI:5
+  23:44:59.265  Stack Begin  -  Studio
+  23:44:59.265  Script 'Players.Xdjpearsonx.PlayerGui.PlayerProfileUI', Line 5  -  Studio - PlayerProfileUI:5
+  23:44:59.265  Stack End  -  Studio
+  23:44:59.265  Requested module experienced an error while loading  -  Client - ProgressionUI:6
+  23:44:59.265  Stack Begin  -  Studio
+  23:44:59.266  Script 'Players.Xdjpearsonx.PlayerGui.ProgressionUI', Line 6  -  Studio - ProgressionUI:6
+  23:44:59.266  Stack End  -  Studio
+  23:44:59.266  Requested module experienced an error while loading  -  Client - RoundUI:6
+  23:44:59.266  Stack Begin  -  Studio
+  23:44:59.266  Script 'Players.Xdjpearsonx.PlayerGui.RoundUI', Line 6  -  Studio - RoundUI:6
+  23:44:59.266  Stack End  -  Studio
+  23:44:59.266  Requested module experienced an error while loading  -  Client - ScoreUI:6
+  23:44:59.266  Stack Begin  -  Studio
+  23:44:59.266  Script 'Players.Xdjpearsonx.PlayerGui.ScoreUI', Line 6  -  Studio - ScoreUI:6
+  23:44:59.266  Stack End  -  Studio
+  23:44:59.267  Requested module experienced an error while loading  -  Client - ScoreboardUI:7
+  23:44:59.267  Stack Begin  -  Studio
+  23:44:59.267  Script 'Players.Xdjpearsonx.PlayerGui.ScoreboardUI', Line 7  -  Studio - ScoreboardUI:7
+  23:44:59.267  Stack End  -  Studio
+  23:44:59.267  Requested module experienced an error while loading  -  Client - SettingsUI:6
+  23:44:59.267  Stack Begin  -  Studio
+  23:44:59.267  Script 'Players.Xdjpearsonx.PlayerGui.SettingsUI', Line 6  -  Studio - SettingsUI:6
+  23:44:59.267  Stack End  -  Studio
+  23:44:59.267  Requested module experienced an error while loading  -  Client - ShopUI:6
+  23:44:59.268  Stack Begin  -  Studio
+  23:44:59.268  Script 'Players.Xdjpearsonx.PlayerGui.ShopUI', Line 6  -  Studio - ShopUI:6
+  23:44:59.268  Stack End  -  Studio
+  23:44:59.268  Requested module experienced an error while loading  -  Client - SocialHubUI:5
+  23:44:59.268  Stack Begin  -  Studio
+  23:44:59.268  Script 'Players.Xdjpearsonx.PlayerGui.SocialHubUI', Line 5  -  Studio - SocialHubUI:5
+  23:44:59.269  Stack End  -  Studio
+  23:44:59.269  Requested module experienced an error while loading  -  Client - SocialInteractionUI:5
+  23:44:59.269  Stack Begin  -  Studio
+  23:44:59.269  Script 'Players.Xdjpearsonx.PlayerGui.SocialInteractionUI', Line 5  -  Studio - SocialInteractionUI:5
+  23:44:59.269  Stack End  -  Studio
+  23:44:59.269  Attempted to call require with invalid argument(s).  -  Client - SocialMediaUI:4
+  23:44:59.269  Stack Begin  -  Studio
+  23:44:59.270  Script 'Players.Xdjpearsonx.PlayerGui.SocialMediaUI', Line 4  -  Studio - SocialMediaUI:4
+  23:44:59.270  Stack End  -  Studio
+  23:44:59.270  Requested module experienced an error while loading  -  Client - SpectatorUI:7
+  23:44:59.270  Stack Begin  -  Studio
+  23:44:59.270  Script 'Players.Xdjpearsonx.PlayerGui.SpectatorUI', Line 7  -  Studio - SpectatorUI:7
+  23:44:59.270  Stack End  -  Studio
+  23:44:59.270  Requested module experienced an error while loading  -  Client - TeamScoreUI:6
+  23:44:59.271  Stack Begin  -  Studio
+  23:44:59.271  Script 'Players.Xdjpearsonx.PlayerGui.TeamScoreUI', Line 6  -  Studio - TeamScoreUI:6
+  23:44:59.271  Stack End  -  Studio
+  23:44:59.271  Requested module experienced an error while loading  -  Client - TeamUI:6
+  23:44:59.271  Stack Begin  -  Studio
+  23:44:59.271  Script 'Players.Xdjpearsonx.PlayerGui.TeamUI', Line 6  -  Studio - TeamUI:6
+  23:44:59.271  Stack End  -  Studio
+  23:44:59.272  Requested module experienced an error while loading  -  Client - WeaponUI:6
+  23:44:59.272  Stack Begin  -  Studio
+  23:44:59.272  Script 'Players.Xdjpearsonx.PlayerGui.WeaponUI', Line 6  -  Studio - WeaponUI:6
+  23:44:59.272  Stack End  -  Studio
+  23:45:03.601  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
+  23:45:03.601  Stack Begin  -  Studio
+  23:45:03.601  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.Admin.AdminReport', Line 10  -  Studio - AdminReport:10
+  23:45:03.601  Stack End  -  Studio
+  23:45:03.602  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
+  23:45:03.602  Stack Begin  -  Studio
+  23:45:03.602  Script 'Players.Xdjpearsonx.PlayerScripts.init.Modules.UI.ReportUI', Line 10  -  Studio - ReportUI:10
+  23:45:03.602  Stack End  -  Studio
+  23:45:03.617  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
+  23:45:03.617  Stack Begin  -  Studio
+  23:45:03.617  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.UI.ReportUI', Line 10  -  Studio - ReportUI:10
+  23:45:03.618  Stack End  -  Studio
+  23:45:03.618  Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild("ReportResponse")'  -  Studio
+  23:45:03.618  Stack Begin  -  Studio
+  23:45:03.618  Script 'Players.Xdjpearsonx.PlayerScripts.Modules.Admin.AdminReport', Line 10  -  Studio - AdminReport:10
+  23:45:03.618  Stack End  -  Studio

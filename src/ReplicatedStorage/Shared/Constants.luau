@@ -12,19 +12,17 @@ local Constants = {
     
     DataStoreNames = {
         PlayerData = "PlayerData",
-        WorldObjects = "WorldObjects",
-        PlayerDataBackup = "PlayerDataBackup"
+        PlayerBackup = "PlayerBackup"
     },
     
     DataVersions = {
-        PlayerData = 1,
-        WorldObjects = 1
+        PlayerData = 1
     },
     
     RetrySettings = {
         MaxRetries = 3,
-        RetryDelay = 1,
-        BackupInterval = 300 -- 5 minutes
+        InitialDelay = 1,
+        MaxDelay = 5
     }
 }
 

@@ -1,7 +1,17 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 
-local Logger = require(game:GetService("ReplicatedStorage").shared.Modules.Logger)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
+local Logger = Shared.Logger
+
+-- Load server modules
+local DataStoreManager = require(ServerScriptService.Modules.Data.DataStoreManager)
 
 local SecurityManager = {}
 
@@ -238,7 +248,26 @@ function SecurityManager.init()
         end
     end)
     
+    -- Set up remote event handlers
+    RemoteManager:onServerEvent(Constants.RemoteEvents.AdminCommand, function(player, command, args)
+        SecurityManager.handleAdminCommand(player, command, args)
+    end)
+    
+    RemoteManager:onServerEvent(Constants.RemoteEvents.ReportObject, function(player, reportData)
+        SecurityManager.handleReport(player, reportData)
+    end)
+    
     Logger.info("SecurityManager initialized successfully")
+end
+
+-- Handle admin commands
+function SecurityManager.handleAdminCommand(player, command, args)
+    -- Implementation
+end
+
+-- Handle reports
+function SecurityManager.handleReport(player, reportData)
+    -- Implementation
 end
 
 return SecurityManager 

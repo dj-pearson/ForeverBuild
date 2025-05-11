@@ -2,8 +2,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
 
 local ProgressionUI = {}
 
@@ -29,13 +32,14 @@ function ProgressionUI.create()
     -- Create main screen GUI
     screenGui = Instance.new("ScreenGui")
     screenGui.Name = "ProgressionUI"
+    screenGui.ResetOnSpawn = false
     screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
     
     -- Create main frame
     mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
-    mainFrame.Size = UDim2.new(0.8, 0, 0.8, 0)
-    mainFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+    mainFrame.Size = UDim2.new(0.4, 0, 0.3, 0)
+    mainFrame.Position = UDim2.new(0.3, 0, 0.35, 0)
     mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
     mainFrame.BorderSizePixel = 0
     mainFrame.Visible = false
@@ -44,12 +48,13 @@ function ProgressionUI.create()
     -- Create title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
-    title.Size = UDim2.new(1, 0, 0.1, 0)
+    title.Size = UDim2.new(1, 0, 0, 40)
     title.Position = UDim2.new(0, 0, 0, 0)
-    title.BackgroundTransparency = 1
-    title.Text = "Progression"
+    title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    title.BorderSizePixel = 0
+    title.Text = "Player Progression"
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.TextScaled = true
+    title.TextSize = 20
     title.Font = Enum.Font.GothamBold
     title.Parent = mainFrame
     
@@ -441,6 +446,11 @@ end
 -- Initialize UI
 function ProgressionUI.init()
     ProgressionUI.create()
+    
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.ProgressionUpdate, function(level, currentXP, maxXP)
+        ProgressionUI.updateProgression(level, currentXP, maxXP)
+    end)
 end
 
 return ProgressionUI 

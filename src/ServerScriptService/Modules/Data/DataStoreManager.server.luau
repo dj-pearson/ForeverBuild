@@ -1,8 +1,15 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 
-local Logger = require(game:GetService("ReplicatedStorage").shared.Modules.Logger)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
+local Logger = Shared.Logger
 
 local DATASTORE_NAME = "PlayerData"
 local WORLD_DATASTORE_NAME = "WorldObjects"
@@ -281,7 +288,26 @@ function DataStoreManager.init()
         end
     end)
     
+    -- Set up remote event handlers
+    RemoteManager:setServerCallback(Constants.RemoteFunctions.GetPlayerData, function(player)
+        return DataStoreManager.GetPlayerData(player)
+    end)
+    
+    RemoteManager:onServerEvent(Constants.RemoteEvents.DataSync, function(player, data)
+        DataStoreManager.SetPlayerData(player, data, true)
+    end)
+    
     Logger.info("DataStoreManager initialized successfully")
+end
+
+-- Get player data
+function DataStoreManager.GetPlayerData(player)
+    -- Implementation
+end
+
+-- Set player data
+function DataStoreManager.SetPlayerData(player, data, save)
+    -- Implementation
 end
 
 return DataStoreManager 

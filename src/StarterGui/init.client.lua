@@ -1,23 +1,40 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local ModuleManager = require(ReplicatedStorage.Shared.ModuleManager)
-local BuildingToolsUI = require(script.Parent.Modules.UI.BuildingToolsUI)
-local BuildingTemplateUI = require(script.Parent.Modules.UI.BuildingTemplateUI)
-local BuildingChallengeUI = require(script.Parent.Modules.UI.BuildingChallengeUI)
-local ProgressionUI = require(script.Parent.Modules.UI.ProgressionUI)
-local AchievementUI = require(script.Parent.Modules.UI.AchievementUI)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
 
--- Register modules
-ModuleManager.registerModule("BuildingToolsUI", BuildingToolsUI, { "ClientManager" })
-ModuleManager.registerModule("BuildingTemplateUI", BuildingTemplateUI, { "ClientManager" })
-ModuleManager.registerModule("BuildingChallengeUI", BuildingChallengeUI, { "ClientManager" })
-ModuleManager.registerModule("ProgressionUI", ProgressionUI, { "ClientManager" })
-ModuleManager.registerModule("AchievementUI", AchievementUI, { "ClientManager" })
+-- Load UI modules
+local AchievementUI = require(script.AchievementUI)
+local ProgressionUI = require(script.ProgressionUI)
+local BuildingChallengeUI = require(script.BuildingChallengeUI)
+local BuildingTemplateUI = require(script.BuildingTemplateUI)
+local BuildingToolsUI = require(script.BuildingToolsUI)
+local SocialMediaUI = require(script.SocialMediaUI)
+local PlayerProfileUI = require(script.PlayerProfileUI)
+local SocialInteractionUI = require(script.SocialInteractionUI)
+local SocialHubUI = require(script.SocialHubUI)
+local FriendsUI = require(script.FriendsUI)
+local Marketplace = require(script.Marketplace)
+local DailyRewardsUI = require(script.DailyRewardsUI)
 
--- Initialize modules
-BuildingToolsUI.init()
-BuildingTemplateUI.init()
-BuildingChallengeUI.init()
-ProgressionUI.init()
-AchievementUI.init() 
+-- Initialize UI modules
+local function init()
+    AchievementUI.init()
+    ProgressionUI.init()
+    BuildingChallengeUI.init()
+    BuildingTemplateUI.init()
+    BuildingToolsUI.init()
+    SocialMediaUI.init()
+    PlayerProfileUI.init()
+    SocialInteractionUI.init()
+    SocialHubUI.init()
+    FriendsUI.init()
+    Marketplace.init()
+    DailyRewardsUI.init()
+end
+
+init() 

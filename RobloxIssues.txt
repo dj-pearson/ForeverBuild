@@ -1,5 +1,5 @@
 # ForeverBuild Roblox Issues Tracking Document
-Last updated: May 10, 2025 (Iteration 3)
+Last updated: May 10, 2025 (Iteration 4 - Final)
 
 This document lists all identified issues in our Roblox project, categorized by priority. 
 Each issue has a tracking ID, status, and assigned priority level.
@@ -192,27 +192,44 @@ The errors suggest that there's a fundamental mismatch between:
 2. How Roblox expects to find them in the game hierarchy 
 3. How scripts are trying to require them
 
+I've examined the workspace structure and found:
+- We have both `src/ReplicatedStorage/Shared` and direct modules in `src/ReplicatedStorage`
+- Required modules exist but in different locations than scripts are looking for them
+- There are duplicate paths with both `ServerScriptService.Modules` and `ServerScriptService.init.Modules`
+- Many modules might be referencing paths like `ReplicatedStorage.Shared.Constants` but the actual file is directly in ReplicatedStorage
+
 ### Recommended Solution Approach:
 
-1. Fix module structure in ReplicatedStorage:
-   - Ensure ReplicatedStorage.Shared folder exists and is properly structured
-   - Implement core modules: ModuleManager, RemoteManager, Constants
-   - Create a SharedModuleResolver to properly expose modules
+1. Fix module structure in ReplicatedStorage (Begin Here):
+   - Move `ReplicatedStorage/RemoteManager.luau` and other direct modules into `ReplicatedStorage/Shared/`
+   - Ensure `SharedModuleResolver.luau` properly exposes all shared modules
+   - Create a proper folder structure that matches the requires in the scripts:
+     ```
+     ReplicatedStorage/
+       Shared/              <- Main shared modules folder
+         Constants.luau     <- Constants module (referenced in many UI scripts)
+         ModuleManager.luau <- Module manager (referenced in Gui:4)
+         RemoteManager.luau <- Remote manager (from existing file)
+         Types.luau         <- Types module
+     ```
 
-2. Standardize script paths and references:
-   - Decide whether to use ServerScriptService.Modules or ServerScriptService.init.Modules
-   - Update all require paths to use a consistent pattern
-
-3. Create Remotes folder with necessary events:
-   - Add ReportObject and AdminCommand RemoteEvents
-   - Ensure they are properly created before clients try to access them
-
-4. Fix DataStoreManager references once core structure is working
-   - This should be addressed after resolving the primary module structure issues
-
-5. Test incremental fixes focusing on the highest priority modules first:
-   - Start with the Shared module structure
-   - Then fix server module access
-   - Then address client module resolution
+2. Create and configure the Remotes folder:
+   - Add this to ServerScriptService.init.server.lua:
+     ```lua
+     -- Create Remotes folder and required RemoteEvents
+     local Remotes = Instance.new("Folder")
+     Remotes.Name = "Remotes"
+     Remotes.Parent = game:GetService("ReplicatedStorage")
+     
+     -- Create admin command event
+     local AdminCommand = Instance.new("RemoteEvent")
+     AdminCommand.Name = "AdminCommand" 
+     AdminCommand.Parent = Remotes
+     
+     -- Create report object event
+     local ReportObject = Instance.new("RemoteEvent")
+     ReportObject.Name = "ReportObject"
+     ReportObject.Parent = Remotes
+     ```
 
 ### Review this document after fixing each category of issues and update status accordingly.

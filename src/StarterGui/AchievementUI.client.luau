@@ -2,8 +2,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
 
 local AchievementUI = {}
 
@@ -20,16 +23,17 @@ local checkAchievementEvent = remotes:WaitForChild("CheckAchievement")
 
 -- Create UI
 function AchievementUI.create()
-    -- Create main screen GUI
+    -- Create ScreenGui
     screenGui = Instance.new("ScreenGui")
     screenGui.Name = "AchievementUI"
+    screenGui.ResetOnSpawn = false
     screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
     
     -- Create main frame
     mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
-    mainFrame.Size = UDim2.new(0.8, 0, 0.8, 0)
-    mainFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+    mainFrame.Size = UDim2.new(0.5, 0, 0.7, 0)
+    mainFrame.Position = UDim2.new(0.25, 0, 0.15, 0)
     mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
     mainFrame.BorderSizePixel = 0
     mainFrame.Visible = false
@@ -38,12 +42,13 @@ function AchievementUI.create()
     -- Create title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
-    title.Size = UDim2.new(1, 0, 0.1, 0)
+    title.Size = UDim2.new(1, 0, 0, 50)
     title.Position = UDim2.new(0, 0, 0, 0)
-    title.BackgroundTransparency = 1
+    title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    title.BorderSizePixel = 0
     title.Text = "Achievements"
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.TextScaled = true
+    title.TextSize = 24
     title.Font = Enum.Font.GothamBold
     title.Parent = mainFrame
     
@@ -110,12 +115,12 @@ function AchievementUI.create()
     -- Create achievements list
     local achievementsList = Instance.new("ScrollingFrame")
     achievementsList.Name = "AchievementsList"
-    achievementsList.Size = UDim2.new(1, 0, 0.8, 0)
-    achievementsList.Position = UDim2.new(0, 0, 0.2, 0)
+    achievementsList.Size = UDim2.new(1, -20, 1, -70)
+    achievementsList.Position = UDim2.new(0, 10, 0, 60)
     achievementsList.BackgroundTransparency = 1
     achievementsList.BorderSizePixel = 0
     achievementsList.ScrollBarThickness = 6
-    achievementsList.CanvasSize = UDim2.new(0, 0, 2, 0)
+    achievementsList.CanvasSize = UDim2.new(0, 0, 0, 0)
     achievementsList.Parent = mainFrame
     
     -- Create notification frame
@@ -352,6 +357,11 @@ end
 -- Initialize UI
 function AchievementUI.init()
     AchievementUI.create()
+    
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.AchievementUpdate, function(achievements)
+        AchievementUI.updateAchievements(achievements)
+    end)
 end
 
 return AchievementUI 

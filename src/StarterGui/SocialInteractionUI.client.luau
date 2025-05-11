@@ -1,28 +1,19 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
 
 local SocialInteractionUI = {}
 
 -- UI Elements
 local screenGui
-local interactionFrame
-local likesFrame
-local commentsFrame
-local commentInput
-
--- Remote events
-local likeObjectEvent = ReplicatedStorage.Remotes.LikeObject
-local unlikeObjectEvent = ReplicatedStorage.Remotes.UnlikeObject
-local addCommentEvent = ReplicatedStorage.Remotes.AddComment
-local removeCommentEvent = ReplicatedStorage.Remotes.RemoveComment
-local getObjectInteractionsEvent = ReplicatedStorage.Remotes.GetObjectInteractions
-local objectInteractionNotificationEvent = ReplicatedStorage.Remotes.ObjectInteractionNotification
-
--- Current object
-local currentObjectId = nil
+local mainFrame
+local interactionList
+local closeButton
 
 -- Create UI
 function SocialInteractionUI.create()
@@ -32,15 +23,15 @@ function SocialInteractionUI.create()
     screenGui.ResetOnSpawn = false
     screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
     
-    -- Create interaction frame
-    interactionFrame = Instance.new("Frame")
-    interactionFrame.Name = "InteractionFrame"
-    interactionFrame.Size = UDim2.new(0, 300, 0, 400)
-    interactionFrame.Position = UDim2.new(1, -320, 0.5, -200)
-    interactionFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-    interactionFrame.BorderSizePixel = 0
-    interactionFrame.Visible = false
-    interactionFrame.Parent = screenGui
+    -- Create main frame
+    mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0.3, 0, 0.4, 0)
+    mainFrame.Position = UDim2.new(0.7, 0, 0.3, 0)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Visible = false
+    mainFrame.Parent = screenGui
     
     -- Create title
     local title = Instance.new("TextLabel")
@@ -49,231 +40,108 @@ function SocialInteractionUI.create()
     title.Position = UDim2.new(0, 0, 0, 0)
     title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     title.BorderSizePixel = 0
-    title.Text = "Object Interactions"
+    title.Text = "Social Interactions"
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.TextSize = 20
     title.Font = Enum.Font.GothamBold
-    title.Parent = interactionFrame
+    title.Parent = mainFrame
     
-    -- Create likes frame
-    likesFrame = Instance.new("Frame")
-    likesFrame.Name = "LikesFrame"
-    likesFrame.Size = UDim2.new(1, -20, 0, 100)
-    likesFrame.Position = UDim2.new(0, 10, 0, 50)
-    likesFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    likesFrame.BorderSizePixel = 0
-    likesFrame.Parent = interactionFrame
+    -- Create interaction list
+    interactionList = Instance.new("ScrollingFrame")
+    interactionList.Name = "InteractionList"
+    interactionList.Size = UDim2.new(1, -20, 1, -50)
+    interactionList.Position = UDim2.new(0, 10, 0, 50)
+    interactionList.BackgroundTransparency = 1
+    interactionList.BorderSizePixel = 0
+    interactionList.ScrollBarThickness = 6
+    interactionList.CanvasSize = UDim2.new(0, 0, 0, 0)
+    interactionList.Parent = mainFrame
     
-    -- Create like button
-    local likeButton = Instance.new("TextButton")
-    likeButton.Name = "LikeButton"
-    likeButton.Size = UDim2.new(0, 100, 0, 30)
-    likeButton.Position = UDim2.new(0.5, -50, 0, 10)
-    likeButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-    likeButton.BorderSizePixel = 0
-    likeButton.Text = "Like"
-    likeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    likeButton.TextSize = 16
-    likeButton.Font = Enum.Font.Gotham
-    likeButton.Parent = likesFrame
-    
-    -- Create likes count
-    local likesCount = Instance.new("TextLabel")
-    likesCount.Name = "LikesCount"
-    likesCount.Size = UDim2.new(1, -20, 0, 20)
-    likesCount.Position = UDim2.new(0, 10, 0, 50)
-    likesCount.BackgroundTransparency = 1
-    likesCount.Text = "0 likes"
-    likesCount.TextColor3 = Color3.fromRGB(255, 255, 255)
-    likesCount.TextSize = 16
-    likesCount.Font = Enum.Font.Gotham
-    likesCount.Parent = likesFrame
-    
-    -- Create comments frame
-    commentsFrame = Instance.new("ScrollingFrame")
-    commentsFrame.Name = "CommentsFrame"
-    commentsFrame.Size = UDim2.new(1, -20, 0, 200)
-    commentsFrame.Position = UDim2.new(0, 10, 0, 160)
-    commentsFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    commentsFrame.BorderSizePixel = 0
-    commentsFrame.ScrollBarThickness = 6
-    commentsFrame.Parent = interactionFrame
-    
-    -- Create comment input
-    commentInput = Instance.new("TextBox")
-    commentInput.Name = "CommentInput"
-    commentInput.Size = UDim2.new(1, -20, 0, 40)
-    commentInput.Position = UDim2.new(0, 10, 1, -50)
-    commentInput.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-    commentInput.BorderSizePixel = 0
-    commentInput.Text = ""
-    commentInput.PlaceholderText = "Add a comment..."
-    commentInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-    commentInput.TextSize = 16
-    commentInput.Font = Enum.Font.Gotham
-    commentInput.Parent = interactionFrame
-    
-    -- Create send button
-    local sendButton = Instance.new("TextButton")
-    sendButton.Name = "SendButton"
-    sendButton.Size = UDim2.new(0, 80, 0, 30)
-    sendButton.Position = UDim2.new(1, -90, 1, -45)
-    sendButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-    sendButton.BorderSizePixel = 0
-    sendButton.Text = "Send"
-    sendButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    sendButton.TextSize = 16
-    sendButton.Font = Enum.Font.Gotham
-    sendButton.Parent = interactionFrame
+    -- Create close button
+    closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -40, 0, 5)
+    closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    closeButton.BorderSizePixel = 0
+    closeButton.Text = "X"
+    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.TextSize = 20
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.Parent = mainFrame
     
     -- Set up button events
-    likeButton.MouseButton1Click:Connect(function()
-        if currentObjectId then
-            local success = likeObjectEvent:InvokeServer(currentObjectId)
-            if success then
-                SocialInteractionUI.refreshInteractions()
-            end
-        end
-    end)
-    
-    sendButton.MouseButton1Click:Connect(function()
-        if currentObjectId and commentInput.Text ~= "" then
-            local success = addCommentEvent:InvokeServer(currentObjectId, commentInput.Text)
-            if success then
-                commentInput.Text = ""
-                SocialInteractionUI.refreshInteractions()
-            end
-        end
-    end)
-    
-    -- Set up notification handler
-    objectInteractionNotificationEvent.OnClientEvent:Connect(function(notification)
-        if notification.objectId == currentObjectId then
-            SocialInteractionUI.refreshInteractions()
-        end
+    closeButton.MouseButton1Click:Connect(function()
+        SocialInteractionUI.hide()
     end)
 end
 
--- Update likes display
-function SocialInteractionUI.updateLikes(likes)
-    -- Update likes count
-    local count = 0
-    for _ in pairs(likes) do
-        count = count + 1
-    end
-    
-    local likesCount = likesFrame:FindFirstChild("LikesCount")
-    if likesCount then
-        likesCount.Text = count .. " likes"
-    end
-    
-    -- Update like button
-    local likeButton = likesFrame:FindFirstChild("LikeButton")
-    if likeButton then
-        local isLiked = likes[Players.LocalPlayer.UserId] ~= nil
-        likeButton.Text = isLiked and "Unlike" or "Like"
-        likeButton.BackgroundColor3 = isLiked and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(0, 120, 255)
-    end
-end
-
--- Update comments display
-function SocialInteractionUI.updateComments(comments)
-    -- Clear existing comments
-    for _, child in ipairs(commentsFrame:GetChildren()) do
-        child:Destroy()
-    end
-    
-    -- Add comments
-    local y = 0
-    for _, comment in ipairs(comments) do
-        local commentFrame = Instance.new("Frame")
-        commentFrame.Name = "Comment" .. comment.id
-        commentFrame.Size = UDim2.new(1, -10, 0, 60)
-        commentFrame.Position = UDim2.new(0, 5, 0, y)
-        commentFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-        commentFrame.BorderSizePixel = 0
-        commentFrame.Parent = commentsFrame
-        
-        -- Username
-        local username = Instance.new("TextLabel")
-        username.Name = "Username"
-        username.Size = UDim2.new(1, -10, 0, 20)
-        username.Position = UDim2.new(0, 5, 0, 5)
-        username.BackgroundTransparency = 1
-        username.Text = comment.username
-        username.TextColor3 = Color3.fromRGB(255, 255, 255)
-        username.TextSize = 14
-        username.Font = Enum.Font.GothamBold
-        username.TextXAlignment = Enum.TextXAlignment.Left
-        username.Parent = commentFrame
-        
-        -- Comment text
-        local text = Instance.new("TextLabel")
-        text.Name = "Text"
-        text.Size = UDim2.new(1, -10, 0, 20)
-        text.Position = UDim2.new(0, 5, 0, 25)
-        text.BackgroundTransparency = 1
-        text.Text = comment.text
-        text.TextColor3 = Color3.fromRGB(200, 200, 200)
-        text.TextSize = 14
-        text.Font = Enum.Font.Gotham
-        text.TextXAlignment = Enum.TextXAlignment.Left
-        text.TextWrapped = true
-        text.Parent = commentFrame
-        
-        -- Remove button (if comment owner)
-        if comment.userId == Players.LocalPlayer.UserId then
-            local removeButton = Instance.new("TextButton")
-            removeButton.Name = "RemoveButton"
-            removeButton.Size = UDim2.new(0, 60, 0, 20)
-            removeButton.Position = UDim2.new(1, -65, 0, 5)
-            removeButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-            removeButton.BorderSizePixel = 0
-            removeButton.Text = "Remove"
-            removeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            removeButton.TextSize = 12
-            removeButton.Font = Enum.Font.Gotham
-            removeButton.Parent = commentFrame
-            
-            removeButton.MouseButton1Click:Connect(function()
-                local success = removeCommentEvent:InvokeServer(currentObjectId, comment.id)
-                if success then
-                    SocialInteractionUI.refreshInteractions()
-                end
-            end)
-        end
-        
-        y = y + 65
-    end
-end
-
--- Refresh interactions
-function SocialInteractionUI.refreshInteractions()
-    if not currentObjectId then return end
-    
-    local interactions = getObjectInteractionsEvent:InvokeServer(currentObjectId)
-    if interactions then
-        SocialInteractionUI.updateLikes(interactions.likes)
-        SocialInteractionUI.updateComments(interactions.comments)
-    end
-end
-
--- Show UI for object
-function SocialInteractionUI.showForObject(objectId)
-    currentObjectId = objectId
-    interactionFrame.Visible = true
-    SocialInteractionUI.refreshInteractions()
+-- Show UI
+function SocialInteractionUI.show()
+    mainFrame.Visible = true
 end
 
 -- Hide UI
 function SocialInteractionUI.hide()
-    currentObjectId = nil
-    interactionFrame.Visible = false
+    mainFrame.Visible = false
+end
+
+-- Update interaction list
+function SocialInteractionUI.updateInteractions(interactions)
+    -- Clear existing interactions
+    for _, child in ipairs(interactionList:GetChildren()) do
+        child:Destroy()
+    end
+    
+    -- Add new interactions
+    local yOffset = 0
+    for _, interaction in ipairs(interactions) do
+        local interactionButton = Instance.new("TextButton")
+        interactionButton.Name = interaction.id
+        interactionButton.Size = UDim2.new(1, 0, 0, 50)
+        interactionButton.Position = UDim2.new(0, 0, 0, yOffset)
+        interactionButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        interactionButton.BorderSizePixel = 0
+        interactionButton.Text = interaction.name
+        interactionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        interactionButton.TextSize = 16
+        interactionButton.Font = Enum.Font.GothamBold
+        interactionButton.Parent = interactionList
+        
+        -- Interaction description
+        local descLabel = Instance.new("TextLabel")
+        descLabel.Name = "Description"
+        descLabel.Size = UDim2.new(1, -20, 0, 20)
+        descLabel.Position = UDim2.new(0, 10, 0, 25)
+        descLabel.BackgroundTransparency = 1
+        descLabel.Text = interaction.description
+        descLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        descLabel.TextSize = 14
+        descLabel.Font = Enum.Font.Gotham
+        descLabel.TextXAlignment = Enum.TextXAlignment.Left
+        descLabel.Parent = interactionButton
+        
+        -- Set up interaction button event
+        interactionButton.MouseButton1Click:Connect(function()
+            RemoteManager:fireServer(Constants.RemoteEvents.SocialInteraction, interaction.id)
+            SocialInteractionUI.hide()
+        end)
+        
+        yOffset = yOffset + 70
+    end
+    
+    -- Update canvas size
+    interactionList.CanvasSize = UDim2.new(0, 0, 0, yOffset)
 end
 
 -- Initialize
 function SocialInteractionUI.init()
     SocialInteractionUI.create()
+    
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.InteractionUpdate, function(interactions)
+        SocialInteractionUI.updateInteractions(interactions)
+    end)
 end
 
 return SocialInteractionUI 

@@ -3,14 +3,17 @@ local ServerStorage = game:GetService("ServerStorage")
 local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
--- Load shared system
+-- Load shared modules
 local Shared = require(ReplicatedStorage.Shared)
 local Constants = Shared.Constants
+local Types = Shared.Types
 local RemoteManager = Shared.RemoteManager
 
--- Load required modules
+-- Load server modules
+local DataStoreManager = require(ServerScriptService.Modules.Data.DataStoreManager)
+
+-- Load shared managers
 local ObjectManager = require(ReplicatedStorage.Shared.Modules.ObjectManager)
-local DataStoreManager = require(ServerScriptService.server.Modules.Data.DataStoreManager)
 local SpawnManager = require(ReplicatedStorage.Shared.Modules.SpawnManager)
 local ToolsManager = require(ReplicatedStorage.Shared.Modules.ToolsManager)
 local DailyRewardsManager = require(ReplicatedStorage.Shared.Modules.DailyRewardsManager)
@@ -19,75 +22,6 @@ local AchievementManager = require(ReplicatedStorage.Shared.Modules.AchievementM
 local RandomDropManager = require(ReplicatedStorage.Shared.Modules.RandomDropManager)
 
 local GameManager = {}
-
--- Remote events
-local remotes = Instance.new("Folder")
-remotes.Name = "Remotes"
-remotes.Parent = ReplicatedStorage
-
-local purchaseObjectEvent = Instance.new("RemoteEvent")
-purchaseObjectEvent.Name = "PurchaseObject"
-purchaseObjectEvent.Parent = remotes
-
-local placeObjectEvent = Instance.new("RemoteEvent")
-placeObjectEvent.Name = "PlaceObject"
-placeObjectEvent.Parent = remotes
-
-local getMarketplaceItemsEvent = Instance.new("RemoteFunction")
-getMarketplaceItemsEvent.Name = "GetMarketplaceItems"
-getMarketplaceItemsEvent.Parent = remotes
-
-local purchaseToolEvent = Instance.new("RemoteEvent")
-purchaseToolEvent.Name = "PurchaseTool"
-purchaseToolEvent.Parent = remotes
-
-local getAvailableToolsEvent = Instance.new("RemoteFunction")
-getAvailableToolsEvent.Name = "GetAvailableTools"
-getAvailableToolsEvent.Parent = remotes
-
-local claimDailyRewardEvent = Instance.new("RemoteEvent")
-claimDailyRewardEvent.Name = "ClaimDailyReward"
-claimDailyRewardEvent.Parent = remotes
-
-local getDailyRewardInfoEvent = Instance.new("RemoteFunction")
-getDailyRewardInfoEvent.Name = "GetDailyRewardInfo"
-getDailyRewardInfoEvent.Parent = remotes
-
-local bulkPurchaseObjectEvent = Instance.new("RemoteEvent")
-bulkPurchaseObjectEvent.Name = "BulkPurchaseObject"
-bulkPurchaseObjectEvent.Parent = remotes
-
-local moveObjectEvent = Instance.new("RemoteEvent")
-moveObjectEvent.Name = "MoveObject"
-moveObjectEvent.Parent = remotes
-
-local cloneObjectEvent = Instance.new("RemoteEvent")
-cloneObjectEvent.Name = "CloneObject"
-cloneObjectEvent.Parent = remotes
-
-local removeObjectEvent = Instance.new("RemoteEvent")
-removeObjectEvent.Name = "RemoveObject"
-removeObjectEvent.Parent = remotes
-
-local rotateObjectEvent = Instance.new("RemoteEvent")
-rotateObjectEvent.Name = "RotateObject"
-rotateObjectEvent.Parent = remotes
-
-local groupObjectsEvent = Instance.new("RemoteEvent")
-groupObjectsEvent.Name = "GroupObjects"
-groupObjectsEvent.Parent = remotes
-
-local ungroupObjectsEvent = Instance.new("RemoteEvent")
-ungroupObjectsEvent.Name = "UngroupObjects"
-ungroupObjectsEvent.Parent = remotes
-
-local getTutorialStatusEvent = Instance.new("RemoteFunction")
-getTutorialStatusEvent.Name = "GetTutorialStatus"
-getTutorialStatusEvent.Parent = remotes
-
-local completeTutorialEvent = Instance.new("RemoteEvent")
-completeTutorialEvent.Name = "CompleteTutorial"
-completeTutorialEvent.Parent = remotes
 
 -- Player data
 local playerData = {}
@@ -120,7 +54,7 @@ Players.PlayerAdded:Connect(function(player)
     end
     
     -- Send marketplace items to player
-    getMarketplaceItemsEvent:Invoke(player)
+    RemoteManager:invokeClient(player, Constants.RemoteFunctions.GetMarketplaceItems)
 end)
 
 -- Player leaving
@@ -129,8 +63,8 @@ Players.PlayerRemoving:Connect(function(player)
     playerData[player.UserId] = nil
 end)
 
--- Purchase object
-purchaseObjectEvent.OnServerEvent:Connect(function(player, objectType)
+-- Set up remote event handlers
+RemoteManager:onServerEvent(Constants.RemoteEvents.PurchaseObject, function(player, objectType)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -153,14 +87,13 @@ purchaseObjectEvent.OnServerEvent:Connect(function(player, objectType)
         GameManager.updatePlayerStats(player, data)
         
         -- Notify client of successful purchase
-        purchaseObjectEvent:FireClient(player, true, data.coins)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.PurchaseObject, true, data.coins)
     else
-        purchaseObjectEvent:FireClient(player, false, data.coins)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.PurchaseObject, false, data.coins)
     end
 end)
 
--- Bulk purchase objects
-bulkPurchaseObjectEvent.OnServerEvent:Connect(function(player, objectTypes, quantity)
+RemoteManager:onServerEvent(Constants.RemoteEvents.BulkPurchaseObject, function(player, objectTypes, quantity)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -194,14 +127,13 @@ bulkPurchaseObjectEvent.OnServerEvent:Connect(function(player, objectTypes, quan
         GameManager.updatePlayerStats(player, data)
         
         -- Notify client of successful purchase
-        bulkPurchaseObjectEvent:FireClient(player, true, data.coins)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.BulkPurchaseObject, true, data.coins)
     else
-        bulkPurchaseObjectEvent:FireClient(player, false, data.coins)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.BulkPurchaseObject, false, data.coins)
     end
 end)
 
--- Place object
-placeObjectEvent.OnServerEvent:Connect(function(player, objectType, position)
+RemoteManager:onServerEvent(Constants.RemoteEvents.PlaceObject, function(player, objectType, position)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -235,19 +167,42 @@ placeObjectEvent.OnServerEvent:Connect(function(player, objectType, position)
         GameManager.updatePlayerStats(player, data)
         
         -- Notify client of successful placement
-        placeObjectEvent:FireClient(player, true)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.PlaceObject, true)
     else
-        placeObjectEvent:FireClient(player, false)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.PlaceObject, false)
     end
 end)
 
--- Get marketplace items
-getMarketplaceItemsEvent.OnServerInvoke = function(player)
+-- Set up remote function handlers
+RemoteManager:setServerCallback(Constants.RemoteFunctions.GetMarketplaceItems, function(player)
     return ObjectManager.getMarketplaceItems()
-end
+end)
+
+RemoteManager:setServerCallback(Constants.RemoteFunctions.GetAvailableTools, function(player)
+    return ToolsManager.getAvailableTools()
+end)
+
+RemoteManager:setServerCallback(Constants.RemoteFunctions.GetDailyRewardInfo, function(player)
+    local data = playerData[player.UserId]
+    if not data then return nil end
+    
+    return {
+        canClaim = DailyRewardsManager.canClaimReward(data),
+        nextDay = DailyRewardsManager.getNextRewardDay(data),
+        streak = data.rewardStreak,
+        rewards = DailyRewardsManager.getAllRewards()
+    }
+end)
+
+RemoteManager:setServerCallback(Constants.RemoteFunctions.GetTutorialStatus, function(player)
+    local data = playerData[player.UserId]
+    if not data then return true end
+    
+    return not data.tutorialCompleted
+end)
 
 -- Purchase tool
-purchaseToolEvent.OnServerEvent:Connect(function(player, toolType)
+RemoteManager:onServerEvent(Constants.RemoteEvents.PurchaseTool, function(player, toolType)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -257,7 +212,7 @@ purchaseToolEvent.OnServerEvent:Connect(function(player, toolType)
     -- Check if player already has this tool
     for _, tool in ipairs(data.tools) do
         if tool.type == toolType then
-            purchaseToolEvent:FireClient(player, false, "Already owned")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.PurchaseTool, false, "Already owned")
             return
         end
     end
@@ -283,22 +238,17 @@ purchaseToolEvent.OnServerEvent:Connect(function(player, toolType)
                 ToolsManager.applyToolEffect(player, toolType)
             end)
             
-            purchaseToolEvent:FireClient(player, true, data.coins)
+            RemoteManager:fireClient(player, Constants.RemoteEvents.PurchaseTool, true, data.coins)
         else
-            purchaseToolEvent:FireClient(player, false, "Failed to create tool")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.PurchaseTool, false, "Failed to create tool")
         end
     else
-        purchaseToolEvent:FireClient(player, false, "Not enough coins")
+        RemoteManager:fireClient(player, Constants.RemoteEvents.PurchaseTool, false, "Not enough coins")
     end
 end)
 
--- Get available tools
-getAvailableToolsEvent.OnServerInvoke = function(player)
-    return ToolsManager.getAvailableTools()
-end
-
 -- Claim daily reward
-claimDailyRewardEvent.OnServerEvent:Connect(function(player)
+RemoteManager:onServerEvent(Constants.RemoteEvents.ClaimDailyReward, function(player)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -308,31 +258,18 @@ claimDailyRewardEvent.OnServerEvent:Connect(function(player)
         GameManager.updatePlayerStats(player, data)
         
         -- Notify client of successful claim
-        claimDailyRewardEvent:FireClient(player, true, {
+        RemoteManager:fireClient(player, Constants.RemoteEvents.ClaimDailyReward, true, {
             reward = result,
             nextDay = DailyRewardsManager.getNextRewardDay(data),
             streak = data.rewardStreak
         })
     else
-        claimDailyRewardEvent:FireClient(player, false, result)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.ClaimDailyReward, false, result)
     end
 end)
 
--- Get daily reward info
-getDailyRewardInfoEvent.OnServerInvoke = function(player)
-    local data = playerData[player.UserId]
-    if not data then return nil end
-    
-    return {
-        canClaim = DailyRewardsManager.canClaimReward(data),
-        nextDay = DailyRewardsManager.getNextRewardDay(data),
-        streak = data.rewardStreak,
-        rewards = DailyRewardsManager.getAllRewards()
-    }
-end
-
 -- Move object
-moveObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
+RemoteManager:onServerEvent(Constants.RemoteEvents.MoveObject, function(player, objectPath, newPosition)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -341,7 +278,7 @@ moveObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         -- Find object in workspace
         local object = workspace:FindFirstChild(objectPath)
         if not object then
-            moveObjectEvent:FireClient(player, false, "Object not found")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.MoveObject, false, "Object not found")
             return
         end
         
@@ -355,7 +292,7 @@ moveObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         end
         
         if not isOwner then
-            moveObjectEvent:FireClient(player, false, "You don't own this object")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.MoveObject, false, "You don't own this object")
             return
         end
         
@@ -376,14 +313,14 @@ moveObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         end
         
         -- Notify client
-        moveObjectEvent:FireClient(player, true)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.MoveObject, true)
     else
-        moveObjectEvent:FireClient(player, false, "Not enough coins")
+        RemoteManager:fireClient(player, Constants.RemoteEvents.MoveObject, false, "Not enough coins")
     end
 end)
 
 -- Clone object
-cloneObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
+RemoteManager:onServerEvent(Constants.RemoteEvents.CloneObject, function(player, objectPath, newPosition)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -392,7 +329,7 @@ cloneObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         -- Find object in workspace
         local object = workspace:FindFirstChild(objectPath)
         if not object then
-            cloneObjectEvent:FireClient(player, false, "Object not found")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.CloneObject, false, "Object not found")
             return
         end
         
@@ -406,7 +343,7 @@ cloneObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         end
         
         if not isOwner then
-            cloneObjectEvent:FireClient(player, false, "You don't own this object")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.CloneObject, false, "You don't own this object")
             return
         end
         
@@ -428,14 +365,14 @@ cloneObjectEvent.OnServerEvent:Connect(function(player, objectPath, newPosition)
         end
         
         -- Notify client
-        cloneObjectEvent:FireClient(player, true)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.CloneObject, true)
     else
-        cloneObjectEvent:FireClient(player, false, "Not enough coins")
+        RemoteManager:fireClient(player, Constants.RemoteEvents.CloneObject, false, "Not enough coins")
     end
 end)
 
 -- Remove object
-removeObjectEvent.OnServerEvent:Connect(function(player, objectPath)
+RemoteManager:onServerEvent(Constants.RemoteEvents.RemoveObject, function(player, objectPath)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -444,7 +381,7 @@ removeObjectEvent.OnServerEvent:Connect(function(player, objectPath)
         -- Find object in workspace
         local object = workspace:FindFirstChild(objectPath)
         if not object then
-            removeObjectEvent:FireClient(player, false, "Object not found")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.RemoveObject, false, "Object not found")
             return
         end
         
@@ -458,7 +395,7 @@ removeObjectEvent.OnServerEvent:Connect(function(player, objectPath)
         end
         
         if not objectIndex then
-            removeObjectEvent:FireClient(player, false, "You don't own this object")
+            RemoteManager:fireClient(player, Constants.RemoteEvents.RemoveObject, false, "You don't own this object")
             return
         end
         
@@ -474,21 +411,21 @@ removeObjectEvent.OnServerEvent:Connect(function(player, objectPath)
         end
         
         -- Notify client
-        removeObjectEvent:FireClient(player, true)
+        RemoteManager:fireClient(player, Constants.RemoteEvents.RemoveObject, true)
     else
-        removeObjectEvent:FireClient(player, false, "Not enough coins")
+        RemoteManager:fireClient(player, Constants.RemoteEvents.RemoveObject, false, "Not enough coins")
     end
 end)
 
 -- Rotate object
-rotateObjectEvent.OnServerEvent:Connect(function(player, objectPath, rotation)
+RemoteManager:onServerEvent(Constants.RemoteEvents.RotateObject, function(player, objectPath, rotation)
     local data = playerData[player.UserId]
     if not data then return end
     
     -- Find object in workspace
     local object = workspace:FindFirstChild(objectPath)
     if not object then
-        rotateObjectEvent:FireClient(player, false, "Object not found")
+        RemoteManager:fireClient(player, Constants.RemoteEvents.RotateObject, false, "Object not found")
         return
     end
     
@@ -502,7 +439,7 @@ rotateObjectEvent.OnServerEvent:Connect(function(player, objectPath, rotation)
     end
     
     if not isOwner then
-        rotateObjectEvent:FireClient(player, false, "You don't own this object")
+        RemoteManager:fireClient(player, Constants.RemoteEvents.RotateObject, false, "You don't own this object")
         return
     end
     
@@ -520,11 +457,11 @@ rotateObjectEvent.OnServerEvent:Connect(function(player, objectPath, rotation)
     end
     
     -- Notify client
-    rotateObjectEvent:FireClient(player, true)
+    RemoteManager:fireClient(player, Constants.RemoteEvents.RotateObject, true)
 end)
 
 -- Group objects
-groupObjectsEvent.OnServerEvent:Connect(function(player, objectPaths)
+RemoteManager:onServerEvent(Constants.RemoteEvents.GroupObjects, function(player, objectPaths)
     local data = playerData[player.UserId]
     if not data then return end
     
@@ -533,7 +470,7 @@ groupObjectsEvent.OnServerEvent:Connect(function(player, objectPaths)
     for _, objectPath in ipairs(objectPaths) do
         local object = workspace:FindFirstChild(objectPath)
         if not object then
-            groupObjectsEvent:FireClient(player, false, "Object not found: " .. objectPath)
+            RemoteManager:fireClient(player, Constants.RemoteEvents.GroupObjects, false, "Object not found: " .. objectPath)
             return
         end
         
@@ -550,7 +487,7 @@ groupObjectsEvent.OnServerEvent:Connect(function(player, objectPaths)
         end
         
         if not isOwner then
-            groupObjectsEvent:FireClient(player, false, "You don't own object: " .. objectPath)
+            RemoteManager:fireClient(player, Constants.RemoteEvents.GroupObjects, false, "You don't own object: " .. objectPath)
             return
         end
     end
@@ -588,11 +525,11 @@ groupObjectsEvent.OnServerEvent:Connect(function(player, objectPaths)
     end
     
     -- Notify client
-    groupObjectsEvent:FireClient(player, true)
+    RemoteManager:fireClient(player, Constants.RemoteEvents.GroupObjects, true)
 end)
 
 -- Ungroup objects
-ungroupObjectsEvent.OnServerEvent:Connect(function(player, groupPath)
+RemoteManager:onServerEvent(Constants.RemoteEvents.UngroupObjects, function(player, groupPath)
     local data = playerData[player.UserId]
     if not data then return end
     

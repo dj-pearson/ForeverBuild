@@ -1,8 +1,11 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
 
 local PlayerProfileUI = {}
 
@@ -542,6 +545,11 @@ end
 -- Initialize
 function PlayerProfileUI.init()
     PlayerProfileUI.create()
+    
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.ProfileUpdate, function(profile)
+        PlayerProfileUI.updateProfile(profile)
+    end)
 end
 
 return PlayerProfileUI 

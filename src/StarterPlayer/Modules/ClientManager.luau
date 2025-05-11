@@ -2,8 +2,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
+
 local InventoryUI = require(ReplicatedStorage.Modules.InventoryUI)
 local MarketplaceUI = require(ReplicatedStorage.Modules.MarketplaceUI)
 local DailyRewardsUI = require(ReplicatedStorage.Modules.DailyRewardsUI)
@@ -406,6 +410,25 @@ function ClientManager.init()
     if availableTools then
         MarketplaceUI.setTools(availableTools)
     end
+
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.PlayerUpdate, function(data)
+        ClientManager.handlePlayerUpdate(data)
+    end)
+    
+    RemoteManager:onClientEvent(Constants.RemoteEvents.DataSync, function(data)
+        ClientManager.handleDataSync(data)
+    end)
+end
+
+-- Handle player updates
+function ClientManager.handlePlayerUpdate(data)
+    -- Implementation
+end
+
+-- Handle data sync
+function ClientManager.handleDataSync(data)
+    -- Implementation
 end
 
 -- Start the client

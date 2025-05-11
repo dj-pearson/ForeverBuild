@@ -2,30 +2,19 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
 
 local BuildingToolsUI = {}
 
 -- UI Elements
 local screenGui
-local toolsFrame
-local gridSnapButton
-local rotationSnapButton
-local copyButton
-local pasteButton
-local groupButton
-local ungroupButton
-
--- Remote events
-local selectObjectEvent = ReplicatedStorage.Remotes.SelectObject
-local deselectObjectEvent = ReplicatedStorage.Remotes.DeselectObject
-local copyObjectsEvent = ReplicatedStorage.Remotes.CopyObjects
-local pasteObjectsEvent = ReplicatedStorage.Remotes.PasteObjects
-local groupObjectsEvent = ReplicatedStorage.Remotes.GroupObjects
-local ungroupObjectsEvent = ReplicatedStorage.Remotes.UngroupObjects
-local setGridSnapEvent = ReplicatedStorage.Remotes.SetGridSnap
-local setRotationSnapEvent = ReplicatedStorage.Remotes.SetRotationSnap
+local mainFrame
+local toolList
+local closeButton
 
 -- Create UI
 function BuildingToolsUI.create()
@@ -35,311 +24,135 @@ function BuildingToolsUI.create()
     screenGui.ResetOnSpawn = false
     screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
     
-    -- Create tools frame
-    toolsFrame = Instance.new("Frame")
-    toolsFrame.Name = "ToolsFrame"
-    toolsFrame.Size = UDim2.new(0, 200, 0, 300)
-    toolsFrame.Position = UDim2.new(0, 10, 0.5, -150)
-    toolsFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    toolsFrame.BorderSizePixel = 0
-    toolsFrame.Visible = false
-    toolsFrame.Parent = screenGui
+    -- Create main frame
+    mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0.3, 0, 0.6, 0)
+    mainFrame.Position = UDim2.new(0.7, 0, 0.2, 0)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Visible = false
+    mainFrame.Parent = screenGui
     
-    -- Title
+    -- Create title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.Size = UDim2.new(1, 0, 0, 40)
     title.Position = UDim2.new(0, 0, 0, 0)
-    title.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     title.BorderSizePixel = 0
     title.Text = "Building Tools"
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.TextSize = 20
     title.Font = Enum.Font.GothamBold
-    title.Parent = toolsFrame
+    title.Parent = mainFrame
     
-    -- Create buttons
-    local buttonHeight = 40
-    local buttonSpacing = 10
-    local y = 50
+    -- Create tool list
+    toolList = Instance.new("ScrollingFrame")
+    toolList.Name = "ToolList"
+    toolList.Size = UDim2.new(1, -20, 1, -50)
+    toolList.Position = UDim2.new(0, 10, 0, 50)
+    toolList.BackgroundTransparency = 1
+    toolList.BorderSizePixel = 0
+    toolList.ScrollBarThickness = 6
+    toolList.CanvasSize = UDim2.new(0, 0, 0, 0)
+    toolList.Parent = mainFrame
     
-    -- Grid snap button
-    gridSnapButton = BuildingToolsUI.createButton("Grid Snap", y)
-    gridSnapButton.Parent = toolsFrame
-    y = y + buttonHeight + buttonSpacing
-    
-    -- Rotation snap button
-    rotationSnapButton = BuildingToolsUI.createButton("Rotation Snap", y)
-    rotationSnapButton.Parent = toolsFrame
-    y = y + buttonHeight + buttonSpacing
-    
-    -- Copy button
-    copyButton = BuildingToolsUI.createButton("Copy", y)
-    copyButton.Parent = toolsFrame
-    y = y + buttonHeight + buttonSpacing
-    
-    -- Paste button
-    pasteButton = BuildingToolsUI.createButton("Paste", y)
-    pasteButton.Parent = toolsFrame
-    y = y + buttonHeight + buttonSpacing
-    
-    -- Group button
-    groupButton = BuildingToolsUI.createButton("Group", y)
-    groupButton.Parent = toolsFrame
-    y = y + buttonHeight + buttonSpacing
-    
-    -- Ungroup button
-    ungroupButton = BuildingToolsUI.createButton("Ungroup", y)
-    ungroupButton.Parent = toolsFrame
+    -- Create close button
+    closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -40, 0, 5)
+    closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    closeButton.BorderSizePixel = 0
+    closeButton.Text = "X"
+    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.TextSize = 20
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.Parent = mainFrame
     
     -- Set up button events
-    gridSnapButton.MouseButton1Click:Connect(function()
-        BuildingToolsUI.toggleGridSnap()
+    closeButton.MouseButton1Click:Connect(function()
+        BuildingToolsUI.hide()
     end)
     
-    rotationSnapButton.MouseButton1Click:Connect(function()
-        BuildingToolsUI.toggleRotationSnap()
-    end)
-    
-    copyButton.MouseButton1Click:Connect(function()
-        BuildingToolsUI.copyObjects()
-    end)
-    
-    pasteButton.MouseButton1Click:Connect(function()
-        BuildingToolsUI.pasteObjects()
-    end)
-    
-    groupButton.MouseButton1Click:Connect(function()
-        BuildingToolsUI.groupObjects()
-    end)
-    
-    ungroupButton.MouseButton1Click:Connect(function()
-        BuildingToolsUI.ungroupObjects()
-    end)
-    
-    -- Set up keyboard shortcuts
+    -- Set up keyboard shortcut
     UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if gameProcessed then return end
-        
-        if input.KeyCode == Enum.KeyCode.G then
-            BuildingToolsUI.toggleGridSnap()
-        elseif input.KeyCode == Enum.KeyCode.R then
-            BuildingToolsUI.toggleRotationSnap()
-        elseif input.KeyCode == Enum.KeyCode.C and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
-            BuildingToolsUI.copyObjects()
-        elseif input.KeyCode == Enum.KeyCode.V and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
-            BuildingToolsUI.pasteObjects()
-        elseif input.KeyCode == Enum.KeyCode.G and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
-            BuildingToolsUI.groupObjects()
-        elseif input.KeyCode == Enum.KeyCode.U and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
-            BuildingToolsUI.ungroupObjects()
+        if not gameProcessed and input.KeyCode == Enum.KeyCode.B then
+            if mainFrame.Visible then
+                BuildingToolsUI.hide()
+            else
+                BuildingToolsUI.show()
+            end
         end
     end)
 end
 
--- Create button
-function BuildingToolsUI.createButton(text, y)
-    local button = Instance.new("TextButton")
-    button.Name = text .. "Button"
-    button.Size = UDim2.new(1, -20, 0, 40)
-    button.Position = UDim2.new(0, 10, 0, y)
-    button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-    button.BorderSizePixel = 0
-    button.Text = text
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.TextSize = 16
-    button.Font = Enum.Font.Gotham
-    
-    return button
+-- Show UI
+function BuildingToolsUI.show()
+    mainFrame.Visible = true
 end
 
--- Toggle grid snap
-function BuildingToolsUI.toggleGridSnap()
-    local success, message = setGridSnapEvent:InvokeServer(not gridSnapButton.BackgroundColor3:IsClose(Color3.fromRGB(0, 170, 0)))
-    if success then
-        gridSnapButton.BackgroundColor3 = gridSnapButton.BackgroundColor3:IsClose(Color3.fromRGB(0, 170, 0))
-            and Color3.fromRGB(45, 45, 45)
-            or Color3.fromRGB(0, 170, 0)
+-- Hide UI
+function BuildingToolsUI.hide()
+    mainFrame.Visible = false
+end
+
+-- Update tool list
+function BuildingToolsUI.updateTools(tools)
+    -- Clear existing tools
+    for _, child in ipairs(toolList:GetChildren()) do
+        child:Destroy()
     end
-end
-
--- Toggle rotation snap
-function BuildingToolsUI.toggleRotationSnap()
-    local success, message = setRotationSnapEvent:InvokeServer(not rotationSnapButton.BackgroundColor3:IsClose(Color3.fromRGB(0, 170, 0)))
-    if success then
-        rotationSnapButton.BackgroundColor3 = rotationSnapButton.BackgroundColor3:IsClose(Color3.fromRGB(0, 170, 0))
-            and Color3.fromRGB(45, 45, 45)
-            or Color3.fromRGB(0, 170, 0)
-    end
-end
-
--- Copy objects
-function BuildingToolsUI.copyObjects()
-    local success, message = copyObjectsEvent:InvokeServer()
-    if success then
-        BuildingToolsUI.showNotification("Objects copied to clipboard")
-    else
-        BuildingToolsUI.showError(message)
-    end
-end
-
--- Paste objects
-function BuildingToolsUI.pasteObjects()
-    local success, message = pasteObjectsEvent:InvokeServer()
-    if success then
-        BuildingToolsUI.showNotification("Objects pasted")
-    else
-        BuildingToolsUI.showError(message)
-    end
-end
-
--- Group objects
-function BuildingToolsUI.groupObjects()
-    local success, message = groupObjectsEvent:InvokeServer()
-    if success then
-        BuildingToolsUI.showNotification("Objects grouped")
-    else
-        BuildingToolsUI.showError(message)
-    end
-end
-
--- Ungroup objects
-function BuildingToolsUI.ungroupObjects()
-    local success, message = ungroupObjectsEvent:InvokeServer()
-    if success then
-        BuildingToolsUI.showNotification("Objects ungrouped")
-    else
-        BuildingToolsUI.showError(message)
-    end
-end
-
--- Show notification
-function BuildingToolsUI.showNotification(message)
-    -- Create notification
-    local notification = Instance.new("Frame")
-    notification.Name = "Notification"
-    notification.Size = UDim2.new(0, 200, 0, 40)
-    notification.Position = UDim2.new(0.5, -100, 0.1, 0)
-    notification.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    notification.BorderSizePixel = 0
-    notification.Parent = screenGui
     
-    -- Message
-    local messageLabel = Instance.new("TextLabel")
-    messageLabel.Name = "Message"
-    messageLabel.Size = UDim2.new(1, 0, 1, 0)
-    messageLabel.Position = UDim2.new(0, 0, 0, 0)
-    messageLabel.BackgroundTransparency = 1
-    messageLabel.Text = message
-    messageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    messageLabel.TextSize = 16
-    messageLabel.Font = Enum.Font.Gotham
-    messageLabel.Parent = notification
-    
-    -- Animate notification
-    notification.BackgroundTransparency = 1
-    messageLabel.TextTransparency = 1
-    
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    
-    local showTween = game:GetService("TweenService"):Create(notification, tweenInfo, {
-        BackgroundTransparency = 0
-    })
-    
-    local showTextTween = game:GetService("TweenService"):Create(messageLabel, tweenInfo, {
-        TextTransparency = 0
-    })
-    
-    showTween:Play()
-    showTextTween:Play()
-    
-    -- Hide notification after delay
-    task.delay(2, function()
-        local hideTween = game:GetService("TweenService"):Create(notification, tweenInfo, {
-            BackgroundTransparency = 1
-        })
+    -- Add new tools
+    local yOffset = 0
+    for _, tool in ipairs(tools) do
+        local toolButton = Instance.new("TextButton")
+        toolButton.Name = tool.id
+        toolButton.Size = UDim2.new(1, 0, 0, 50)
+        toolButton.Position = UDim2.new(0, 0, 0, yOffset)
+        toolButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        toolButton.BorderSizePixel = 0
+        toolButton.Text = tool.name
+        toolButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        toolButton.TextSize = 16
+        toolButton.Font = Enum.Font.GothamBold
+        toolButton.Parent = toolList
         
-        local hideTextTween = game:GetService("TweenService"):Create(messageLabel, tweenInfo, {
-            TextTransparency = 1
-        })
+        -- Tool description
+        local descLabel = Instance.new("TextLabel")
+        descLabel.Name = "Description"
+        descLabel.Size = UDim2.new(1, -20, 0, 20)
+        descLabel.Position = UDim2.new(0, 10, 0, 25)
+        descLabel.BackgroundTransparency = 1
+        descLabel.Text = tool.description
+        descLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        descLabel.TextSize = 12
+        descLabel.Font = Enum.Font.Gotham
+        descLabel.TextXAlignment = Enum.TextXAlignment.Left
+        descLabel.Parent = toolButton
         
-        hideTween:Play()
-        hideTextTween:Play()
-        
-        hideTween.Completed:Connect(function()
-            notification:Destroy()
+        -- Tool button click handler
+        toolButton.MouseButton1Click:Connect(function()
+            RemoteManager:fireServer(Constants.RemoteEvents.SelectTool, tool.id)
         end)
-    end)
-end
-
--- Show error
-function BuildingToolsUI.showError(message)
-    -- Create error dialog
-    local errorDialog = Instance.new("Frame")
-    errorDialog.Name = "ErrorDialog"
-    errorDialog.Size = UDim2.new(0, 300, 0, 150)
-    errorDialog.Position = UDim2.new(0.5, -150, 0.5, -75)
-    errorDialog.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    errorDialog.BorderSizePixel = 0
-    errorDialog.Parent = screenGui
+        
+        yOffset = yOffset + 60
+    end
     
-    -- Title
-    local title = Instance.new("TextLabel")
-    title.Name = "Title"
-    title.Size = UDim2.new(1, 0, 0, 40)
-    title.Position = UDim2.new(0, 0, 0, 0)
-    title.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    title.BorderSizePixel = 0
-    title.Text = "Error"
-    title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.TextSize = 20
-    title.Font = Enum.Font.GothamBold
-    title.Parent = errorDialog
-    
-    -- Message
-    local messageLabel = Instance.new("TextLabel")
-    messageLabel.Name = "Message"
-    messageLabel.Size = UDim2.new(1, -20, 0, 60)
-    messageLabel.Position = UDim2.new(0, 10, 0, 50)
-    messageLabel.BackgroundTransparency = 1
-    messageLabel.Text = message
-    messageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    messageLabel.TextSize = 16
-    messageLabel.Font = Enum.Font.Gotham
-    messageLabel.TextWrapped = true
-    messageLabel.Parent = errorDialog
-    
-    -- Close button
-    local closeButton = Instance.new("TextButton")
-    closeButton.Name = "CloseButton"
-    closeButton.Size = UDim2.new(0, 100, 0, 30)
-    closeButton.Position = UDim2.new(0.5, -50, 1, -40)
-    closeButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-    closeButton.BorderSizePixel = 0
-    closeButton.Text = "Close"
-    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    closeButton.TextSize = 16
-    closeButton.Font = Enum.Font.Gotham
-    closeButton.Parent = errorDialog
-    
-    closeButton.MouseButton1Click:Connect(function()
-        errorDialog:Destroy()
-    end)
-end
-
--- Show tools
-function BuildingToolsUI.showTools()
-    toolsFrame.Visible = true
-end
-
--- Hide tools
-function BuildingToolsUI.hideTools()
-    toolsFrame.Visible = false
+    -- Update canvas size
+    toolList.CanvasSize = UDim2.new(0, 0, 0, yOffset)
 end
 
 -- Initialize
 function BuildingToolsUI.init()
     BuildingToolsUI.create()
+    
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.ToolUpdate, function(tools)
+        BuildingToolsUI.updateTools(tools)
+    end)
 end
 
 return BuildingToolsUI 

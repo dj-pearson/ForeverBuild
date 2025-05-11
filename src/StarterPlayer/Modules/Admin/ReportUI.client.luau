@@ -1,8 +1,10 @@
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
 
--- Get the shared modules
+-- Load shared modules
 local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
 local RemoteManager = Shared.RemoteManager
 local Logger = Shared.Modules.Logger
 
@@ -14,6 +16,19 @@ function ReportUI.new()
     self.remoteManager = RemoteManager.new()
     self.logger = Logger.new("ReportUI")
     return self
+end
+
+-- Initialize
+function ReportUI.init()
+    -- Set up remote event handlers
+    RemoteManager:onClientEvent(Constants.RemoteEvents.ReportObject, function(data)
+        ReportUI.showReportDialog(data)
+    end)
+end
+
+-- Show report dialog
+function ReportUI.showReportDialog(data)
+    -- Implementation
 end
 
 -- Create the report menu

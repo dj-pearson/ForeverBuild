@@ -16,7 +16,8 @@ local screenGui
 local mainFrame
 local mapFrame
 local playerDot
-local enemyDots = {}
+local teamDots
+local objectiveMarkers
 
 -- Create UI
 function MinimapUI.create()
@@ -30,9 +31,9 @@ function MinimapUI.create()
     mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0, 200, 0, 200)
-    mainFrame.Position = UDim2.new(1, -220, 0, 20)
-    mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    mainFrame.BackgroundTransparency = 0.2
+    mainFrame.Position = UDim2.new(1, -220, 1, -220)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    mainFrame.BackgroundTransparency = 0.5
     mainFrame.BorderSizePixel = 0
     mainFrame.Parent = screenGui
     
@@ -41,7 +42,7 @@ function MinimapUI.create()
     mapFrame.Name = "MapFrame"
     mapFrame.Size = UDim2.new(1, -20, 1, -20)
     mapFrame.Position = UDim2.new(0, 10, 0, 10)
-    mapFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    mapFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     mapFrame.BorderSizePixel = 0
     mapFrame.Parent = mainFrame
     
@@ -50,77 +51,111 @@ function MinimapUI.create()
     playerDot.Name = "PlayerDot"
     playerDot.Size = UDim2.new(0, 8, 0, 8)
     playerDot.Position = UDim2.new(0.5, -4, 0.5, -4)
-    playerDot.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    playerDot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     playerDot.BorderSizePixel = 0
     playerDot.Parent = mapFrame
     
-    -- Create player direction indicator
-    local directionIndicator = Instance.new("Frame")
-    directionIndicator.Name = "DirectionIndicator"
-    directionIndicator.Size = UDim2.new(0, 2, 0, 12)
-    directionIndicator.Position = UDim2.new(0.5, -1, 0.5, -12)
-    directionIndicator.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-    directionIndicator.BorderSizePixel = 0
-    directionIndicator.Parent = playerDot
+    -- Create team dots container
+    teamDots = Instance.new("Frame")
+    teamDots.Name = "TeamDots"
+    teamDots.Size = UDim2.new(1, 0, 1, 0)
+    teamDots.Position = UDim2.new(0, 0, 0, 0)
+    teamDots.BackgroundTransparency = 1
+    teamDots.Parent = mapFrame
+    
+    -- Create objective markers container
+    objectiveMarkers = Instance.new("Frame")
+    objectiveMarkers.Name = "ObjectiveMarkers"
+    objectiveMarkers.Size = UDim2.new(1, 0, 1, 0)
+    objectiveMarkers.Position = UDim2.new(0, 0, 0, 0)
+    objectiveMarkers.BackgroundTransparency = 1
+    objectiveMarkers.Parent = mapFrame
 end
 
--- Create enemy dot
-function MinimapUI.createEnemyDot(player)
+-- Create team dot
+function MinimapUI.createTeamDot(playerData)
     local dot = Instance.new("Frame")
-    dot.Name = player.Name
+    dot.Name = playerData.name
     dot.Size = UDim2.new(0, 6, 0, 6)
     dot.Position = UDim2.new(0.5, -3, 0.5, -3)
-    dot.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    dot.BackgroundColor3 = playerData.team == "Red" and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 0, 255)
     dot.BorderSizePixel = 0
-    dot.Parent = mapFrame
+    dot.Parent = teamDots
     
-    enemyDots[player] = dot
     return dot
+end
+
+-- Create objective marker
+function MinimapUI.createObjectiveMarker(objectiveData)
+    local marker = Instance.new("Frame")
+    marker.Name = objectiveData.name
+    marker.Size = UDim2.new(0, 12, 0, 12)
+    marker.Position = UDim2.new(0.5, -6, 0.5, -6)
+    marker.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+    marker.BorderSizePixel = 0
+    marker.Parent = objectiveMarkers
+    
+    return marker
 end
 
 -- Update player position
 function MinimapUI.updatePlayerPosition(position, rotation)
     -- Convert world position to minimap position
     local mapSize = mapFrame.AbsoluteSize
-    local worldSize = workspace.CurrentMap.Size
-    local relativeX = (position.X + worldSize.X/2) / worldSize.X
-    local relativeZ = (position.Z + worldSize.Z/2) / worldSize.Z
+    local worldSize = Constants.WorldSize
+    local x = (position.X + worldSize/2) / worldSize
+    local z = (position.Z + worldSize/2) / worldSize
     
     -- Update player dot position
-    playerDot.Position = UDim2.new(relativeX, -4, relativeZ, -4)
+    playerDot.Position = UDim2.new(x, -4, z, -4)
     
-    -- Update direction indicator rotation
-    local directionIndicator = playerDot:FindFirstChild("DirectionIndicator")
-    if directionIndicator then
-        directionIndicator.Rotation = rotation.Y
-    end
+    -- Update player dot rotation
+    playerDot.Rotation = rotation
 end
 
--- Update enemy positions
-function MinimapUI.updateEnemyPositions(positions)
-    -- Remove old enemy dots
-    for player, dot in pairs(enemyDots) do
-        if not positions[player] then
-            dot:Destroy()
-            enemyDots[player] = nil
+-- Update team positions
+function MinimapUI.updateTeamPositions(teamData)
+    -- Clear existing team dots
+    for _, child in ipairs(teamDots:GetChildren()) do
+        if child:IsA("Frame") then
+            child:Destroy()
         end
     end
     
-    -- Update or create enemy dots
-    for player, position in pairs(positions) do
-        local dot = enemyDots[player]
-        if not dot then
-            dot = MinimapUI.createEnemyDot(player)
-        end
+    -- Create new team dots
+    for _, playerData in ipairs(teamData) do
+        local dot = MinimapUI.createTeamDot(playerData)
         
         -- Convert world position to minimap position
         local mapSize = mapFrame.AbsoluteSize
-        local worldSize = workspace.CurrentMap.Size
-        local relativeX = (position.X + worldSize.X/2) / worldSize.X
-        local relativeZ = (position.Z + worldSize.Z/2) / worldSize.Z
+        local worldSize = Constants.WorldSize
+        local x = (playerData.position.X + worldSize/2) / worldSize
+        local z = (playerData.position.Z + worldSize/2) / worldSize
         
-        -- Update dot position
-        dot.Position = UDim2.new(relativeX, -3, relativeZ, -3)
+        dot.Position = UDim2.new(x, -3, z, -3)
+    end
+end
+
+-- Update objective positions
+function MinimapUI.updateObjectivePositions(objectiveData)
+    -- Clear existing objective markers
+    for _, child in ipairs(objectiveMarkers:GetChildren()) do
+        if child:IsA("Frame") then
+            child:Destroy()
+        end
+    end
+    
+    -- Create new objective markers
+    for _, objective in ipairs(objectiveData) do
+        local marker = MinimapUI.createObjectiveMarker(objective)
+        
+        -- Convert world position to minimap position
+        local mapSize = mapFrame.AbsoluteSize
+        local worldSize = Constants.WorldSize
+        local x = (objective.position.X + worldSize/2) / worldSize
+        local z = (objective.position.Z + worldSize/2) / worldSize
+        
+        marker.Position = UDim2.new(x, -6, z, -6)
     end
 end
 
@@ -154,20 +189,21 @@ function MinimapUI.init()
     MinimapUI.create()
     
     -- Set up remote event handlers
-    RemoteManager:onClientEvent(Constants.RemoteEvents.MinimapUpdate, function(playerPosition, playerRotation, enemyPositions)
-        MinimapUI.updatePlayerPosition(playerPosition, playerRotation)
-        MinimapUI.updateEnemyPositions(enemyPositions)
+    RemoteManager:onClientEvent(Constants.RemoteEvents.TeamPositionsUpdate, function(teamData)
+        MinimapUI.updateTeamPositions(teamData)
     end)
     
-    -- Set up render step for smooth updates
+    RemoteManager:onClientEvent(Constants.RemoteEvents.ObjectivesUpdate, function(objectiveData)
+        MinimapUI.updateObjectivePositions(objectiveData)
+    end)
+    
+    -- Update player position every frame
     RunService.RenderStepped:Connect(function()
-        if mainFrame.Visible then
-            local character = Players.LocalPlayer.Character
-            if character then
-                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-                if humanoidRootPart then
-                    MinimapUI.updatePlayerPosition(humanoidRootPart.Position, humanoidRootPart.Orientation)
-                end
+        local character = Players.LocalPlayer.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                MinimapUI.updatePlayerPosition(humanoidRootPart.Position, humanoidRootPart.Orientation.Y)
             end
         end
     end)

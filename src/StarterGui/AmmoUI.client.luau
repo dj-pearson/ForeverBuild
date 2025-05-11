@@ -90,64 +90,48 @@ function AmmoUI.create()
     reloadText.TextSize = 16
     reloadText.Font = Enum.Font.GothamBold
     reloadText.Visible = false
+    reloadText.Parent = reloadBg
 end
 
 -- Update ammo
-function AmmoUI.updateAmmo(ammo, reserve, weaponData)
-    ammoText.Text = tostring(ammo)
+function AmmoUI.updateAmmo(current, reserve)
+    ammoText.Text = tostring(current)
     reserveText.Text = tostring(reserve)
     
-    -- Update weapon icon
-    if weaponData and weaponData.icon then
-        weaponIcon.Image = weaponData.icon
-    end
-    
-    -- Update text color based on ammo
-    if ammo == 0 then
-        ammoText.TextColor3 = Color3.fromRGB(255, 50, 50)
+    -- Update color based on ammo
+    local color
+    if current > 0 then
+        color = Color3.fromRGB(255, 255, 255) -- White
     else
-        ammoText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        color = Color3.fromRGB(255, 0, 0) -- Red
     end
     
-    -- Update reserve text color based on reserve
-    if reserve == 0 then
-        reserveText.TextColor3 = Color3.fromRGB(255, 50, 50)
-    else
-        reserveText.TextColor3 = Color3.fromRGB(200, 200, 200)
-    end
-end
-
--- Show UI
-function AmmoUI.show()
-    mainFrame.Visible = true
-    
-    -- Animate in
-    mainFrame.Position = UDim2.new(1, -220, 1, -40)
-    mainFrame.BackgroundTransparency = 1
-    mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-    
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(mainFrame, tweenInfo, {
-        Position = UDim2.new(1, -220, 1, -80),
-        BackgroundTransparency = 0
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = TweenService:Create(ammoText, tweenInfo, {
+        TextColor3 = color
     })
     tween:Play()
 end
 
--- Hide UI
-function AmmoUI.hide()
-    -- Animate out
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-    local tween = TweenService:Create(mainFrame, tweenInfo, {
-        Position = UDim2.new(1, -220, 1, -40),
-        BackgroundTransparency = 1
-    })
-    tween:Play()
-    
-    -- Hide after animation
-    task.delay(0.5, function()
-        mainFrame.Visible = false
-    end)
+-- Start reload
+function AmmoUI.startReload(duration)
+    local reloadBg = mainFrame:FindFirstChild("ReloadBg")
+    if reloadBg then
+        reloadBg.Visible = true
+        reloadBar.Size = UDim2.new(0, 0, 1, 0)
+        reloadText.Visible = true
+        
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(reloadBar, tweenInfo, {
+            Size = UDim2.new(1, 0, 1, 0)
+        })
+        tween:Play()
+        
+        task.delay(duration, function()
+            reloadBg.Visible = false
+            reloadText.Visible = false
+        end)
+    end
 end
 
 -- Initialize
@@ -155,16 +139,12 @@ function AmmoUI.init()
     AmmoUI.create()
     
     -- Set up remote event handlers
-    RemoteManager:onClientEvent(Constants.RemoteEvents.AmmoUpdate, function(ammo, reserve, weaponData)
-        AmmoUI.updateAmmo(ammo, reserve, weaponData)
+    RemoteManager:onClientEvent(Constants.RemoteEvents.AmmoUpdate, function(current, reserve)
+        AmmoUI.updateAmmo(current, reserve)
     end)
     
-    RemoteManager:onClientEvent(Constants.RemoteEvents.WeaponEquipped, function(weaponData)
-        if weaponData then
-            AmmoUI.show()
-        else
-            AmmoUI.hide()
-        end
+    RemoteManager:onClientEvent(Constants.RemoteEvents.ReloadStart, function(duration)
+        AmmoUI.startReload(duration)
     end)
 end
 

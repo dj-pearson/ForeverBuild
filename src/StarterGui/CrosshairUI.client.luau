@@ -15,9 +15,8 @@ local CrosshairUI = {}
 local screenGui
 local mainFrame
 local crosshairFrame
-local dotFrame
-local spreadFrame
-local hitMarkerFrame
+local dot
+local lines = {}
 
 -- Create UI
 function CrosshairUI.create()
@@ -43,93 +42,83 @@ function CrosshairUI.create()
     crosshairFrame.BackgroundTransparency = 1
     crosshairFrame.Parent = mainFrame
     
-    -- Create dot frame
-    dotFrame = Instance.new("Frame")
-    dotFrame.Name = "DotFrame"
-    dotFrame.Size = UDim2.new(0, 2, 0, 2)
-    dotFrame.Position = UDim2.new(0.5, -1, 0.5, -1)
-    dotFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    dotFrame.BorderSizePixel = 0
-    dotFrame.Parent = crosshairFrame
+    -- Create center dot
+    dot = Instance.new("Frame")
+    dot.Name = "Dot"
+    dot.Size = UDim2.new(0, 2, 0, 2)
+    dot.Position = UDim2.new(0.5, -1, 0.5, -1)
+    dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    dot.BorderSizePixel = 0
+    dot.Parent = crosshairFrame
     
-    -- Create spread frame
-    spreadFrame = Instance.new("Frame")
-    spreadFrame.Name = "SpreadFrame"
-    spreadFrame.Size = UDim2.new(0, 20, 0, 20)
-    spreadFrame.Position = UDim2.new(0.5, -10, 0.5, -10)
-    spreadFrame.BackgroundTransparency = 1
-    spreadFrame.Parent = mainFrame
-    
-    -- Create hit marker frame
-    hitMarkerFrame = Instance.new("Frame")
-    hitMarkerFrame.Name = "HitMarkerFrame"
-    hitMarkerFrame.Size = UDim2.new(0, 40, 0, 40)
-    hitMarkerFrame.Position = UDim2.new(0.5, -20, 0.5, -20)
-    hitMarkerFrame.BackgroundTransparency = 1
-    hitMarkerFrame.Visible = false
-    hitMarkerFrame.Parent = mainFrame
-    
-    -- Create hit marker lines
-    local lines = {
-        {size = UDim2.new(0, 2, 0, 10), position = UDim2.new(0.5, -1, 0, 0)},
-        {size = UDim2.new(0, 2, 0, 10), position = UDim2.new(0.5, -1, 1, -10)},
-        {size = UDim2.new(0, 10, 0, 2), position = UDim2.new(0, 0, 0.5, -1)},
-        {size = UDim2.new(0, 10, 0, 2), position = UDim2.new(1, -10, 0.5, -1)}
+    -- Create crosshair lines
+    local linePositions = {
+        {UDim2.new(0, -8, 0.5, -1), UDim2.new(0, 8, 0, 2)}, -- Left
+        {UDim2.new(1, 0, 0.5, -1), UDim2.new(0, 8, 0, 2)}, -- Right
+        {UDim2.new(0.5, -1, 0, -8), UDim2.new(0, 2, 0, 8)}, -- Top
+        {UDim2.new(0.5, -1, 1, 0), UDim2.new(0, 2, 0, 8)} -- Bottom
     }
     
-    for _, line in ipairs(lines) do
-        local lineFrame = Instance.new("Frame")
-        lineFrame.Name = "Line"
-        lineFrame.Size = line.size
-        lineFrame.Position = line.position
-        lineFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        lineFrame.BorderSizePixel = 0
-        lineFrame.Parent = hitMarkerFrame
+    for i, pos in ipairs(linePositions) do
+        local line = Instance.new("Frame")
+        line.Name = "Line" .. i
+        line.Size = pos[2]
+        line.Position = pos[1]
+        line.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        line.BorderSizePixel = 0
+        line.Parent = crosshairFrame
+        table.insert(lines, line)
     end
 end
 
 -- Update crosshair spread
 function CrosshairUI.updateSpread(spread)
-    local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(spreadFrame, tweenInfo, {
-        Size = UDim2.new(0, spread, 0, spread),
-        Position = UDim2.new(0.5, -spread/2, 0.5, -spread/2)
-    })
-    tween:Play()
-end
-
--- Show hit marker
-function CrosshairUI.showHitMarker()
-    hitMarkerFrame.Visible = true
-    hitMarkerFrame.BackgroundTransparency = 1
+    -- Calculate line positions based on spread
+    local linePositions = {
+        {UDim2.new(0, -spread, 0.5, -1), UDim2.new(0, spread, 0, 2)}, -- Left
+        {UDim2.new(1, 0, 0.5, -1), UDim2.new(0, spread, 0, 2)}, -- Right
+        {UDim2.new(0.5, -1, 0, -spread), UDim2.new(0, 2, 0, spread)}, -- Top
+        {UDim2.new(0.5, -1, 1, 0), UDim2.new(0, 2, 0, spread)} -- Bottom
+    }
     
-    local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(hitMarkerFrame, tweenInfo, {
-        BackgroundTransparency = 0.5
-    })
-    tween:Play()
-    
-    task.delay(0.1, function()
-        local fadeOutTween = TweenService:Create(hitMarkerFrame, tweenInfo, {
-            BackgroundTransparency = 1
+    -- Update line positions
+    for i, line in ipairs(lines) do
+        local tweenInfo = TweenInfo.new(0.1)
+        local tween = TweenService:Create(line, tweenInfo, {
+            Position = linePositions[i][1],
+            Size = linePositions[i][2]
         })
-        fadeOutTween:Play()
-        
-        task.delay(0.1, function()
-            hitMarkerFrame.Visible = false
-        end)
-    end)
+        tween:Play()
+    end
 end
 
 -- Update crosshair color
 function CrosshairUI.updateColor(color)
-    dotFrame.BackgroundColor3 = color
+    local tweenInfo = TweenInfo.new(0.1)
     
-    for _, child in ipairs(hitMarkerFrame:GetChildren()) do
-        if child:IsA("Frame") then
-            child.BackgroundColor3 = color
-        end
+    -- Update dot color
+    local dotTween = TweenService:Create(dot, tweenInfo, {
+        BackgroundColor3 = color
+    })
+    dotTween:Play()
+    
+    -- Update line colors
+    for _, line in ipairs(lines) do
+        local lineTween = TweenService:Create(line, tweenInfo, {
+            BackgroundColor3 = color
+        })
+        lineTween:Play()
     end
+end
+
+-- Show crosshair
+function CrosshairUI.show()
+    mainFrame.Visible = true
+end
+
+-- Hide crosshair
+function CrosshairUI.hide()
+    mainFrame.Visible = false
 end
 
 -- Initialize
@@ -137,16 +126,33 @@ function CrosshairUI.init()
     CrosshairUI.create()
     
     -- Set up remote event handlers
-    RemoteManager:onClientEvent(Constants.RemoteEvents.CrosshairSpread, function(spread)
+    RemoteManager:onClientEvent(Constants.RemoteEvents.CrosshairSpreadUpdate, function(spread)
         CrosshairUI.updateSpread(spread)
     end)
     
-    RemoteManager:onClientEvent(Constants.RemoteEvents.HitMarker, function()
-        CrosshairUI.showHitMarker()
+    RemoteManager:onClientEvent(Constants.RemoteEvents.CrosshairColorUpdate, function(color)
+        CrosshairUI.updateColor(color)
     end)
     
-    RemoteManager:onClientEvent(Constants.RemoteEvents.CrosshairColor, function(color)
-        CrosshairUI.updateColor(color)
+    RemoteManager:onClientEvent(Constants.RemoteEvents.CrosshairVisibilityUpdate, function(visible)
+        if visible then
+            CrosshairUI.show()
+        else
+            CrosshairUI.hide()
+        end
+    end)
+    
+    -- Set up input handling
+    UserInputService.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton2 then
+            CrosshairUI.updateSpread(4) -- Tighter spread when aiming
+        end
+    end)
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton2 then
+            CrosshairUI.updateSpread(8) -- Normal spread when not aiming
+        end
     end)
 end
 

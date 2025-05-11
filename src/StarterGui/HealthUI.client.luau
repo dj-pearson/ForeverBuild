@@ -31,9 +31,9 @@ function HealthUI.create()
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0, 200, 0, 60)
     mainFrame.Position = UDim2.new(0, 20, 1, -80)
-    mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    mainFrame.BackgroundTransparency = 0.5
     mainFrame.BorderSizePixel = 0
-    mainFrame.Visible = true
     mainFrame.Parent = screenGui
     
     -- Create health bar background
@@ -41,7 +41,7 @@ function HealthUI.create()
     healthBarBg.Name = "HealthBarBg"
     healthBarBg.Size = UDim2.new(1, -20, 0, 20)
     healthBarBg.Position = UDim2.new(0, 10, 0, 10)
-    healthBarBg.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    healthBarBg.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     healthBarBg.BorderSizePixel = 0
     healthBarBg.Parent = mainFrame
     
@@ -50,7 +50,7 @@ function HealthUI.create()
     healthBar.Name = "HealthBar"
     healthBar.Size = UDim2.new(1, 0, 1, 0)
     healthBar.Position = UDim2.new(0, 0, 0, 0)
-    healthBar.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    healthBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
     healthBar.BorderSizePixel = 0
     healthBar.Parent = healthBarBg
     
@@ -60,7 +60,7 @@ function HealthUI.create()
     healthText.Size = UDim2.new(1, 0, 1, 0)
     healthText.Position = UDim2.new(0, 0, 0, 0)
     healthText.BackgroundTransparency = 1
-    healthText.Text = "100/100"
+    healthText.Text = "100"
     healthText.TextColor3 = Color3.fromRGB(255, 255, 255)
     healthText.TextSize = 14
     healthText.Font = Enum.Font.GothamBold
@@ -70,8 +70,8 @@ function HealthUI.create()
     local shieldBarBg = Instance.new("Frame")
     shieldBarBg.Name = "ShieldBarBg"
     shieldBarBg.Size = UDim2.new(1, -20, 0, 20)
-    shieldBarBg.Position = UDim2.new(0, 10, 0, 40)
-    shieldBarBg.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    shieldBarBg.Position = UDim2.new(0, 10, 1, -30)
+    shieldBarBg.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     shieldBarBg.BorderSizePixel = 0
     shieldBarBg.Parent = mainFrame
     
@@ -80,7 +80,7 @@ function HealthUI.create()
     shieldBar.Name = "ShieldBar"
     shieldBar.Size = UDim2.new(1, 0, 1, 0)
     shieldBar.Position = UDim2.new(0, 0, 0, 0)
-    shieldBar.BackgroundColor3 = Color3.fromRGB(50, 150, 200)
+    shieldBar.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
     shieldBar.BorderSizePixel = 0
     shieldBar.Parent = shieldBarBg
     
@@ -90,7 +90,7 @@ function HealthUI.create()
     shieldText.Size = UDim2.new(1, 0, 1, 0)
     shieldText.Position = UDim2.new(0, 0, 0, 0)
     shieldText.BackgroundTransparency = 1
-    shieldText.Text = "100/100"
+    shieldText.Text = "100"
     shieldText.TextColor3 = Color3.fromRGB(255, 255, 255)
     shieldText.TextSize = 14
     shieldText.Font = Enum.Font.GothamBold
@@ -99,34 +99,70 @@ end
 
 -- Update health
 function HealthUI.updateHealth(health, maxHealth)
+    -- Update health bar
     local healthPercent = health / maxHealth
-    healthBar.Size = UDim2.new(healthPercent, 0, 1, 0)
-    healthText.Text = tostring(health) .. "/" .. tostring(maxHealth)
+    local tweenInfo = TweenInfo.new(0.3)
+    local tween = TweenService:Create(healthBar, tweenInfo, {
+        Size = UDim2.new(healthPercent, 0, 1, 0)
+    })
+    tween:Play()
     
-    -- Update color based on health percentage
-    if healthPercent > 0.5 then
-        healthBar.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    elseif healthPercent > 0.25 then
-        healthBar.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
+    -- Update health text
+    healthText.Text = tostring(math.floor(health))
+    
+    -- Update health bar color
+    local color
+    if healthPercent > 0.6 then
+        color = Color3.fromRGB(0, 255, 0) -- Green
+    elseif healthPercent > 0.3 then
+        color = Color3.fromRGB(255, 255, 0) -- Yellow
     else
-        healthBar.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        color = Color3.fromRGB(255, 0, 0) -- Red
     end
+    
+    local colorTween = TweenService:Create(healthBar, tweenInfo, {
+        BackgroundColor3 = color
+    })
+    colorTween:Play()
 end
 
 -- Update shield
 function HealthUI.updateShield(shield, maxShield)
+    -- Update shield bar
     local shieldPercent = shield / maxShield
-    shieldBar.Size = UDim2.new(shieldPercent, 0, 1, 0)
-    shieldText.Text = tostring(shield) .. "/" .. tostring(maxShield)
+    local tweenInfo = TweenInfo.new(0.3)
+    local tween = TweenService:Create(shieldBar, tweenInfo, {
+        Size = UDim2.new(shieldPercent, 0, 1, 0)
+    })
+    tween:Play()
     
-    -- Update color based on shield percentage
-    if shieldPercent > 0.5 then
-        shieldBar.BackgroundColor3 = Color3.fromRGB(50, 150, 200)
-    elseif shieldPercent > 0.25 then
-        shieldBar.BackgroundColor3 = Color3.fromRGB(100, 200, 255)
+    -- Update shield text
+    shieldText.Text = tostring(math.floor(shield))
+    
+    -- Update shield bar color
+    local color
+    if shieldPercent > 0.6 then
+        color = Color3.fromRGB(0, 150, 255) -- Blue
+    elseif shieldPercent > 0.3 then
+        color = Color3.fromRGB(255, 255, 0) -- Yellow
     else
-        shieldBar.BackgroundColor3 = Color3.fromRGB(150, 200, 255)
+        color = Color3.fromRGB(255, 0, 0) -- Red
     end
+    
+    local colorTween = TweenService:Create(shieldBar, tweenInfo, {
+        BackgroundColor3 = color
+    })
+    colorTween:Play()
+end
+
+-- Show health UI
+function HealthUI.show()
+    mainFrame.Visible = true
+end
+
+-- Hide health UI
+function HealthUI.hide()
+    mainFrame.Visible = false
 end
 
 -- Initialize
@@ -140,6 +176,14 @@ function HealthUI.init()
     
     RemoteManager:onClientEvent(Constants.RemoteEvents.ShieldUpdate, function(shield, maxShield)
         HealthUI.updateShield(shield, maxShield)
+    end)
+    
+    RemoteManager:onClientEvent(Constants.RemoteEvents.HealthUIVisibilityUpdate, function(visible)
+        if visible then
+            HealthUI.show()
+        else
+            HealthUI.hide()
+        end
     end)
 end
 

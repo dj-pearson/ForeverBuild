@@ -64,9 +64,51 @@
     },
     "StarterGui": {
       "$className": "StarterGui",
-      "Gui": {
-        "$path": "src/StarterGui"
+        "MainUI": {
+          "$path": "src/StarterGui/MainUI"
+        },
+        "AchievementUI": {
+          "$path": "src/StarterGui/AchievementUI.client.luau"
+        },
+        "AmmoUI": {
+          "$path": "src/StarterGui/AmmoUI.client.luau"
+        },
+        "BuildingChallengeUI": {
+          "$path": "src/StarterGui/BuildingChallengeUI.client.luau"
+        },
+        "BuildingTemplateUI": {
+          "$path": "src/StarterGui/BuildingTemplateUI.client.luau"
+        },
+        "BuildingToolsUI": {
+          "$path": "src/StarterGui/BuildingToolsUI.client.luau"
+        },
+        "ChatUI": {
+          "$path": "src/StarterGui/ChatUI.client.luau"
+        },
+        "ConfirmationUI": {
+          "$path": "src/StarterGui/ConfirmationUI.client.luau"
+        },
+        "CrosshairUI": {
+          "$path": "src/StarterGui/CrosshairUI.client.luau"
+        },
+        "DailyRewardsUI": {
+          "$path": "src/StarterGui/DailyRewardsUI.client.luau"
+        },
+        "EndUI": {
+          "$path": "src/StarterGui/EndUI.client.luau"
+        },
+        "ErrorUI": {
+          "$path": "src/StarterGui/ErrorUI.client.luau"
+        },
+        "FriendsUI": {
+          "$path": "src/StarterGui/FriendsUI.client.luau"
+        },
+        "HealthUI": {
+          "$path": "src/StarterGui/HealthUI.client.luau"
+        },
+        "HelpUI": {
+          "$path": "src/StarterGui/HelpUI.client.luau"
+        }
       }
-    }
   }
 }

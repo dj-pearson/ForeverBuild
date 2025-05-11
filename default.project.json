@@ -11,7 +11,7 @@
         "$path": "src/ReplicatedStorage/Shared"
       },
       "init": {
-        "$path": "src/ReplicatedStorage/init.lua"
+        "$path": "src/ReplicatedStorage/Shared/init.luau"
       },
       "SharedModuleResolver": {
         "$path": "src/ReplicatedStorage/SharedModuleResolver.luau"
@@ -38,10 +38,10 @@
         "$path": "src/ServerScriptService/init.server.lua"
       },
       "DataStoreManager": {
-        "$path": "src/ServerScriptService/DataStoreManager.server.lua"
+        "$path": "src/ServerScriptService/Modules/DataStoreManager.server.lua"
       },
       "ServerModuleResolver": {
-        "$path": "src/ServerScriptService/ServerModuleResolver.luau"
+        "$path": "src/ServerScriptService/Modules/ServerModuleResolver.luau"
       }
     },
     "StarterPlayer": {
@@ -49,10 +49,16 @@
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
         "Modules": {
-          "$path": "src/StarterPlayer/Modules"
+          "$path": "src/StarterPlayer/StarterPlayerScripts/Modules"
+        },
+        "TutorialClient": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/TutorialClient"
+        },
+        "UI": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/UI"
         },
         "init": {
-          "$path": "src/StarterPlayer/init.client.lua"
+          "$path": "src/StarterPlayer/StarterPlayerScripts/init.client.lua"
         }
       }
     },

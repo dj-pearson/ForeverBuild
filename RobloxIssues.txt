@@ -1,5 +1,5 @@
 # ForeverBuild Roblox Issues Tracking Document
-Last updated: May 10, 2025 (Iteration 4 - Final)
+Last updated: May 11, 2025 (Iteration 5 - Final Implementation)
 
 This document lists all identified issues in our Roblox project, categorized by priority. 
 Each issue has a tracking ID, status, and assigned priority level.
@@ -22,23 +22,24 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 Path Structure and Module Access Issues
 
-- [P] **P0-001**: Structure mismatch between `shared` folder and `ReplicatedStorage.Shared`
-  - Updated error: "shared is not a valid member of ReplicatedStorage" 
-  - Affects both server and client scripts
-  - Now occurring in both ServerScriptService and PlayerScripts modules
+- [X] **P0-001**: Structure mismatch between `shared` folder and `ReplicatedStorage.Shared`
+  - Fixed by creating proper init.lua file in ReplicatedStorage.Shared
+  - Implemented ModuleManager and RemoteManager in the shared modules
+  - Created a simplified API for accessing shared modules
 
-- [P] **P0-002**: Server module access issues
-  - Updated error: "server is not a valid member of ServerScriptService"
-  - File: ServerScriptService.Modules.Tutorial.TutorialHandler:6
-  - Also occurring in ServerScriptService.init.Modules.Tutorial.TutorialHandler:6
+- [X] **P0-002**: Server module access issues
+  - Created ServerModuleResolver.luau to centralize access to server-side modules
+  - Fixed references in TutorialHandler to properly require modules
+  - Addressed pathing issues in server scripts
 
 - [ ] **P0-003**: Modules folder not accessible
   - "Modules is not a valid member of ServerScriptService"
   - File: ServerScriptService.server:14
 
 - [P] **P0-004**: Missing Remotes folder in ReplicatedStorage
-  - Multiple "Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild'" errors
-  - Found in specific modules: ReportUI, AdminReport, AdminCommandHandler
+  - Implemented RemoteManager.setupRemotes() in Shared module to create necessary RemoteEvents
+  - Added code to automatically create the Remotes folder and required events
+  - Added to init.lua to ensure it runs when the game starts
 
 ### 🔄 DataStore and Module Resolution Issues
 
@@ -87,12 +88,12 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 Module Structure and References
 
-- [P] **P2-004**: Missing Modules in ReplicatedStorage.Shared
-  - Project appears to expect these modules in Shared:
-    - ModuleManager (used in Gui:4)
-    - RemoteManager (used in ServerScriptService.init:25)
-    - Constants (previously referenced in UI scripts)
-  - Suggests a need for consistent module implementation in ReplicatedStorage
+- [X] **P2-004**: Missing Modules in ReplicatedStorage.Shared
+  - Created the following modules in Shared:
+    - ModuleManager (implemented in init.lua)
+    - RemoteManager (implemented in init.lua with setupRemotes function)
+    - Constants (already existed in Shared folder)
+  - All modules are now properly accessible via require(ReplicatedStorage.Shared)
   
 - [X] **P2-005**: BuildingChallengeManager code structure issues
   - Fixed duplicate if blocks by refactoring with a `shouldAward` variable
@@ -153,9 +154,9 @@ Each issue has a tracking ID, status, and assigned priority level.
 - P3 Low: 4
 
 **Progress**:
-- Completed: 2/19 (11%)
-- In Progress: 6/19 (32%)
-- Not Started: 11/19 (57%)
+- Completed: 5/19 (26%)
+- In Progress: 4/19 (21%)
+- Not Started: 10/19 (53%)
 - Deferred: 0/19 (0%)
 
 ---

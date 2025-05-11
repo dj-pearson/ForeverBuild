@@ -129,4 +129,103 @@ Constants.Performance = {
     MaxRequestRate = 100 -- requests per second
 }
 
+-- Game Settings
+Constants.GameSettings = {
+    MaxPlayers = 50,
+    DefaultSpawnLocation = Vector3.new(0, 5, 0),
+    MaxBuildingHeight = 100,
+    MaxBuildingWidth = 50,
+    MaxBuildingDepth = 50
+}
+
+-- Module Paths
+Constants.ModulePaths = {
+    Shared = "ReplicatedStorage.Shared",
+    Server = "ServerScriptService.server",
+    Client = "StarterPlayer.StarterPlayerScripts.client"
+}
+
+-- Remote Event Names
+Constants.RemoteEvents = {
+    -- Admin Events
+    ReportObject = "ReportObject",
+    AdminCommand = "AdminCommand",
+    AdminReport = "AdminReport",
+    
+    -- Game Events
+    DataSync = "DataSync",
+    PlayerUpdate = "PlayerUpdate",
+    PurchaseObject = "PurchaseObject",
+    PlaceObject = "PlaceObject",
+    PurchaseTool = "PurchaseTool",
+    ClaimDailyReward = "ClaimDailyReward",
+    SpawnObject = "SpawnObject",
+    RemoveObject = "RemoveObject",
+    UpdateInventory = "UpdateInventory",
+    UpdateCurrency = "UpdateCurrency",
+    
+    -- Social Events
+    FriendRequest = "FriendRequest",
+    FriendResponse = "FriendResponse",
+    ChatMessage = "ChatMessage",
+    PartyInvite = "PartyInvite",
+    PartyResponse = "PartyResponse",
+    GuildInvite = "GuildInvite",
+    GuildResponse = "GuildResponse",
+    
+    -- Building Events
+    PlaceBuilding = "PlaceBuilding",
+    RemoveBuilding = "RemoveBuilding",
+    UpdateBuilding = "UpdateBuilding",
+    SaveBuilding = "SaveBuilding",
+    LoadBuilding = "LoadBuilding",
+    
+    -- Achievement Events
+    AchievementProgress = "AchievementProgress",
+    AchievementUnlocked = "AchievementUnlocked",
+    RewardClaimed = "RewardClaimed"
+}
+
+-- Remote Function Names
+Constants.RemoteFunctions = {
+    -- Game Functions
+    GetMarketplaceItems = "GetMarketplaceItems",
+    GetAvailableTools = "GetAvailableTools",
+    GetPlayerData = "GetPlayerData",
+    GetInventory = "GetInventory",
+    GetCurrency = "GetCurrency",
+    
+    -- Social Functions
+    GetFriends = "GetFriends",
+    GetParty = "GetParty",
+    GetGuild = "GetGuild",
+    GetChatHistory = "GetChatHistory",
+    
+    -- Building Functions
+    GetBuildings = "GetBuildings",
+    GetBuildingData = "GetBuildingData",
+    ValidateBuilding = "ValidateBuilding",
+    
+    -- Achievement Functions
+    GetAchievements = "GetAchievements",
+    GetProgress = "GetProgress",
+    GetRewards = "GetRewards"
+}
+
+-- Module Status
+Constants.ModuleStatus = {
+    NOT_LOADED = "NOT_LOADED",
+    LOADING = "LOADING",
+    LOADED = "LOADED",
+    ERROR = "ERROR"
+}
+
+-- Error Messages
+Constants.ErrorMessages = {
+    ModuleNotFound = "Module not found: %s",
+    InvalidModulePath = "Invalid module path: %s",
+    ModuleLoadError = "Failed to load module: %s - %s",
+    RemoteNotFound = "Remote event not found: %s"
+}
+
 return Constants 

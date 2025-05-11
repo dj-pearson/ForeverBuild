@@ -3,16 +3,20 @@ local ServerStorage = game:GetService("ServerStorage")
 local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
-local ObjectManager = require(ReplicatedStorage.Modules.ObjectManager)
-local DataStoreManager = require(ServerScriptService.Server.Modules.Data.DataStoreManager)
-local SpawnManager = require(ReplicatedStorage.Modules.SpawnManager)
-local ToolsManager = require(ReplicatedStorage.Modules.ToolsManager)
-local DailyRewardsManager = require(ReplicatedStorage.Modules.DailyRewardsManager)
-local LeaderboardManager = require(ReplicatedStorage.Modules.LeaderboardManager)
-local AchievementManager = require(ReplicatedStorage.Modules.AchievementManager)
-local RandomDropManager = require(ReplicatedStorage.Modules.RandomDropManager)
+-- Load shared system
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local RemoteManager = Shared.RemoteManager
+
+-- Load required modules
+local ObjectManager = require(ReplicatedStorage.Shared.Modules.ObjectManager)
+local DataStoreManager = require(ServerScriptService.server.Modules.Data.DataStoreManager)
+local SpawnManager = require(ReplicatedStorage.Shared.Modules.SpawnManager)
+local ToolsManager = require(ReplicatedStorage.Shared.Modules.ToolsManager)
+local DailyRewardsManager = require(ReplicatedStorage.Shared.Modules.DailyRewardsManager)
+local LeaderboardManager = require(ReplicatedStorage.Shared.Modules.LeaderboardManager)
+local AchievementManager = require(ReplicatedStorage.Shared.Modules.AchievementManager)
+local RandomDropManager = require(ReplicatedStorage.Shared.Modules.RandomDropManager)
 
 local GameManager = {}
 

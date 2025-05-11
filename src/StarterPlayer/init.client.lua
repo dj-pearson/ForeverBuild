@@ -1,79 +1,92 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
--- Load shared modules
+-- Load shared system
 local Shared = require(ReplicatedStorage.Shared)
-local Logger = require(ReplicatedStorage.Shared.Modules.Logger)
-local ModuleManager = require(ReplicatedStorage.Shared.Modules.ModuleManager)
+local Constants = Shared.Constants
+local ModuleManager = Shared.ModuleManager
+local RemoteManager = Shared.RemoteManager
 
--- Create module manager instance
-local moduleManager = ModuleManager.new()
-
--- Load client modules
-local ClientManager = require(game.ServerScriptService.Modules.ClientManager)
-local AdminCommandHandler = require(script.Parent.Modules.Admin.AdminCommandHandler)
-local ReportUI = require(script.Parent.Modules.Admin.ReportUI)
-local AdminReportUI = require(script.Parent.Modules.Admin.AdminReport)
-local ReportContextMenu = require(script.Parent.Modules.Admin.ReportContextMenu)
-local TutorialManager = require(game.ServerScriptService.Modules.TutorialManager)
-local InventoryUI = require(script.Parent.Modules.UI.InventoryUI)
-local MarketplaceUI = require(script.Parent.Modules.UI.MarketplaceUI)
-local DailyRewardsUI = require(script.Parent.Modules.UI.DailyRewardsUI)
-local ObjectInteractionManager = require(script.Parent.Modules.UI.ObjectInteractionManager)
-local LeaderboardUI = require(script.Parent.Modules.UI.LeaderboardUI)
-local AchievementUI = require(script.Parent.Modules.UI.AchievementUI)
-local FriendsUI = require(script.Parent.Modules.UI.FriendsUI)
-local SocialHubUI = require(script.Parent.Modules.UI.SocialHubUI)
-local SocialInteractionUI = require(script.Parent.Modules.UI.SocialInteractionUI)
-local PlayerProfileUI = require(script.Parent.Modules.UI.PlayerProfileUI)
-local SocialMediaUI = require(script.Parent.Modules.UI.SocialMediaUI)
-local BuildingToolsUI = require(script.Parent.Modules.UI.BuildingToolsUI)
-local BuildingTemplateUI = require(script.Parent.Modules.UI.BuildingTemplateUI)
-local BuildingChallengeUI = require(script.Parent.Modules.UI.BuildingChallengeUI)
-
--- Register modules with their dependencies
-moduleManager:registerModule("ClientManager", ClientManager)
-moduleManager:registerModule("AdminCommandHandler", AdminCommandHandler, { "ClientManager" })
-moduleManager:registerModule("ReportUI", ReportUI, { "ClientManager" })
-moduleManager:registerModule("AdminReportUI", AdminReportUI, { "ClientManager", "ReportUI" })
-moduleManager:registerModule("ReportContextMenu", ReportContextMenu, { "ClientManager", "ReportUI" })
-moduleManager:registerModule("TutorialManager", TutorialManager, { "ClientManager" })
-moduleManager:registerModule("InventoryUI", InventoryUI, { "ClientManager" })
-moduleManager:registerModule("MarketplaceUI", MarketplaceUI, { "ClientManager" })
-moduleManager:registerModule("DailyRewardsUI", DailyRewardsUI, { "ClientManager" })
-moduleManager:registerModule("ObjectInteractionManager", ObjectInteractionManager, { "ClientManager" })
-moduleManager:registerModule("LeaderboardUI", LeaderboardUI, { "ClientManager" })
-moduleManager:registerModule("AchievementUI", AchievementUI, { "ClientManager" })
-moduleManager:registerModule("FriendsUI", FriendsUI, { "ClientManager" })
-moduleManager:registerModule("SocialHubUI", SocialHubUI, { "ClientManager" })
-moduleManager:registerModule("SocialInteractionUI", SocialInteractionUI, { "ClientManager" })
-moduleManager:registerModule("PlayerProfileUI", PlayerProfileUI, { "ClientManager" })
-moduleManager:registerModule("SocialMediaUI", SocialMediaUI, { "ClientManager" })
-moduleManager:registerModule("BuildingToolsUI", BuildingToolsUI, { "ClientManager" })
-moduleManager:registerModule("BuildingTemplateUI", BuildingTemplateUI, { "ClientManager" })
-moduleManager:registerModule("BuildingChallengeUI", BuildingChallengeUI, { "ClientManager" })
-
--- Initialize all modules
-local success = moduleManager:initializeAll()
-if not success then
-    local moduleStatuses = moduleManager:getAllModuleStatuses()
-    local failedModules = {}
+-- Initialize core modules
+local function initializeCoreModules()
+    local coreModules = {
+        -- UI Systems
+        InventoryUI = require(script.Parent.Modules.UI.InventoryUI),
+        MarketplaceUI = require(script.Parent.Modules.UI.MarketplaceUI),
+        DailyRewardsUI = require(script.Parent.Modules.UI.DailyRewardsUI),
+        LeaderboardUI = require(script.Parent.Modules.UI.LeaderboardUI),
+        AchievementUI = require(script.Parent.Modules.UI.AchievementUI),
+        FriendsUI = require(script.Parent.Modules.UI.FriendsUI),
+        SocialHubUI = require(script.Parent.Modules.UI.SocialHubUI),
+        SocialInteractionUI = require(script.Parent.Modules.UI.SocialInteractionUI),
+        PlayerProfileUI = require(script.Parent.Modules.UI.PlayerProfileUI),
+        SocialMediaUI = require(script.Parent.Modules.UI.SocialMediaUI),
+        BuildingToolsUI = require(script.Parent.Modules.UI.BuildingToolsUI),
+        BuildingTemplateUI = require(script.Parent.Modules.UI.BuildingTemplateUI),
+        BuildingChallengeUI = require(script.Parent.Modules.UI.BuildingChallengeUI),
+        
+        -- Admin Systems
+        AdminCommandHandler = require(script.Parent.Modules.Admin.AdminCommandHandler),
+        ReportUI = require(script.Parent.Modules.Admin.ReportUI),
+        AdminReportUI = require(script.Parent.Modules.Admin.AdminReport),
+        ReportContextMenu = require(script.Parent.Modules.Admin.ReportContextMenu),
+        
+        -- Game Systems
+        ClientManager = require(script.Parent.Modules.ClientManager),
+        TutorialManager = require(script.Parent.Modules.TutorialManager),
+        ObjectInteractionManager = require(script.Parent.Modules.UI.ObjectInteractionManager)
+    }
     
-    for name, status in pairs(moduleStatuses) do
-        if status.status == "ERROR" then
-            table.insert(failedModules, {
-                name = name,
-                error = status.error
-            })
+    -- Register modules with their dependencies
+    ModuleManager.registerModule("ClientManager", coreModules.ClientManager, {})
+    ModuleManager.registerModule("TutorialManager", coreModules.TutorialManager, { "ClientManager" })
+    ModuleManager.registerModule("ObjectInteractionManager", coreModules.ObjectInteractionManager, { "ClientManager" })
+    
+    -- Register UI modules
+    for name, module in pairs(coreModules) do
+        if string.match(name, "UI$") then
+            ModuleManager.registerModule(name, module, { "ClientManager" })
         end
     end
     
-    Logger.fatal("Client initialization failed", {
-        failedModules = failedModules
-    })
-    error("Client initialization failed - check logs for details")
+    -- Register admin modules
+    ModuleManager.registerModule("AdminCommandHandler", coreModules.AdminCommandHandler, { "ClientManager" })
+    ModuleManager.registerModule("ReportUI", coreModules.ReportUI, { "ClientManager" })
+    ModuleManager.registerModule("AdminReportUI", coreModules.AdminReportUI, { "ClientManager" })
+    ModuleManager.registerModule("ReportContextMenu", coreModules.ReportContextMenu, { "ClientManager" })
+    
+    return coreModules
 end
 
-Logger.info("Client initialized successfully", {
-    moduleStatuses = moduleManager:getAllModuleStatuses()
-}) 
+-- Initialize the system
+local function initialize()
+    -- Initialize core modules
+    local coreModules = initializeCoreModules()
+    
+    -- Initialize all modules in dependency order
+    ModuleManager.initializeAll()
+    
+    -- Set up UI cleanup on player leaving
+    Players.PlayerRemoving:Connect(function(player)
+        if player == Players.LocalPlayer then
+            for _, module in pairs(coreModules) do
+                if module.cleanup then
+                    module.cleanup()
+                end
+            end
+        end
+    end)
+    
+    print("Client: All systems initialized successfully")
+end
+
+-- Start initialization
+initialize()
+
+-- Return the initialized client system
+return {
+    Initialize = initialize,
+    getModule = function(modulePath)
+        return ModuleManager.getModule(modulePath)
+    end
+} 

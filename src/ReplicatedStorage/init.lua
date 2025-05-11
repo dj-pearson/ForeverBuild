@@ -15,31 +15,42 @@ end
 local sharedFolder = ensureFolder(ReplicatedStorage, "Shared")
 local modulesFolder = ensureFolder(sharedFolder, "Modules")
 local typesFolder = ensureFolder(sharedFolder, "Types")
+local remotesFolder = ensureFolder(sharedFolder, "Remotes")
 
 -- Initialize the shared module resolver
 local SharedModuleResolver = require(script.SharedModuleResolver)
 local sharedResolver = SharedModuleResolver.new()
 
--- Initialize the remote manager
-local RemoteManager = require(script.RemoteManager)
-local remoteManager = RemoteManager.new()
+-- Initialize core modules
+local ModuleManager = require(modulesFolder.ModuleManager)
+local RemoteManager = require(modulesFolder.RemoteManager)
+local Constants = require(modulesFolder.Constants)
 
--- Initialize the remote event manager
-local RemoteEventManager = require(script.RemoteEventManager)
-local remoteEventManager = RemoteEventManager.new()
+-- Initialize the module manager
+ModuleManager.init()
 
--- Initialize the achievement manager
-local AchievementManager = require(script.AchievementManager)
-local achievementManager = AchievementManager.new()
+-- Create remote events
+for _, eventName in pairs(Constants.RemoteEvents) do
+    local remote = Instance.new("RemoteEvent")
+    remote.Name = eventName
+    remote.Parent = remotesFolder
+end
+
+-- Create remote functions
+for _, functionName in pairs(Constants.RemoteFunctions) do
+    local remote = Instance.new("RemoteFunction")
+    remote.Name = functionName
+    remote.Parent = remotesFolder
+end
 
 -- Return the initialized shared system
 return {
     Modules = sharedResolver,
     Types = typesFolder,
-    RemoteManager = remoteManager,
-    SharedModuleResolver = sharedResolver,
-    RemoteEventManager = remoteEventManager,
-    AchievementManager = achievementManager,
+    Remotes = remotesFolder,
+    ModuleManager = ModuleManager,
+    RemoteManager = RemoteManager,
+    Constants = Constants,
     getModule = function(moduleName)
         return sharedResolver:getModule(moduleName)
     end,

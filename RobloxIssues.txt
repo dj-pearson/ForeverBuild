@@ -1,5 +1,5 @@
 # ForeverBuild Roblox Issues Tracking Document
-Last updated: May 15, 2025 (Iteration 2)
+Last updated: May 10, 2025 (Iteration 3)
 
 This document lists all identified issues in our Roblox project, categorized by priority. 
 Each issue has a tracking ID, status, and assigned priority level.
@@ -23,13 +23,14 @@ Each issue has a tracking ID, status, and assigned priority level.
 ### 🔄 Path Structure and Module Access Issues
 
 - [P] **P0-001**: Structure mismatch between `shared` folder and `ReplicatedStorage.Shared`
-  - Updated error: "Shared is not a valid member of ReplicatedStorage" 
-  - Affects all UI scripts
-  - Files: Multiple UI files in Players.Xdjpearsonx.PlayerGui.Gui and PlayerScripts.client.Modules
+  - Updated error: "shared is not a valid member of ReplicatedStorage" 
+  - Affects both server and client scripts
+  - Now occurring in both ServerScriptService and PlayerScripts modules
 
-- [ ] **P0-002**: Server module access issues
-  - "Server is not a valid member of ServerScriptService"
-  - File: ServerScriptService.server.Modules.Tutorial.TutorialHandler:3
+- [P] **P0-002**: Server module access issues
+  - Updated error: "server is not a valid member of ServerScriptService"
+  - File: ServerScriptService.Modules.Tutorial.TutorialHandler:6
+  - Also occurring in ServerScriptService.init.Modules.Tutorial.TutorialHandler:6
 
 - [ ] **P0-003**: Modules folder not accessible
   - "Modules is not a valid member of ServerScriptService"
@@ -52,15 +53,17 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 Player Module Access Issues
 
-- [ ] **P1-001**: ReportUI module not found
-  - "ReportUI is not a valid member of Folder 'Players.Xdjpearsonx.PlayerScripts.client.Modules.Admin'"
-  - File: ReportContextMenu:8
+- [P] **P1-001**: Module resolution in client scripts
+  - Updated error: "ReportUI is not a valid member of ServerScriptService" 
+  - File: Players.Xdjpearsonx.PlayerScripts.Modules.Admin.ReportContextMenu:8
+  - Suggests improper require paths between client scripts
 
 ### 🔄 Invalid Require Calls
 
-- [ ] **P1-002**: Invalid require calls in shared scripts
-  - "Attempted to call require with invalid argument(s)"
-  - File: ServerScriptService.server.Modules.Tutorial.TutorialHandler:6
+- [P] **P1-002**: Invalid require calls in scripts
+  - "Attempted to call require with invalid argument(s)" now appearing throughout the project
+  - Occurring in nearly all UI scripts in PlayerGui.Gui
+  - Also occurs in PlayerScripts.init.Modules and PlayerScripts.Modules
 
 - [ ] **P1-003**: Module load errors cascading to other scripts
   - "Requested module experienced an error while loading"
@@ -68,10 +71,11 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 Missing Module Errors
 
-- [P] **P1-004**: Shared module structure issues
-  - "Shared is not a valid member of ReplicatedStorage" replaces previous "SharedModuleResolver" error
-  - Affects all UI files and client modules 
-  - This is the root cause of many cascading errors
+- [P] **P1-004**: Module structure and references issues  
+  - "shared is not a valid member of ReplicatedStorage" in server scripts
+  - "ModuleManager is not a valid member of Folder 'ReplicatedStorage.Shared'" in client scripts
+  - "RemoteManager is not a valid member of Folder 'ReplicatedStorage.Shared'" in ServerScriptService.init
+  - This confirms that module structure is the core issue across the project
 
 - [X] **P1-005**: AchievementManager missing variable definitions
   - Fixed by properly defining required variables
@@ -81,31 +85,34 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ## P2: Medium Priority Issues
 
-### 🔄 DataStoreManagerPro Issues
+### 🔄 Module Structure and References
 
-- [ ] **P2-001**: Missing modules in DataStoreManagerPro plugin
-  - Multiple "Failed to resolve module" errors
-  - Modules affected: CacheManager, SchemaManager, SchemaValidator, SessionManager, etc.
-
-- [ ] **P2-002**: UI Component access errors in DataStoreManagerPro
-  - Multiple "X is not a valid member of Folder/Script" errors
-  - Components: APIIntegration, AccessControl, SchemaManager, StyleGuide, etc.
-
-- [ ] **P2-003**: Invalid callback in DataExplorer
-  - "Attempt to connect failed: Passed value is not a function"
-  - File: DataStoreManagerPro.src.server.DataExplorer:472
-
-### 🔄 UI Module Dependencies
-
-- [ ] **P2-004**: Constants module missing in UI scripts 
-  - Multiple "Constants is not a valid member of ModuleScript 'ReplicatedStorage.Shared'" errors
-  - Affects nearly all UI scripts in PlayerGui
+- [P] **P2-004**: Missing Modules in ReplicatedStorage.Shared
+  - Project appears to expect these modules in Shared:
+    - ModuleManager (used in Gui:4)
+    - RemoteManager (used in ServerScriptService.init:25)
+    - Constants (previously referenced in UI scripts)
+  - Suggests a need for consistent module implementation in ReplicatedStorage
   
 - [X] **P2-005**: BuildingChallengeManager code structure issues
   - Fixed duplicate if blocks by refactoring with a `shouldAward` variable
   - Fixed empty if block implementation
   - Properly prefixed unused parameters with underscore
   - Commented out unused imports
+
+### 🔄 DataStoreManagerPro Issues
+
+- [ ] **P2-006**: Missing modules in DataStoreManagerPro plugin
+  - Multiple "Failed to resolve module" errors
+  - Modules affected: CacheManager, SchemaManager, SchemaValidator, SessionManager, etc.
+
+- [ ] **P2-007**: UI Component access errors in DataStoreManagerPro
+  - Multiple "X is not a valid member of Folder/Script" errors
+  - Components: APIIntegration, AccessControl, SchemaManager, StyleGuide, etc.
+
+- [ ] **P2-008**: Invalid callback in DataExplorer
+  - "Attempt to connect failed: Passed value is not a function"
+  - File: DataStoreManagerPro.src.server.DataExplorer:472
 
 ---
 
@@ -139,46 +146,73 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ## Completion Tracking
 
-**Total Issues**: 17
+**Total Issues**: 19
 - P0 Critical: 5
 - P1 High: 5
-- P2 Medium: 5
+- P2 Medium: 8
 - P3 Low: 4
 
 **Progress**:
-- Completed: 2/17 (12%)
-- In Progress: 3/17 (18%)
-- Not Started: 12/17 (70%)
-- Deferred: 0/17 (0%)
+- Completed: 2/19 (11%)
+- In Progress: 6/19 (32%)
+- Not Started: 11/19 (57%)
+- Deferred: 0/19 (0%)
 
 ---
 
 ## Notes and Guidelines
 
 ### Key Problem Categories:
-1. Path structure mismatches between code and project structure (Now in progress)
-2. Missing Shared module in ReplicatedStorage (Now in progress)
-3. Missing Remotes folder in ReplicatedStorage (Now in progress)
-4. Missing modules causing cascading failures
-5. External plugin (DataStoreManagerPro) integration issues
+1. Path structure and module resolution issues (In progress)
+   - Both server and client scripts are failing to find modules
+   - The errors show that neither "shared" nor "server" modules can be accessed
+   - Project has multiple module reference patterns that aren't working together
+
+2. Missing core modules in ReplicatedStorage.Shared (In progress)
+   - ModuleManager, RemoteManager, and Constants all appear to be expected in Shared
+
+3. Multiple instance paths for the same scripts
+   - Scripts exist in both `ServerScriptService.Modules` and `ServerScriptService.init.Modules`
+   - Scripts exist in both `PlayerScripts.Modules` and `PlayerScripts.init.Modules`
+   - This suggests a project structure mismatch or duplication
+
+4. DataStoreManagerPro integration issues (Less urgent for now)
 
 ### Resolved Issues:
-1. ✅ AchievementManager.luau missing variables and undefined references
-2. ✅ BuildingChallengeManager.luau code structure issues
+1. ✅ AchievementManager.luau missing variable definitions
+2. ✅ BuildingChallengeManager.luau code structure issues 
 
 ### In Progress:
-1. 🔄 DataStoreManager.server.lua has been moved to the correct location but still has integration issues
-2. 🔄 Shared module structure issues - identifying correct approach for implementation
-3. 🔄 Remotes folder creation and configuration
+1. 🔄 Module path structure and references (P0-001, P0-002, P1-001, P1-002, P1-004, P2-004)
+2. 🔄 Remotes folder creation and configuration (P0-004)
+
+### Root Cause Analysis:
+The errors suggest that there's a fundamental mismatch between:
+1. How modules are organized in the file system
+2. How Roblox expects to find them in the game hierarchy 
+3. How scripts are trying to require them
 
 ### Recommended Solution Approach:
-1. Create a proper Shared module in ReplicatedStorage
-   - Ensure ReplicatedStorage.Shared exists in the game hierarchy
-   - Create/update SharedModuleResolver to properly expose modules
-2. Create Remotes folder in ReplicatedStorage
-   - Add necessary Remote events for admin commands and reporting
-3. Fix module reference issues in UI scripts
-4. Address DataStoreManagerPro integration
-5. Test incremental fixes by category
+
+1. Fix module structure in ReplicatedStorage:
+   - Ensure ReplicatedStorage.Shared folder exists and is properly structured
+   - Implement core modules: ModuleManager, RemoteManager, Constants
+   - Create a SharedModuleResolver to properly expose modules
+
+2. Standardize script paths and references:
+   - Decide whether to use ServerScriptService.Modules or ServerScriptService.init.Modules
+   - Update all require paths to use a consistent pattern
+
+3. Create Remotes folder with necessary events:
+   - Add ReportObject and AdminCommand RemoteEvents
+   - Ensure they are properly created before clients try to access them
+
+4. Fix DataStoreManager references once core structure is working
+   - This should be addressed after resolving the primary module structure issues
+
+5. Test incremental fixes focusing on the highest priority modules first:
+   - Start with the Shared module structure
+   - Then fix server module access
+   - Then address client module resolution
 
 ### Review this document after fixing each category of issues and update status accordingly.

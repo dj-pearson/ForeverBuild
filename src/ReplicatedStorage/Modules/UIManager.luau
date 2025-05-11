@@ -2,8 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 
-local Logger = require(script.Parent.Logger)
-local NetworkManager = require(script.Parent.NetworkManager)
+local Logger = require(game.ServerScriptService.Logger)
+local NetworkManager = require(game.ServerScriptService.NetworkManager)
 
 local UIManager = {}
 

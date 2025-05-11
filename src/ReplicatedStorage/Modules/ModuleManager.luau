@@ -1,4 +1,4 @@
-local Logger = require(script.Parent.Logger)
+local Logger = require(game.ServerScriptService.Logger)
 
 local ModuleManager = {}
 ModuleManager.__index = ModuleManager

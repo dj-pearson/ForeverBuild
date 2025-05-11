@@ -1,4 +1,4 @@
-local TestRunner = require(script.Parent.TestRunner)
+local TestRunner = require(game.ServerScriptService.TestRunner)
 
 -- Run all tests
 print("Starting test suite...")

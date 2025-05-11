@@ -1,7 +1,7 @@
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 
-local Logger = require(script.Parent.Logger)
+local Logger = require(game.ServerScriptService.Logger)
 
 local PerformanceManager = {}
 

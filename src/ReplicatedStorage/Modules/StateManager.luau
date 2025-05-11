@@ -1,8 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local Logger = require(script.Parent.Logger)
-local PerformanceManager = require(script.Parent.PerformanceManager)
+local Logger = require(game.ServerScriptService.Logger)
+local PerformanceManager = require(game.ServerScriptService.PerformanceManager)
 
 local StateManager = {}
 

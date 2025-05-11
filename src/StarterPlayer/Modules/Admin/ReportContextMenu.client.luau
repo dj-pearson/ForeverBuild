@@ -5,7 +5,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local mouse = player:GetMouse()
 
-local ReportUI = require(script.Parent.ReportUI)
+local ReportUI = require(game.ServerScriptService.ReportUI)
 
 -- Create context menu
 local contextMenu = Instance.new("Frame")

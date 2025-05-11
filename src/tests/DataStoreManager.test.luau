@@ -114,8 +114,8 @@ local function createMockPlayer(userId, name)
     }
 end
 
-local MockEnvironment = require(script.Parent.MockEnvironment)
-local TestRunner = require(script.Parent.TestRunner)
+local MockEnvironment = require(game.ServerScriptService.MockEnvironment)
+local TestRunner = require(game.ServerScriptService.TestRunner)
 
 -- Test DataStoreManager
 local function testDataStoreManager()

@@ -1,5 +1,5 @@
 # ForeverBuild Roblox Issues Tracking Document
-Last updated: May 15, 2025
+Last updated: May 15, 2025 (Iteration 2)
 
 This document lists all identified issues in our Roblox project, categorized by priority. 
 Each issue has a tracking ID, status, and assigned priority level.
@@ -22,10 +22,10 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 Path Structure and Module Access Issues
 
-- [ ] **P0-001**: Structure mismatch between `shared` folder and `ReplicatedStorage.Shared`
-  - Multiple "Shared is not a valid member of ReplicatedStorage" errors
+- [P] **P0-001**: Structure mismatch between `shared` folder and `ReplicatedStorage.Shared`
+  - Updated error: "Shared is not a valid member of ReplicatedStorage" 
   - Affects all UI scripts
-  - Files: Multiple UI files in Players.Xdjpearsonx.PlayerGui.server
+  - Files: Multiple UI files in Players.Xdjpearsonx.PlayerGui.Gui and PlayerScripts.client.Modules
 
 - [ ] **P0-002**: Server module access issues
   - "Server is not a valid member of ServerScriptService"
@@ -35,9 +35,9 @@ Each issue has a tracking ID, status, and assigned priority level.
   - "Modules is not a valid member of ServerScriptService"
   - File: ServerScriptService.server:14
 
-- [ ] **P0-004**: Missing Remotes folder in ReplicatedStorage
-  - Multiple "Infinite yield possible on 'ReplicatedStorage:WaitForChild("Remotes")'" errors
-  - Affects client modules like ReportUI, AdminReport, AdminCommandHandler
+- [P] **P0-004**: Missing Remotes folder in ReplicatedStorage
+  - Multiple "Infinite yield possible on 'ReplicatedStorage.Remotes:WaitForChild'" errors
+  - Found in specific modules: ReportUI, AdminReport, AdminCommandHandler
 
 ### 🔄 DataStore and Module Resolution Issues
 
@@ -60,7 +60,7 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 - [ ] **P1-002**: Invalid require calls in shared scripts
   - "Attempted to call require with invalid argument(s)"
-  - File: ReplicatedStorage.shared:4
+  - File: ServerScriptService.server.Modules.Tutorial.TutorialHandler:6
 
 - [ ] **P1-003**: Module load errors cascading to other scripts
   - "Requested module experienced an error while loading"
@@ -68,10 +68,10 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 Missing Module Errors
 
-- [ ] **P1-004**: SharedModuleResolver not found in ReplicatedStorage
-  - "SharedModuleResolver is not a valid member of ReplicatedStorage"
-  - File: ReplicatedStorage.Shared:20
-  - Cascades to multiple other module errors
+- [P] **P1-004**: Shared module structure issues
+  - "Shared is not a valid member of ReplicatedStorage" replaces previous "SharedModuleResolver" error
+  - Affects all UI files and client modules 
+  - This is the root cause of many cascading errors
 
 - [X] **P1-005**: AchievementManager missing variable definitions
   - Fixed by properly defining required variables
@@ -147,8 +147,8 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 **Progress**:
 - Completed: 2/17 (12%)
-- In Progress: 1/17 (6%)
-- Not Started: 14/17 (82%)
+- In Progress: 3/17 (18%)
+- Not Started: 12/17 (70%)
 - Deferred: 0/17 (0%)
 
 ---
@@ -156,23 +156,29 @@ Each issue has a tracking ID, status, and assigned priority level.
 ## Notes and Guidelines
 
 ### Key Problem Categories:
-1. Path structure mismatches between code and project.json
-2. Missing required folders (Remotes, Shared) and modules (Constants, SharedModuleResolver)
-3. Missing modules causing cascading failures
-4. External plugin (DataStoreManagerPro) integration issues
+1. Path structure mismatches between code and project structure (Now in progress)
+2. Missing Shared module in ReplicatedStorage (Now in progress)
+3. Missing Remotes folder in ReplicatedStorage (Now in progress)
+4. Missing modules causing cascading failures
+5. External plugin (DataStoreManagerPro) integration issues
 
 ### Resolved Issues:
 1. ✅ AchievementManager.luau missing variables and undefined references
 2. ✅ BuildingChallengeManager.luau code structure issues
 
 ### In Progress:
-1. 🔄 DataStoreManager.server.lua has been moved to the correct location but still has integration issues with the DataStoreManagerPro plugin
+1. 🔄 DataStoreManager.server.lua has been moved to the correct location but still has integration issues
+2. 🔄 Shared module structure issues - identifying correct approach for implementation
+3. 🔄 Remotes folder creation and configuration
 
 ### Recommended Solution Approach:
-1. First fix P0 issues related to path structure and module access
-2. Create missing folders and ensure correct paths in project.json
-3. Fix module reference issues
+1. Create a proper Shared module in ReplicatedStorage
+   - Ensure ReplicatedStorage.Shared exists in the game hierarchy
+   - Create/update SharedModuleResolver to properly expose modules
+2. Create Remotes folder in ReplicatedStorage
+   - Add necessary Remote events for admin commands and reporting
+3. Fix module reference issues in UI scripts
 4. Address DataStoreManagerPro integration
-5. Test incremental fixes by category to avoid introducing new issues
+5. Test incremental fixes by category
 
 ### Review this document after fixing each category of issues and update status accordingly.

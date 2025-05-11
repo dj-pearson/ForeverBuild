@@ -4,26 +4,26 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
+      "Modules": {
+        "$path": "src/ReplicatedStorage/Modules"
+      },
       "Shared": {
-        "$path": "src/shared",
-        "Modules": {
-          "$path": "src/shared/Modules"
-        },
-        "Types": {
-          "$path": "src/shared/Shared"
-        },
-        "RemoteManager": {
-          "$path": "src/shared/RemoteManager.luau"
-        },
-        "SharedModuleResolver": {
-          "$path": "src/shared/SharedModuleResolver.luau"
-        },
-        "RemoteEventManager": {
-          "$path": "src/shared/RemoteEventManager.luau"
-        },
-        "AchievementManager": {
-          "$path": "src/shared/AchievementManager.luau"
-        }
+        "$path": "src/ReplicatedStorage/Shared"
+      },
+      "init": {
+        "$path": "src/ReplicatedStorage/init.lua"
+      },
+      "SharedModuleResolver": {
+        "$path": "src/ReplicatedStorage/SharedModuleResolver.luau"
+      },
+      "RemoteManager": {
+        "$path": "src/ReplicatedStorage/RemoteManager.luau"
+      },
+      "RemoteEventManager": {
+        "$path": "src/ReplicatedStorage/RemoteEventManager.luau"
+      },
+      "AchievementManager": {
+        "$path": "src/ReplicatedStorage/AchievementManager.luau"
       },
       "Remotes": {
         "$className": "Folder"
@@ -31,10 +31,28 @@
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "server": {
-        "$path": "src/server",
+      "Modules": {
+        "$path": "src/ServerScriptService/Modules"
+      },
+      "init": {
+        "$path": "src/ServerScriptService/init.server.lua"
+      },
+      "DataStoreManager": {
+        "$path": "src/ServerScriptService/DataStoreManager.server.lua"
+      },
+      "ServerModuleResolver": {
+        "$path": "src/ServerScriptService/ServerModuleResolver.luau"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
         "Modules": {
-          "$path": "src/server/Modules"
+          "$path": "src/StarterPlayer/Modules"
+        },
+        "init": {
+          "$path": "src/StarterPlayer/init.client.lua"
         }
       }
     },
@@ -42,18 +60,6 @@
       "$className": "StarterGui",
       "Gui": {
         "$path": "src/StarterGui"
-      }
-    },
-    "StarterPlayer": {
-      "$className": "StarterPlayer",
-      "StarterPlayerScripts": {
-        "$className": "StarterPlayerScripts",
-        "client": {
-          "$path": "src/client",
-          "Modules": {
-            "$path": "src/client/Modules"
-          }
-        }
       }
     }
   }

@@ -16,12 +16,19 @@ end
 -- Ensure required folders exist
 local modulesFolder = ensureFolder(ServerScriptService, "Modules")
 local sharedFolder = ensureFolder(ReplicatedStorage, "Shared")
+local remotesFolder = ensureFolder(ReplicatedStorage, "Remotes")
 
 -- Helper function to safely require modules
 local function safeRequire(modulePath)
+    if not modulePath then
+        warn("Invalid module path provided to safeRequire")
+        return nil
+    end
+    
     local success, result = pcall(function()
         return require(modulePath)
     end)
+    
     if success then
         return result
     else
@@ -36,12 +43,14 @@ local function initializeCoreModules()
     local dataStoreManager = safeRequire(modulesFolder.Data.DataStoreManager)
     if not dataStoreManager then
         warn("Failed to load DataStoreManager - this will affect other modules")
+        return nil
     end
 
     -- Then initialize SecurityManager as it's used by many modules
     local securityManager = safeRequire(modulesFolder.Security.SecurityManager)
     if not securityManager then
         warn("Failed to load SecurityManager - this will affect other modules")
+        return nil
     end
 
     -- Initialize remaining modules
@@ -85,7 +94,7 @@ local function initializeCoreModules()
     for name, module in pairs(coreModules) do
         if module and module.Initialize then
             local success, result = pcall(function()
-                module:Initialize()
+                return module:Initialize()
             end)
             if not success then
                 warn("Failed to initialize module:", name, "-", result)
@@ -98,7 +107,26 @@ end
 
 -- Initialize the system
 local function initialize()
+    -- Create necessary remote events
+    local remotes = {
+        "ReportObject",
+        "AdminCommand",
+        "CompleteTutorial",
+        "GetTutorialStatus"
+    }
+    
+    for _, remoteName in ipairs(remotes) do
+        local remote = Instance.new("RemoteEvent")
+        remote.Name = remoteName
+        remote.Parent = remotesFolder
+    end
+    
     local coreModules = initializeCoreModules()
+    if not coreModules then
+        warn("Failed to initialize core modules")
+        return nil
+    end
+    
     print("Core modules initialized successfully")
     return coreModules
 end
@@ -110,6 +138,6 @@ local modules = initialize()
 return {
     Initialize = initialize,
     getModule = function(moduleName)
-        return modules[moduleName]
+        return modules and modules[moduleName]
     end
 } 

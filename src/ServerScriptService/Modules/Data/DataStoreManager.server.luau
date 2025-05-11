@@ -11,17 +11,17 @@ local Types = Shared.Types
 local RemoteManager = Shared.RemoteManager
 local Logger = Shared.Logger
 
-local DATASTORE_NAME = "PlayerData"
-local WORLD_DATASTORE_NAME = "WorldObjects"
-local BACKUP_DATASTORE_NAME = "PlayerDataBackup"
+local DATASTORE_NAME = Constants.DataStoreNames.PlayerData
+local WORLD_DATASTORE_NAME = Constants.DataStoreNames.WorldObjects
+local BACKUP_DATASTORE_NAME = Constants.DataStoreNames.PlayerDataBackup
 local DataStoreManager = {}
 DataStoreManager.__index = DataStoreManager
 
 -- Constants
-local MAX_RETRIES = 3
-local RETRY_DELAY = 1
-local BACKUP_INTERVAL = 300 -- 5 minutes
-local DATA_VERSION = 1
+local MAX_RETRIES = Constants.RetrySettings.MaxRetries
+local RETRY_DELAY = Constants.RetrySettings.RetryDelay
+local BACKUP_INTERVAL = Constants.RetrySettings.BackupInterval
+local DATA_VERSION = Constants.DataVersions.PlayerData
 
 -- Cache
 local playerCache = {}
@@ -89,7 +89,7 @@ local function migrateData(data, currentVersion)
         return data
     end
     
-    Logger.info("Migrating data", { fromVersion = data.version, toVersion = currentVersion })
+    Logger:info("Migrating data", { fromVersion = data.version, toVersion = currentVersion })
     
     -- Add migration logic here as needed
     data.version = currentVersion
@@ -134,9 +134,9 @@ local function backupPlayerData(player)
     
     if success then
         lastBackupTime[player.UserId] = os.time()
-        Logger.info("Player data backed up", { playerId = player.UserId })
+        Logger:info("Player data backed up", { playerId = player.UserId })
     else
-        Logger.error("Failed to backup player data", { 
+        Logger:error("Failed to backup player data", { 
             playerId = player.UserId,
             error = err
         })
@@ -159,7 +159,7 @@ function DataStoreManager.LoadPlayerData(player)
         data = result
     else
         -- Try loading from backup
-        Logger.warn("Failed to load from main datastore, trying backup", { 
+        Logger:warn("Failed to load from main datastore, trying backup", { 
             playerId = player.UserId,
             error = result
         })
@@ -170,9 +170,9 @@ function DataStoreManager.LoadPlayerData(player)
         
         if success and result and result.data then
             data = result.data
-            Logger.info("Loaded data from backup", { playerId = player.UserId })
+            Logger:info("Loaded data from backup", { playerId = player.UserId })
         else
-            Logger.error("Failed to load player data from both stores", { 
+            Logger:error("Failed to load player data from both stores", { 
                 playerId = player.UserId,
                 error = result
             })
@@ -183,7 +183,7 @@ function DataStoreManager.LoadPlayerData(player)
     -- Validate and migrate data
     local isValid, errorMsg = validateData(data, PlayerDataSchema)
     if not isValid then
-        Logger.error("Invalid player data", { 
+        Logger:error("Invalid player data", { 
             playerId = player.UserId,
             error = errorMsg
         })
@@ -202,75 +202,33 @@ function DataStoreManager.SavePlayerData(player)
     local key = tostring(player.UserId)
     local data = playerCache[player.UserId]
     
-    if not data then 
-        Logger.error("No data to save", { playerId = player.UserId })
-        return 
-    end
-    
-    -- Validate data before saving
-    local isValid, errorMsg = validateData(data, PlayerDataSchema)
-    if not isValid then
-        Logger.error("Invalid data, skipping save", { 
-            playerId = player.UserId,
-            error = errorMsg
-        })
+    if not data then
+        Logger:warn("No data to save for player", { playerId = player.UserId })
         return
     end
-    
-    -- Update last login
-    data.lastLogin = os.time()
     
     local success, err = retryOperation(function()
         dataStore:SetAsync(key, data)
     end)
     
     if success then
-        Logger.info("Player data saved successfully", { playerId = player.UserId })
-        -- Create backup after successful save
+        Logger:info("Player data saved", { playerId = player.UserId })
+        -- Backup after successful save
         backupPlayerData(player)
     else
-        Logger.error("Failed to save player data", { 
+        Logger:error("Failed to save player data", { 
             playerId = player.UserId,
             error = err
         })
     end
 end
 
--- Periodic backup system
-local function startBackupSystem()
-    task.spawn(function()
-        while true do
-            task.wait(BACKUP_INTERVAL)
-            for _, player in ipairs(Players:GetPlayers()) do
-                if playerCache[player.UserId] then
-                    backupPlayerData(player)
-                end
-            end
-        end
-    end)
-end
-
--- Initialize the DataStoreManager
-function DataStoreManager.init()
-    Logger.info("Initializing DataStoreManager")
-    
-    -- Load world objects
-    local success, result = retryOperation(function()
-        local dataStore = DataStoreService:GetDataStore(WORLD_DATASTORE_NAME)
-        return dataStore:GetAsync("WorldObjects")
-    end)
-    
-    if success and result then
-        worldObjectsCache = result
-        Logger.info("World objects loaded successfully")
-    else
-        Logger.error("Failed to load world objects", { error = result })
-        worldObjectsCache = createDefaultWorldData()
-    end
-    
-    -- Set up player events
+-- Initialize
+function DataStoreManager.Initialize()
+    -- Set up player handling
     Players.PlayerAdded:Connect(function(player)
-        DataStoreManager.LoadPlayerData(player)
+        local data = DataStoreManager.LoadPlayerData(player)
+        playerCache[player.UserId] = data
     end)
     
     Players.PlayerRemoving:Connect(function(player)
@@ -279,117 +237,21 @@ function DataStoreManager.init()
         lastBackupTime[player.UserId] = nil
     end)
     
-    -- Set up periodic backup
-    startBackupSystem()
-    
-    -- Set up shutdown handler
-    game:BindToClose(function()
-        for _, player in ipairs(Players:GetPlayers()) do
-            DataStoreManager.SavePlayerData(player)
+    -- Set up periodic backups
+    task.spawn(function()
+        while true do
+            task.wait(BACKUP_INTERVAL)
+            for _, player in ipairs(Players:GetPlayers()) do
+                if not lastBackupTime[player.UserId] or 
+                   os.time() - lastBackupTime[player.UserId] >= BACKUP_INTERVAL then
+                    backupPlayerData(player)
+                end
+            end
         end
     end)
     
-    -- Set up remote event handlers
-    RemoteManager:setServerCallback(Constants.RemoteFunctions.GetPlayerData, function(player)
-        return DataStoreManager.GetPlayerData(player)
-    end)
-    
-    RemoteManager:onServerEvent(Constants.RemoteEvents.DataSync, function(player, data)
-        DataStoreManager.SetPlayerData(player, data, true)
-    end)
-    
-    Logger.info("DataStoreManager initialized successfully")
-end
-
--- Get player data
-function DataStoreManager.GetPlayerData(player)
-    -- Implementation
-end
-
--- Set player data
-function DataStoreManager.SetPlayerData(player, data, save)
-    -- Implementation
-end
-
-function DataStoreManager.new()
-    local self = setmetatable({}, DataStoreManager)
-    self.dataStores = {}
-    self.cache = {}
-    return self
-end
-
-function DataStoreManager:Initialize()
-    -- Initialize core data stores
-    self.dataStores.PlayerData = DataStoreService:GetDataStore("PlayerData")
-    self.dataStores.GameData = DataStoreService:GetDataStore("GameData")
-    self.dataStores.Achievements = DataStoreService:GetDataStore("Achievements")
-    
-    -- Set up error handling
-    DataStoreService:OnUpdate("PlayerData", function(key, value)
-        self:HandleDataUpdate("PlayerData", key, value)
-    end)
-    
-    print("DataStoreManager: Initialized successfully")
+    Logger:info("DataStoreManager initialized successfully")
     return true
 end
 
-function DataStoreManager:HandleDataUpdate(storeName, key, value)
-    if self.cache[storeName] and self.cache[storeName][key] then
-        self.cache[storeName][key] = value
-    end
-end
-
-function DataStoreManager:GetData(storeName, key)
-    if not self.dataStores[storeName] then
-        error("Invalid data store: " .. storeName)
-    end
-    
-    -- Check cache first
-    if self.cache[storeName] and self.cache[storeName][key] then
-        return self.cache[storeName][key]
-    end
-    
-    -- Get from DataStore
-    local success, result = pcall(function()
-        return self.dataStores[storeName]:GetAsync(key)
-    end)
-    
-    if success then
-        -- Cache the result
-        if not self.cache[storeName] then
-            self.cache[storeName] = {}
-        end
-        self.cache[storeName][key] = result
-        return result
-    else
-        warn("Failed to get data from " .. storeName .. " for key " .. key .. ": " .. tostring(result))
-        return nil
-    end
-end
-
-function DataStoreManager:SetData(storeName, key, value)
-    if not self.dataStores[storeName] then
-        error("Invalid data store: " .. storeName)
-    end
-    
-    -- Update cache
-    if not self.cache[storeName] then
-        self.cache[storeName] = {}
-    end
-    self.cache[storeName][key] = value
-    
-    -- Save to DataStore
-    local success, result = pcall(function()
-        return self.dataStores[storeName]:SetAsync(key, value)
-    end)
-    
-    if not success then
-        warn("Failed to set data in " .. storeName .. " for key " .. key .. ": " .. tostring(result))
-        return false
-    end
-    
-    return true
-end
-
--- Create and return a new instance
-return DataStoreManager.new() 
+return DataStoreManager 

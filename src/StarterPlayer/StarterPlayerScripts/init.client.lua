@@ -38,6 +38,50 @@ local function safeRequire(modulePath)
     end
 end
 
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
+local Constants = Shared.Constants
+local Types = Shared.Types
+local RemoteManager = Shared.RemoteManager
+local Logger = Shared.Logger
+
+-- Initialize client modules
+local function initializeClientModules()
+    -- Load UI modules
+    local UI = require(script.Parent.UI)
+    if not UI then
+        Logger:error("Failed to load UI module")
+        return false
+    end
+    
+    -- Load tutorial client
+    local TutorialClient = require(script.Parent.TutorialClient)
+    if not TutorialClient then
+        Logger:error("Failed to load TutorialClient module")
+        return false
+    end
+    
+    -- Initialize modules
+    if not UI.Initialize() then
+        Logger:error("Failed to initialize UI")
+        return false
+    end
+    
+    if not TutorialClient.Initialize() then
+        Logger:error("Failed to initialize TutorialClient")
+        return false
+    end
+    
+    Logger:info("Client modules initialized successfully")
+    return true
+end
+
+-- Start initialization
+local success = initializeClientModules()
+if not success then
+    Logger:error("Failed to initialize client modules")
+end
+
 -- Initialize UI modules
 local function initializeUIModules()
     local uiModules = {

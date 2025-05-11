@@ -14,6 +14,7 @@ local Logger = Shared.Logger
 local DataStoreManager = require(ServerScriptService.Modules.Data.DataStoreManager)
 
 local SecurityManager = {}
+SecurityManager.__index = SecurityManager
 
 -- Constants
 local RATE_LIMIT_WINDOW = 60 -- 1 minute
@@ -33,66 +34,66 @@ local VALIDATION_PATTERNS = {
     password = "^[%w!@#$%%^&*()_+{}|:<>?~]{8,}$"
 }
 
--- Define roles and their permissions
-local roles = {
-    admin = {
-        read = true,
-        write = true,
-        delete = true,
-        manageSessions = true,
-        manageSchemas = true,
-        viewPerformance = true,
-        viewCache = true
+-- Role definitions
+local ROLES = {
+    ADMIN = {
+        name = "Admin",
+        permissions = {
+            "admin.commands",
+            "admin.reports",
+            "admin.ban",
+            "admin.kick",
+            "admin.mute",
+            "admin.warn"
+        }
     },
-    editor = {
-        read = true,
-        write = true,
-        delete = false,
-        manageSessions = false,
-        manageSchemas = false,
-        viewPerformance = true,
-        viewCache = true
+    MODERATOR = {
+        name = "Moderator",
+        permissions = {
+            "admin.reports",
+            "admin.kick",
+            "admin.mute",
+            "admin.warn"
+        }
     },
-    viewer = {
-        read = true,
-        write = false,
-        delete = false,
-        manageSessions = false,
-        manageSchemas = false,
-        viewPerformance = true,
-        viewCache = true
+    USER = {
+        name = "User",
+        permissions = {}
     }
 }
 
--- Placeholder mapping of UserIds to roles
--- In a real implementation, this would be loaded from a secure location
+-- User role mapping (in production, this would be stored in a database)
 local userRoles = {
-    [12345] = 'admin', -- Example Admin User ID
-    [67890] = 'editor', -- Example Editor User ID
-    [13579] = 'viewer' -- Example Viewer User ID
-    -- Add other user mappings here
+    -- Example: [123456789] = "ADMIN"
 }
 
--- Function to get the role of a user
-local function getUserRole(userId)
-    return userRoles[userId]
+-- Get user role
+function SecurityManager.GetUserRole(userId)
+    return userRoles[tostring(userId)] or "USER"
 end
 
--- Function to check if a user has a specific permission
-function SecurityManager.hasPermission(userId, permission)
-    local roleName = getUserRole(userId)
-    if not roleName then
-        -- User has no assigned role, grant no permissions
+-- Check if user has permission
+function SecurityManager.HasPermission(userId, permission)
+    local role = SecurityManager.GetUserRole(userId)
+    local roleData = ROLES[role]
+    
+    if not roleData then
+        Logger:warn("Invalid role for user", { userId = userId, role = role })
         return false
     end
+    
+    return table.find(roleData.permissions, permission) ~= nil
+end
 
-    local rolePermissions = roles[roleName]
-    if not rolePermissions then
-        -- Role is not defined, grant no permissions
-        return false
-    end
+-- Check if user is admin
+function SecurityManager.IsAdmin(userId)
+    return SecurityManager.GetUserRole(userId) == "ADMIN"
+end
 
-    return rolePermissions[permission] == true
+-- Check if user is moderator
+function SecurityManager.IsModerator(userId)
+    local role = SecurityManager.GetUserRole(userId)
+    return role == "ADMIN" or role == "MODERATOR"
 end
 
 -- Utility: Clean rate limit data
@@ -280,14 +281,9 @@ function SecurityManager.validateRemoteData(player, data, schema)
     return true, data
 end
 
--- Public API: Check if player is admin
-function SecurityManager.isAdmin(player)
-    return player:GetAttribute("IsAdmin") == true
-end
-
 -- Public API: Validate admin action
 function SecurityManager.validateAdminAction(player, action)
-    if not SecurityManager.isAdmin(player) then
+    if not SecurityManager.IsAdmin(player.UserId) then
         Logger.warn("Unauthorized admin action attempt", {
             playerId = player.UserId,
             action = action
@@ -298,10 +294,22 @@ function SecurityManager.validateAdminAction(player, action)
     return true
 end
 
--- Initialize the SecurityManager
+-- Initialize
 function SecurityManager.Initialize()
-    print("SecurityManager: Initializing security system...")
-    -- Add any initialization logic here
+    -- Set up remote event handlers
+    RemoteManager:setServerCallback("CheckPermission", function(player, permission)
+        return SecurityManager.HasPermission(player.UserId, permission)
+    end)
+    
+    RemoteManager:setServerCallback("IsAdmin", function(player)
+        return SecurityManager.IsAdmin(player.UserId)
+    end)
+    
+    RemoteManager:setServerCallback("IsModerator", function(player)
+        return SecurityManager.IsModerator(player.UserId)
+    end)
+    
+    Logger:info("SecurityManager initialized successfully")
     return true
 end
 

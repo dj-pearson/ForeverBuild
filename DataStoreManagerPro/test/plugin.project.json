@@ -1,0 +1,12 @@
+{
+  "name": "TestPlugin",
+  "tree": {
+    "$className": "Plugin",
+    "Main": {
+      "$className": "ModuleScript",
+      "Source": {
+        "$path": "src/init.server.lua"
+      }
+    }
+  }
+}

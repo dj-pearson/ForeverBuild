@@ -1,8 +1,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local DataStoreManager = require(ServerScriptService.Server.Modules.Data.DataStoreManager)
+local Players = game:GetService("Players")
 
-local Shared = require(ReplicatedStorage.shared)
+-- Load shared modules
+local Shared = require(ReplicatedStorage.Shared)
 local Constants = Shared.Constants
 local Types = Shared.Types
 

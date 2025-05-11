@@ -1,0 +1,16 @@
+# Backup files
+*.backup
+*.backup.*
+Backups/
+
+# Large image files
+*.png
+
+# Other files to ignore
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+
+# Rojo sourcemap
+sourcemap.json

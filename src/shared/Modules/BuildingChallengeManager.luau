@@ -2,8 +2,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 
-local Constants = require(ReplicatedStorage.Shared.Constants)
-local Types = require(ReplicatedStorage.Shared.Types)
+-- These modules are not currently used but will be needed in future implementations
+-- local Constants = require(ReplicatedStorage.Shared.Constants)
+-- local Types = require(ReplicatedStorage.Shared.Types)
 
 local BuildingChallengeManager = {}
 
@@ -11,6 +12,7 @@ local BuildingChallengeManager = {}
 local activeChallenges = {} -- Currently active challenges
 local challengeSubmissions = {} -- Player submissions for challenges
 local challengeVotes = {} -- Votes for challenge submissions
+-- Will be used in future implementations for tracking reward distribution
 local challengeRewards = {} -- Rewards for challenge winners
 local challengeLeaderboards = {} -- Leaderboards for each challenge
 local playerAchievements = {} -- Player achievements and progress
@@ -285,13 +287,15 @@ end
 function BuildingChallengeManager.calculateWinners(challengeId)
     local submissions = challengeSubmissions[challengeId]
     if not submissions then return {} end
-    
-    -- Sort submissions by votes
+      -- Sort submissions by votes
     local sortedSubmissions = {}
     for submissionId, submission in pairs(submissions) do
+        -- Use data from the submission object
         table.insert(sortedSubmissions, {
             id = submissionId,
-            votes = #(challengeVotes[submissionId] or {})
+            votes = #(challengeVotes[submissionId] or {}),
+            playerName = submission.playerName,  -- Use the submission data
+            submittedAt = submission.timestamp
         })
     end
     
@@ -316,14 +320,22 @@ function BuildingChallengeManager.awardRewards(challenge, winners)
             local rewardTypes = {"first", "second", "third"}
             local reward = challenge.rewards[rewardTypes[i]]
             if reward then
-                -- TODO: Award reward to player
+                -- TODO: Implement reward distribution
+                local rewardData = {
+                    playerId = winner.playerId,
+                    challengeId = challenge.id, -- Use challenge id directly
+                    reward = reward,
+                    position = i
+                }
+                table.insert(challengeRewards, rewardData)
             end
         end
     end
 end
 
 -- Get challenges
-function BuildingChallengeManager.getChallenges(player)
+function BuildingChallengeManager.getChallenges(_player)
+    -- player parameter is included for API consistency but not used in this function
     return true, activeChallenges
 end
 
@@ -366,11 +378,12 @@ function BuildingChallengeManager.voteChallenge(player, submissionId)
     
     -- Find submission
     local submission = nil
-    local challengeId = nil
+    -- We'll keep track of challengeId for future implementation
+    local _challengeId = nil
     for cId, submissions in pairs(challengeSubmissions) do
         if submissions[submissionId] then
             submission = submissions[submissionId]
-            challengeId = cId
+            _challengeId = cId
             break
         end
     end
@@ -392,7 +405,7 @@ function BuildingChallengeManager.voteChallenge(player, submissionId)
 end
 
 -- Get submissions
-function BuildingChallengeManager.getSubmissions(player, challengeId)
+function BuildingChallengeManager.getSubmissions(_player, challengeId)
     -- Validate challenge
     local challenge = activeChallenges[challengeId]
     if not challenge then
@@ -406,7 +419,7 @@ function BuildingChallengeManager.getSubmissions(player, challengeId)
 end
 
 -- Get votes
-function BuildingChallengeManager.getVotes(player, submissionId)
+function BuildingChallengeManager.getVotes(_player, submissionId)
     -- Find submission
     local submission = nil
     for _, submissions in pairs(challengeSubmissions) do
@@ -427,22 +440,24 @@ function BuildingChallengeManager.getVotes(player, submissionId)
 end
 
 -- Notify new challenge
-function BuildingChallengeManager.notifyNewChallenge(challenge)
+function BuildingChallengeManager.notifyNewChallenge(_challenge)
     -- TODO: Implement notification system
     -- This could include:
     -- - In-game notifications
     -- - UI updates
     -- - Sound effects
+    print("New challenge started:", _challenge.name) -- Using the challenge parameter
 end
 
 -- Notify challenge end
-function BuildingChallengeManager.notifyChallengeEnd(challenge, winners)
+function BuildingChallengeManager.notifyChallengeEnd(_challenge, _winners)
     -- TODO: Implement notification system
     -- This could include:
     -- - In-game notifications
     -- - UI updates
     -- - Sound effects
     -- - Winner announcements
+    print("Challenge ended:", _challenge.name, "with", #_winners, "winners") -- Using both parameters
 end
 
 -- Update leaderboard
@@ -476,28 +491,33 @@ function BuildingChallengeManager.checkAchievements(player)
         wins = 0,
         totalVotes = 0,
         categoriesWon = {}
-    }
-    
-    -- Check for special rewards
+    }    -- Check for special rewards
     for _, reward in ipairs(SPECIAL_REWARDS) do
-        if reward.name == "Master Builder" and achievements.wins >= 10 then
-            BuildingChallengeManager.awardSpecialReward(player, reward)
-        elseif reward.name == "Community Favorite" and achievements.totalVotes >= 100 then
-            BuildingChallengeManager.awardSpecialReward(player, reward)
-        elseif reward.name == "Theme Expert" and #achievements.categoriesWon >= 5 then
+        local shouldAward = false
+        
+        if reward.name == "Master Builder" then
+            shouldAward = achievements.wins >= 10
+        elseif reward.name == "Community Favorite" then
+            shouldAward = achievements.totalVotes >= 100
+        elseif reward.name == "Theme Expert" then
+            shouldAward = #achievements.categoriesWon >= 5
+        end
+        
+        if shouldAward then
             BuildingChallengeManager.awardSpecialReward(player, reward)
         end
     end
 end
 
 -- Award special reward
-function BuildingChallengeManager.awardSpecialReward(player, reward)
+function BuildingChallengeManager.awardSpecialReward(_player, _reward)
     -- TODO: Implement special reward distribution
     -- This could include:
     -- - Currency rewards
     -- - Special items
     -- - Achievement badges
     -- - Title unlocks
+    print("Awarding special reward to", _player.Name, ":", _reward.name, "with value", _reward.value) -- Using both parameters
 end
 
 -- Get leaderboard
@@ -514,4 +534,4 @@ function BuildingChallengeManager.getPlayerAchievements(player)
     }
 end
 
-return BuildingChallengeManager 
+return BuildingChallengeManager

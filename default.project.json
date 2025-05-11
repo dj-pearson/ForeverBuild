@@ -4,8 +4,17 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "shared": {
-        "$path": "src/shared"
+      "Shared": {
+        "$path": "src/shared",
+        "Modules": {
+          "$path": "src/shared/Modules"
+        },
+        "Types": {
+          "$path": "src/shared/Shared"
+        }
+      },
+      "Remotes": {
+        "$className": "Folder"
       }
     },
     "ServerScriptService": {

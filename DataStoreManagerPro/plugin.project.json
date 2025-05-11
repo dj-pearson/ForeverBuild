@@ -1,0 +1,36 @@
+{
+  "name": "DataStoreManagerPro",
+  "tree": {
+    "$className": "Plugin",
+    "Main": {
+      "$className": "ModuleScript",
+      "Source": {
+        "$path": "src/init.server.lua"
+      }
+    },
+    "server": {
+      "$className": "Folder",
+      "DataExplorer": {
+        "$className": "ModuleScript",
+        "Source": {
+          "$path": "src/server/DataExplorer.server.lua"
+        }
+      },
+      "DataStoreManager": {
+        "$className": "ModuleScript",
+        "Source": {
+          "$path": "src/server/DataStoreManager.server.luau"
+        }
+      }
+    },
+    "clientScripts": {
+      "$className": "Folder",
+      "DataExplorerUI": {
+        "$className": "ModuleScript",
+        "Source": {
+          "$path": "src/clientScripts/DataExplorerUI.client.lua"
+        }
+      }
+    }
+  }
+}

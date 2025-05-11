@@ -2,9 +2,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 -- Load shared modules
-local Shared = require(ReplicatedStorage.shared)
-local Logger = require(ReplicatedStorage.shared.Modules.Logger)
-local ModuleManager = require(ReplicatedStorage.shared.Modules.ModuleManager)
+local Shared = require(ReplicatedStorage.Shared)
+local Logger = require(ReplicatedStorage.Shared.Modules.Logger)
+local ModuleManager = require(ReplicatedStorage.Shared.Modules.ModuleManager)
 
 -- Load client modules
 local ClientManager = require(script.Parent.Modules.ClientManager)

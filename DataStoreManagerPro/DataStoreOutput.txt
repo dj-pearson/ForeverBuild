@@ -1,0 +1,129 @@
+  23:11:26.067  shared is not a valid member of Folder "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro"  -  Edit
+  23:11:26.067  Stack Begin  -  Studio
+  23:11:26.067  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src', Line 18 - function resolveModule  -  Studio
+  23:11:26.067  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src', Line 54  -  Studio
+  23:11:26.068  Stack End  -  Studio
+  23:11:26.069  APIIntegration is not a valid member of Folder "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Edit
+  23:11:26.069  Stack Begin  -  Studio
+  23:11:26.069  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.APIIntegrationUI', Line 9  -  Studio
+  23:11:26.069  Stack End  -  Studio
+  23:11:26.071  AccessControl is not a valid member of Folder "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Edit
+  23:11:26.071  Stack Begin  -  Studio
+  23:11:26.071  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.AccessControlUI', Line 13  -  Studio
+  23:11:26.071  Stack End  -  Studio
+  23:11:26.072  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.072  Stack Begin  -  Studio
+  23:11:26.072  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.BulkOperationsUI', Line 6  -  Studio
+  23:11:26.072  Stack End  -  Studio
+  23:11:26.072  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.072  Stack Begin  -  Studio
+  23:11:26.072  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.CachingSystemUI', Line 6  -  Studio
+  23:11:26.072  Stack End  -  Studio
+  23:11:26.073  SchemaManager is not a valid member of Folder "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Edit
+  23:11:26.073  Stack Begin  -  Studio
+  23:11:26.073  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.CodeGeneratorUI', Line 9  -  Studio
+  23:11:26.073  Stack End  -  Studio
+  23:11:26.073  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.073  Stack Begin  -  Studio
+  23:11:26.074  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.DataMigrationUI', Line 6  -  Studio
+  23:11:26.074  Stack End  -  Studio
+  23:11:26.075  StyleGuide is not a valid member of Folder "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Edit
+  23:11:26.075  Stack Begin  -  Studio
+  23:11:26.075  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.LoadTestingUI', Line 9  -  Studio
+  23:11:26.075  Stack End  -  Studio
+  23:11:26.075  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.076  Stack Begin  -  Studio
+  23:11:26.076  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.MonitoringDashboardUI', Line 6  -  Studio
+  23:11:26.076  Stack End  -  Studio
+  23:11:26.076  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.076  Stack Begin  -  Studio
+  23:11:26.076  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.MultiServerCoordinationUI', Line 6  -  Studio
+  23:11:26.076  Stack End  -  Studio
+  23:11:26.076  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.076  Stack Begin  -  Studio
+  23:11:26.076  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.PerformanceAnalyzerUI', Line 6  -  Studio
+  23:11:26.076  Stack End  -  Studio
+  23:11:26.076  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.076  Stack Begin  -  Studio
+  23:11:26.077  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.SchemaBuilderUI', Line 6  -  Studio
+  23:11:26.077  Stack End  -  Studio
+  23:11:26.077  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.077  Stack Begin  -  Studio
+  23:11:26.077  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.clientScripts.SessionManagementUI', Line 6  -  Studio
+  23:11:26.077  Stack End  -  Studio
+  23:11:26.078  user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server:37: Module not found: DataStoreManager  -  Edit
+  23:11:26.078  Stack Begin  -  Studio
+  23:11:26.078  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server', Line 37 - function resolveModule  -  Studio
+  23:11:26.078  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server', Line 49  -  Studio
+  23:11:26.078  Stack End  -  Studio
+  23:11:26.078  APIIntegrationUI is not a valid member of Script "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server"  -  Edit
+  23:11:26.079  Stack Begin  -  Studio
+  23:11:26.079  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.APIIntegrationIntegration', Line 9  -  Studio
+  23:11:26.079  Stack End  -  Studio
+  23:11:26.079  AccessControl is not a valid member of Script "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server"  -  Edit
+  23:11:26.079  Stack Begin  -  Studio
+  23:11:26.079  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.AccessControlIntegration', Line 9  -  Studio
+  23:11:26.079  Stack End  -  Studio
+  23:11:26.080  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.080  Stack Begin  -  Studio
+  23:11:26.080  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.BulkOperationsManager', Line 7  -  Studio
+  23:11:26.080  Stack End  -  Studio
+  23:11:26.081  CodeGeneratorUI is not a valid member of Script "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server"  -  Edit
+  23:11:26.081  Stack Begin  -  Studio
+  23:11:26.081  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.CodeGeneratorIntegration', Line 9  -  Studio
+  23:11:26.081  Stack End  -  Studio
+  23:11:26.084  Attempt to connect failed: Passed value is not a function  -  Studio
+  23:11:26.084  Stack Begin  -  Studio
+  23:11:26.084  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.DataExplorer', Line 472  -  Studio
+  23:11:26.084  Stack End  -  Studio
+  23:11:26.084  user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.DataExplorer:549: attempt to call a nil value  -  Edit
+  23:11:26.084  Stack Begin  -  Studio
+  23:11:26.085  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.DataExplorer', Line 549  -  Studio
+  23:11:26.085  Stack End  -  Studio
+  23:11:26.085  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.085  Stack Begin  -  Studio
+  23:11:26.085  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.DataMigrationTools', Line 23  -  Studio
+  23:11:26.085  Stack End  -  Studio
+  23:11:26.086  Failed to resolve module: CacheManager  -  Edit
+  23:11:26.086  Failed to resolve module: SchemaManager  -  Edit
+  23:11:26.086  Failed to resolve module: SchemaValidator  -  Edit
+  23:11:26.086  Failed to resolve module: SessionManager  -  Edit
+  23:11:26.086  Failed to resolve module: PerformanceMonitor  -  Edit
+  23:11:26.086  Failed to resolve module: SecurityManager  -  Edit
+  23:11:26.087  Running module resolver update...  -  Edit
+  23:11:26.087  Could not find init script  -  Edit
+  23:11:26.088  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.088  Stack Begin  -  Studio
+  23:11:26.089  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.MonitoringDashboard', Line 8  -  Studio
+  23:11:26.089  Stack End  -  Studio
+  23:11:26.098  Failed to resolve module: SessionManager  -  Edit
+  23:11:26.098  Failed to resolve module: DataVisualization  -  Edit
+  23:11:26.099  Failed to resolve module: StyleGuide  -  Edit
+  23:11:26.099  Failed to resolve module: DataExplorer  -  Edit
+  23:11:26.100  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.100  Stack Begin  -  Studio
+  23:11:26.100  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.PerformanceAnalyzer', Line 12  -  Studio
+  23:11:26.100  Stack End  -  Studio
+  23:11:26.100  Failed to resolve module: DataExplorer  -  Edit
+  23:11:26.101  Failed to resolve module: SchemaManager  -  Edit
+  23:11:26.102  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.102  Stack Begin  -  Studio
+  23:11:26.102  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.SchemaEditor', Line 4  -  Studio
+  23:11:26.102  Stack End  -  Studio
+  23:11:26.102  Failed to resolve module: SchemaVersioning  -  Edit
+  23:11:26.103  Attempted to call require with invalid argument(s).  -  Edit
+  23:11:26.103  Stack Begin  -  Studio
+  23:11:26.103  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src.server.SchemaVersionViewer', Line 5  -  Studio
+  23:11:26.103  Stack End  -  Studio
+  23:11:27.646  Failed to apply StyleRule property 'Color' from '.X-Gradient100-Deg180 ::UIGradient': Unable to cast Color3 to ColorSequence  -  Studio
+  23:11:27.646  Failed to apply StyleRule property 'Color' from '.X-Gradient100-Deg0 ::UIGradient': Unable to cast Color3 to ColorSequence  -  Studio
+  23:11:27.644  Xdjpearsonx joined live editing session.  -  Studio
+  23:11:29.059  init.server is not a valid member of Script "user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.src"  -  Edit
+  23:11:29.060  Stack Begin  -  Studio
+  23:11:29.060  Script 'user_DataStoreManagerPro.rbxmx.DataStoreManagerPro.Main', Line 20  -  Studio
+  23:11:29.060  Stack End  -  Studio
+  23:11:32.222  Requiring asset 16781084836.
+Callstack:
+cloud_6514761722.UITools.Main, line 155
+cloud_6514761722.UITools.Main, line 154
+  -  Edit

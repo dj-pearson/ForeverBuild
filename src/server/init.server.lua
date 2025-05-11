@@ -2,29 +2,36 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 
--- Load shared modules
-local Logger = require(ReplicatedStorage.shared.Modules.Logger)
-local ModuleManager = require(ReplicatedStorage.shared.Modules.ModuleManager)
-local PerformanceManager = require(ReplicatedStorage.shared.Modules.PerformanceManager)
-local StateManager = require(ReplicatedStorage.shared.Modules.StateManager)
-local NetworkManager = require(ReplicatedStorage.shared.Modules.NetworkManager)
-local UIManager = require(ReplicatedStorage.shared.Modules.UIManager)
+-- Ensure Remotes folder exists
+if not ReplicatedStorage:FindFirstChild("Remotes") then
+    local remotesFolder = Instance.new("Folder")
+    remotesFolder.Name = "Remotes"
+    remotesFolder.Parent = ReplicatedStorage
+end
+
+-- Load shared and server modules
+local Logger = require(ReplicatedStorage.Shared.Modules.Logger)
+local ModuleManager = require(ReplicatedStorage.Shared.Modules.ModuleManager)
+local PerformanceManager = require(ReplicatedStorage.Shared.Modules.PerformanceManager)
+local StateManager = require(ReplicatedStorage.Shared.Modules.StateManager)
+local NetworkManager = require(ReplicatedStorage.Shared.Modules.NetworkManager)
+local UIManager = require(ReplicatedStorage.Shared.Modules.UIManager)
 
 -- Load server modules
-local SecurityManager = require(script.Parent.Modules.Security.SecurityManager)
-local GameManager = require(script.Parent.Modules.Game.GameManager)
-local SpawnManager = require(script.Parent.Modules.Game.SpawnManager)
-local TutorialHandler = require(script.Parent.Modules.Tutorial.TutorialHandler)
-local FriendManager = require(script.Parent.Modules.Social.FriendManager)
-local SocialHubManager = require(script.Parent.Modules.Social.SocialHubManager)
-local SocialInteractionManager = require(script.Parent.Modules.Social.SocialInteractionManager)
-local PlayerProfileManager = require(script.Parent.Modules.Social.PlayerProfileManager)
-local SocialMediaManager = require(script.Parent.Modules.Social.SocialMediaManager)
-local BuildingToolsManager = require(script.Parent.Modules.Building.BuildingToolsManager)
-local BuildingTemplateManager = require(script.Parent.Modules.Building.BuildingTemplateManager)
-local BuildingChallengeManager = require(script.Parent.Modules.Building.BuildingChallengeManager)
-local ProgressionManager = require(script.Parent.Modules.ProgressionManager)
-local AchievementManager = require(script.Parent.Modules.AchievementManager)
+local SecurityManager = require(ServerScriptService.Server.Modules.Security.SecurityManager)
+local GameManager = require(ServerScriptService.Server.Modules.Game.GameManager)
+local SpawnManager = require(ServerScriptService.Server.Modules.Game.SpawnManager)
+local TutorialHandler = require(ServerScriptService.Server.Modules.Tutorial.TutorialHandler)
+local FriendManager = require(ServerScriptService.Server.Modules.Social.FriendManager)
+local SocialHubManager = require(ServerScriptService.Server.Modules.Social.SocialHubManager)
+local SocialInteractionManager = require(ServerScriptService.Server.Modules.Social.SocialInteractionManager)
+local PlayerProfileManager = require(ServerScriptService.Server.Modules.Social.PlayerProfileManager)
+local SocialMediaManager = require(ServerScriptService.Server.Modules.Social.SocialMediaManager)
+local BuildingToolsManager = require(ServerScriptService.Server.Modules.Building.BuildingToolsManager)
+local BuildingTemplateManager = require(ServerScriptService.Server.Modules.Building.BuildingTemplateManager)
+local BuildingChallengeManager = require(ServerScriptService.Server.Modules.Building.BuildingChallengeManager)
+local ProgressionManager = require(ServerScriptService.Server.Modules.ProgressionManager)
+local AchievementManager = require(ServerScriptService.Server.Modules.AchievementManager)
 
 -- Initialize Logger first
 Logger.init()

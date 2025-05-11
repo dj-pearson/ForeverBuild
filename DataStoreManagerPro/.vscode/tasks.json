@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Node.js",
+            "type": "shell",
+            "command": "& \"C:\\Program Files\\nodejs\\node.exe\"",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Node.js REPL",
+            "type": "shell",
+            "command": "& \"C:\\Program Files\\nodejs\\node.exe\"",
+            "args": ["start-node-repl.js"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Show Node.js Info",
+            "type": "shell",
+            "command": "& \"C:\\Program Files\\nodejs\\node.exe\"",
+            "args": ["node-info.js"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Roblox Tools",
+            "type": "shell",
+            "command": "& \"C:\\Program Files\\nodejs\\node.exe\"",
+            "args": ["roblox-tools.js"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

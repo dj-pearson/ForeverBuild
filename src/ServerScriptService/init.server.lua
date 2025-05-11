@@ -1,111 +1,76 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
-local Players = game:GetService("Players")
-
--- Create necessary folders if they don't exist
-local function ensureFolder(parent, name)
-    local folder = parent:FindFirstChild(name)
-    if not folder then
-        folder = Instance.new("Folder")
-        folder.Name = name
-        folder.Parent = parent
-    end
-    return folder
-end
-
--- Ensure required folders exist
-local modulesFolder = ensureFolder(ServerScriptService, "Modules")
-local dataFolder = ensureFolder(modulesFolder, "Data")
-local securityFolder = ensureFolder(modulesFolder, "Security")
-local tutorialFolder = ensureFolder(modulesFolder, "Tutorial")
-
--- Helper function to safely require modules
-local function safeRequire(modulePath)
-    if not modulePath then
-        warn("Invalid module path provided to safeRequire")
-        return nil
-    end
-    
-    local success, result = pcall(function()
-        return require(modulePath)
-    end)
-    
-    if success then
-        return result
-    else
-        warn("Failed to load module:", modulePath.Name, "-", result)
-        return nil
-    end
-end
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Load shared modules
 local Shared = require(ReplicatedStorage.Shared)
-local Constants = Shared.Constants
-local Types = Shared.Types
-local RemoteManager = Shared.RemoteManager
 local Logger = Shared.Logger
+
+-- Helper function to safely require modules
+local function safeRequire(module)
+    local success, result = pcall(function()
+        return require(module)
+    end)
+    
+    if not success then
+        Logger:error("Failed to load module", { module = module.Name, error = result })
+        return nil
+    end
+    
+    return result
+end
 
 -- Initialize core modules
 local function initializeCoreModules()
-    -- Load DataStoreManager first as it's a dependency
-    local DataStoreManager = safeRequire(dataFolder.DataStoreManager)
-    if not DataStoreManager then
-        Logger:error("Failed to load DataStoreManager - this will affect other modules")
-        return false
-    end
+    -- Load core modules
+    local dataStoreManager = safeRequire(script.Parent.Modules.Data.DataStoreManager)
+    if not dataStoreManager then return false end
     
-    -- Load SecurityManager
-    local SecurityManager = safeRequire(securityFolder.SecurityManager)
-    if not SecurityManager then
-        Logger:error("Failed to load SecurityManager")
-        return false
-    end
+    local securityManager = safeRequire(script.Parent.Modules.Security.SecurityManager)
+    if not securityManager then return false end
     
-    -- Load TutorialHandler
-    local TutorialHandler = safeRequire(tutorialFolder.TutorialHandler)
-    if not TutorialHandler then
-        Logger:error("Failed to load TutorialHandler")
-        return false
-    end
+    local tutorialHandler = safeRequire(script.Parent.Modules.Tutorial.TutorialHandler)
+    if not tutorialHandler then return false end
     
-    -- Initialize modules in dependency order
-    if not DataStoreManager.Initialize() then
+    -- Initialize modules in correct order
+    if not dataStoreManager.Initialize() then
         Logger:error("Failed to initialize DataStoreManager")
         return false
     end
     
-    if not SecurityManager.Initialize() then
+    if not securityManager.Initialize() then
         Logger:error("Failed to initialize SecurityManager")
         return false
     end
     
-    if not TutorialHandler.Initialize() then
+    if not tutorialHandler.Initialize() then
         Logger:error("Failed to initialize TutorialHandler")
         return false
     end
     
-    Logger:info("Core modules initialized successfully")
     return true
 end
 
--- Initialize the system
-local function initialize()
-    -- Initialize core modules
-    if not initializeCoreModules() then
-        Logger:error("Failed to initialize core modules")
-        return nil
+-- Main initialization
+local success, result = pcall(function()
+    -- Create necessary folders
+    if not script.Parent:FindFirstChild("Modules") then
+        local modules = Instance.new("Folder")
+        modules.Name = "Modules"
+        modules.Parent = script.Parent
     end
     
-    Logger:info("Server system initialized successfully")
-    return true
-end
+    -- Initialize modules
+    if not initializeCoreModules() then
+        error("Failed to initialize core modules")
+    end
+end)
 
--- Start initialization
-local success = initialize()
 if not success then
-    Logger:error("Failed to initialize server system")
+    Logger:error("Server initialization failed", { error = result })
+else
+    Logger:info("Server initialized successfully")
 end
 
 return {
-    Initialize = initialize
+    Initialize = initializeCoreModules
 } 

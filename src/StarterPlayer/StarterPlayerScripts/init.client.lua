@@ -1,140 +1,123 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local PlayerScripts = LocalPlayer:WaitForChild("PlayerScripts")
-
--- Create necessary folders if they don't exist
-local function ensureFolder(parent, name)
-    local folder = parent:FindFirstChild(name)
-    if not folder then
-        folder = Instance.new("Folder")
-        folder.Name = name
-        folder.Parent = parent
-    end
-    return folder
-end
-
--- Ensure required folders exist
-local modulesFolder = ensureFolder(PlayerScripts, "Modules")
-local sharedFolder = ensureFolder(ReplicatedStorage, "Shared")
-local remotesFolder = ensureFolder(ReplicatedStorage, "Remotes")
-
--- Helper function to safely require modules
-local function safeRequire(modulePath)
-    if not modulePath then
-        warn("Invalid module path provided to safeRequire")
-        return nil
-    end
-    
-    local success, result = pcall(function()
-        return require(modulePath)
-    end)
-    
-    if success then
-        return result
-    else
-        warn("Failed to load module:", modulePath.Name, "-", result)
-        return nil
-    end
-end
 
 -- Load shared modules
 local Shared = require(ReplicatedStorage.Shared)
-local Constants = Shared.Constants
-local Types = Shared.Types
-local RemoteManager = Shared.RemoteManager
 local Logger = Shared.Logger
+
+-- Helper function to safely require modules
+local function safeRequire(module)
+    local success, result = pcall(function()
+        return require(module)
+    end)
+    
+    if not success then
+        Logger:error("Failed to load module", { module = module.Name, error = result })
+        return nil
+    end
+    
+    return result
+end
 
 -- Initialize client modules
 local function initializeClientModules()
-    -- Load UI modules
-    local UI = require(script.Parent.UI)
-    if not UI then
-        Logger:error("Failed to load UI module")
-        return false
-    end
+    -- Load UI module
+    local uiModule = safeRequire(script.Modules.UI)
+    if not uiModule then return false end
     
-    -- Load tutorial client
-    local TutorialClient = require(script.Parent.TutorialClient)
-    if not TutorialClient then
-        Logger:error("Failed to load TutorialClient module")
-        return false
-    end
+    -- Load Tutorial module
+    local tutorialModule = safeRequire(script.Modules.Tutorial)
+    if not tutorialModule then return false end
     
     -- Initialize modules
-    if not UI.Initialize() then
-        Logger:error("Failed to initialize UI")
+    if not uiModule.Initialize() then
+        Logger:error("Failed to initialize UI module")
         return false
     end
     
-    if not TutorialClient.Initialize() then
-        Logger:error("Failed to initialize TutorialClient")
+    if not tutorialModule.Initialize() then
+        Logger:error("Failed to initialize Tutorial module")
         return false
     end
     
-    Logger:info("Client modules initialized successfully")
     return true
 end
 
--- Start initialization
-local success = initializeClientModules()
+-- Main initialization
+local success, result = pcall(function()
+    -- Create necessary folders
+    if not script:FindFirstChild("Modules") then
+        local modules = Instance.new("Folder")
+        modules.Name = "Modules"
+        modules.Parent = script
+    end
+    
+    -- Initialize modules
+    if not initializeClientModules() then
+        error("Failed to initialize client modules")
+    end
+end)
+
 if not success then
-    Logger:error("Failed to initialize client modules")
+    Logger:error("Client initialization failed", { error = result })
+else
+    Logger:info("Client initialized successfully")
 end
 
 -- Initialize UI modules
 local function initializeUIModules()
     local uiModules = {
         -- Core UI
-        Gui = safeRequire(modulesFolder.UI.Gui),
-        MenuUI = safeRequire(modulesFolder.UI.MenuUI),
-        LoadingUI = safeRequire(modulesFolder.UI.LoadingUI),
+        Gui = safeRequire(script.Modules.UI.Gui),
+        MenuUI = safeRequire(script.Modules.UI.MenuUI),
+        LoadingUI = safeRequire(script.Modules.UI.LoadingUI),
         
         -- Game UI
-        HealthUI = safeRequire(modulesFolder.UI.HealthUI),
-        AmmoUI = safeRequire(modulesFolder.UI.AmmoUI),
-        CrosshairUI = safeRequire(modulesFolder.UI.CrosshairUI),
-        MinimapUI = safeRequire(modulesFolder.UI.MinimapUI),
-        ScoreUI = safeRequire(modulesFolder.UI.ScoreUI),
-        TeamScoreUI = safeRequire(modulesFolder.UI.TeamScoreUI),
-        LeaderboardUI = safeRequire(modulesFolder.UI.LeaderboardUI),
-        KillFeedUI = safeRequire(modulesFolder.UI.KillFeedUI),
+        HealthUI = safeRequire(script.Modules.UI.HealthUI),
+        AmmoUI = safeRequire(script.Modules.UI.AmmoUI),
+        CrosshairUI = safeRequire(script.Modules.UI.CrosshairUI),
+        MinimapUI = safeRequire(script.Modules.UI.MinimapUI),
+        ScoreUI = safeRequire(script.Modules.UI.ScoreUI),
+        TeamScoreUI = safeRequire(script.Modules.UI.TeamScoreUI),
+        LeaderboardUI = safeRequire(script.Modules.UI.LeaderboardUI),
+        KillFeedUI = safeRequire(script.Modules.UI.KillFeedUI),
         
         -- Social UI
-        FriendsUI = safeRequire(modulesFolder.UI.FriendsUI),
-        SocialHubUI = safeRequire(modulesFolder.UI.SocialHubUI),
-        SocialInteractionUI = safeRequire(modulesFolder.UI.SocialInteractionUI),
-        SocialMediaUI = safeRequire(modulesFolder.UI.SocialMediaUI),
-        PlayerProfileUI = safeRequire(modulesFolder.UI.PlayerProfileUI),
+        FriendsUI = safeRequire(script.Modules.UI.FriendsUI),
+        SocialHubUI = safeRequire(script.Modules.UI.SocialHubUI),
+        SocialInteractionUI = safeRequire(script.Modules.UI.SocialInteractionUI),
+        SocialMediaUI = safeRequire(script.Modules.UI.SocialMediaUI),
+        PlayerProfileUI = safeRequire(script.Modules.UI.PlayerProfileUI),
         
         -- Game Systems UI
-        InventoryUI = safeRequire(modulesFolder.UI.InventoryUI),
-        ShopUI = safeRequire(modulesFolder.UI.ShopUI),
-        MarketplaceUI = safeRequire(modulesFolder.UI.MarketplaceUI),
-        AchievementUI = safeRequire(modulesFolder.UI.AchievementUI),
-        ProgressionUI = safeRequire(modulesFolder.UI.ProgressionUI),
+        InventoryUI = safeRequire(script.Modules.UI.InventoryUI),
+        ShopUI = safeRequire(script.Modules.UI.ShopUI),
+        MarketplaceUI = safeRequire(script.Modules.UI.MarketplaceUI),
+        AchievementUI = safeRequire(script.Modules.UI.AchievementUI),
+        ProgressionUI = safeRequire(script.Modules.UI.ProgressionUI),
         
         -- Building UI
-        BuildingToolsUI = safeRequire(modulesFolder.UI.BuildingToolsUI),
-        BuildingTemplateUI = safeRequire(modulesFolder.UI.BuildingTemplateUI),
-        BuildingChallengeUI = safeRequire(modulesFolder.UI.BuildingChallengeUI),
+        BuildingToolsUI = safeRequire(script.Modules.UI.BuildingToolsUI),
+        BuildingTemplateUI = safeRequire(script.Modules.UI.BuildingTemplateUI),
+        BuildingChallengeUI = safeRequire(script.Modules.UI.BuildingChallengeUI),
         
         -- Other UI
-        ChatUI = safeRequire(modulesFolder.UI.ChatUI),
-        SettingsUI = safeRequire(modulesFolder.UI.SettingsUI),
-        HelpUI = safeRequire(modulesFolder.UI.HelpUI),
-        PauseUI = safeRequire(modulesFolder.UI.PauseUI),
-        RoundUI = safeRequire(modulesFolder.UI.RoundUI),
-        EndUI = safeRequire(modulesFolder.UI.EndUI),
-        ErrorUI = safeRequire(modulesFolder.UI.ErrorUI),
-        NotificationUI = safeRequire(modulesFolder.UI.NotificationUI),
-        ConfirmationUI = safeRequire(modulesFolder.UI.ConfirmationUI),
-        InputUI = safeRequire(modulesFolder.UI.InputUI),
-        SpectatorUI = safeRequire(modulesFolder.UI.SpectatorUI),
-        TeamUI = safeRequire(modulesFolder.UI.TeamUI),
-        WeaponUI = safeRequire(modulesFolder.UI.WeaponUI),
-        DailyRewardsUI = safeRequire(modulesFolder.UI.DailyRewardsUI),
-        ScoreboardUI = safeRequire(modulesFolder.UI.ScoreboardUI)
+        ChatUI = safeRequire(script.Modules.UI.ChatUI),
+        SettingsUI = safeRequire(script.Modules.UI.SettingsUI),
+        HelpUI = safeRequire(script.Modules.UI.HelpUI),
+        PauseUI = safeRequire(script.Modules.UI.PauseUI),
+        RoundUI = safeRequire(script.Modules.UI.RoundUI),
+        EndUI = safeRequire(script.Modules.UI.EndUI),
+        ErrorUI = safeRequire(script.Modules.UI.ErrorUI),
+        NotificationUI = safeRequire(script.Modules.UI.NotificationUI),
+        ConfirmationUI = safeRequire(script.Modules.UI.ConfirmationUI),
+        InputUI = safeRequire(script.Modules.UI.InputUI),
+        SpectatorUI = safeRequire(script.Modules.UI.SpectatorUI),
+        TeamUI = safeRequire(script.Modules.UI.TeamUI),
+        WeaponUI = safeRequire(script.Modules.UI.WeaponUI),
+        DailyRewardsUI = safeRequire(script.Modules.UI.DailyRewardsUI),
+        ScoreboardUI = safeRequire(script.Modules.UI.ScoreboardUI)
     }
     
     -- Initialize modules in dependency order
@@ -156,11 +139,11 @@ end
 local function initializeCoreModules()
     local coreModules = {
         -- Core Systems
-        TutorialManager = safeRequire(modulesFolder.Tutorial.TutorialManager),
-        AdminCommandHandler = safeRequire(modulesFolder.Admin.AdminCommandHandler),
-        AdminReport = safeRequire(modulesFolder.Admin.AdminReport),
-        ReportUI = safeRequire(modulesFolder.UI.ReportUI),
-        ReportContextMenu = safeRequire(modulesFolder.Admin.ReportContextMenu)
+        TutorialManager = safeRequire(script.Modules.Tutorial.TutorialManager),
+        AdminCommandHandler = safeRequire(script.Modules.Admin.AdminCommandHandler),
+        AdminReport = safeRequire(script.Modules.Admin.AdminReport),
+        ReportUI = safeRequire(script.Modules.UI.ReportUI),
+        ReportContextMenu = safeRequire(script.Modules.Admin.ReportContextMenu)
     }
     
     -- Initialize modules in dependency order

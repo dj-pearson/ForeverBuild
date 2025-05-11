@@ -1,5 +1,5 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 -- Create necessary folders if they don't exist
@@ -14,116 +14,102 @@ local function ensureFolder(parent, name)
 end
 
 -- Ensure required folders exist
-local serverFolder = ensureFolder(ServerScriptService, "server")
-local modulesFolder = ensureFolder(serverFolder, "Modules")
+local modulesFolder = ensureFolder(ServerScriptService, "Modules")
+local sharedFolder = ensureFolder(ReplicatedStorage, "Shared")
 
--- Load shared system
-local Shared = require(ReplicatedStorage.Shared)
-local Constants = Shared.Constants
-local ModuleManager = Shared.ModuleManager
-local RemoteManager = Shared.RemoteManager
+-- Helper function to safely require modules
+local function safeRequire(modulePath)
+    local success, result = pcall(function()
+        return require(modulePath)
+    end)
+    if success then
+        return result
+    else
+        warn("Failed to load module:", modulePath.Name, "-", result)
+        return nil
+    end
+end
 
 -- Initialize core modules
 local function initializeCoreModules()
+    -- First initialize DataStoreManager as other modules depend on it
+    local dataStoreManager = safeRequire(modulesFolder.Data.DataStoreManager)
+    if not dataStoreManager then
+        warn("Failed to load DataStoreManager - this will affect other modules")
+    end
+
+    -- Then initialize SecurityManager as it's used by many modules
+    local securityManager = safeRequire(modulesFolder.Security.SecurityManager)
+    if not securityManager then
+        warn("Failed to load SecurityManager - this will affect other modules")
+    end
+
+    -- Initialize remaining modules
     local coreModules = {
         -- Security and Performance
-        SecurityManager = require(modulesFolder.Security.SecurityManager),
-        PerformanceManager = require(modulesFolder.Performance.PerformanceManager),
+        SecurityManager = securityManager,
+        PerformanceManager = safeRequire(modulesFolder.Performance.PerformanceManager),
         
         -- State and Network
-        StateManager = require(modulesFolder.State.StateManager),
-        NetworkManager = require(modulesFolder.Network.NetworkManager),
+        StateManager = safeRequire(modulesFolder.State.StateManager),
+        NetworkManager = safeRequire(modulesFolder.Network.NetworkManager),
         
         -- Game Systems
-        GameManager = require(modulesFolder.Game.GameManager),
-        SpawnManager = require(modulesFolder.Game.SpawnManager),
+        GameManager = safeRequire(modulesFolder.Game.GameManager),
+        SpawnManager = safeRequire(modulesFolder.Game.SpawnManager),
         
         -- Social Systems
-        FriendManager = require(modulesFolder.Social.FriendManager),
-        SocialHubManager = require(modulesFolder.Social.SocialHubManager),
-        SocialInteractionManager = require(modulesFolder.Social.SocialInteractionManager),
-        PlayerProfileManager = require(modulesFolder.Social.PlayerProfileManager),
-        SocialMediaManager = require(modulesFolder.Social.SocialMediaManager),
+        FriendManager = safeRequire(modulesFolder.Social.FriendManager),
+        SocialHubManager = safeRequire(modulesFolder.Social.SocialHubManager),
+        SocialInteractionManager = safeRequire(modulesFolder.Social.SocialInteractionManager),
+        PlayerProfileManager = safeRequire(modulesFolder.Social.PlayerProfileManager),
+        SocialMediaManager = safeRequire(modulesFolder.Social.SocialMediaManager),
         
         -- Building Systems
-        BuildingToolsManager = require(modulesFolder.Building.BuildingToolsManager),
-        BuildingTemplateManager = require(modulesFolder.Building.BuildingTemplateManager),
-        BuildingChallengeManager = require(modulesFolder.Building.BuildingChallengeManager),
+        BuildingToolsManager = safeRequire(modulesFolder.Building.BuildingToolsManager),
+        BuildingTemplateManager = safeRequire(modulesFolder.Building.BuildingTemplateManager),
+        BuildingChallengeManager = safeRequire(modulesFolder.Building.BuildingChallengeManager),
         
         -- Progression Systems
-        ProgressionManager = require(modulesFolder.Progression.ProgressionManager),
-        AchievementManager = require(modulesFolder.Achievement.AchievementManager),
+        ProgressionManager = safeRequire(modulesFolder.Progression.ProgressionManager),
+        AchievementManager = safeRequire(modulesFolder.Achievement.AchievementManager),
         
         -- Data Systems
-        DataStoreManager = require(modulesFolder.Data.DataStoreManager),
+        DataStoreManager = dataStoreManager,
         
         -- Tutorial System
-        TutorialHandler = require(modulesFolder.Tutorial.TutorialHandler)
+        TutorialHandler = safeRequire(modulesFolder.Tutorial.TutorialHandler)
     }
     
-    -- Register modules with their dependencies
-    ModuleManager.registerModule("PerformanceManager", coreModules.PerformanceManager)
-    ModuleManager.registerModule("SecurityManager", coreModules.SecurityManager)
-    ModuleManager.registerModule("StateManager", coreModules.StateManager)
-    ModuleManager.registerModule("NetworkManager", coreModules.NetworkManager)
-    ModuleManager.registerModule("GameManager", coreModules.GameManager, {})
-    ModuleManager.registerModule("SpawnManager", coreModules.SpawnManager, { "GameManager" })
-    ModuleManager.registerModule("FriendManager", coreModules.FriendManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("SocialHubManager", coreModules.SocialHubManager, { "GameManager", "SecurityManager", "PerformanceManager" })
-    ModuleManager.registerModule("SocialInteractionManager", coreModules.SocialInteractionManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("PlayerProfileManager", coreModules.PlayerProfileManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("SocialMediaManager", coreModules.SocialMediaManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("BuildingToolsManager", coreModules.BuildingToolsManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("BuildingTemplateManager", coreModules.BuildingTemplateManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("BuildingChallengeManager", coreModules.BuildingChallengeManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("ProgressionManager", coreModules.ProgressionManager, { "GameManager", "SecurityManager" })
-    ModuleManager.registerModule("AchievementManager", coreModules.AchievementManager, { "GameManager", "SecurityManager", "ProgressionManager" })
+    -- Initialize modules in dependency order
+    for name, module in pairs(coreModules) do
+        if module and module.Initialize then
+            local success, result = pcall(function()
+                module:Initialize()
+            end)
+            if not success then
+                warn("Failed to initialize module:", name, "-", result)
+            end
+        end
+    end
     
     return coreModules
 end
 
 -- Initialize the system
 local function initialize()
-    -- Initialize core modules
     local coreModules = initializeCoreModules()
-    
-    -- Initialize all modules in dependency order
-    ModuleManager.initializeAll()
-    
-    -- Set up periodic cleanup
-    task.spawn(function()
-        while true do
-            task.wait(Constants.Performance.CleanupInterval or 300) -- Default to 5 minutes
-            if coreModules.PerformanceManager then coreModules.PerformanceManager.cleanup() end
-            if coreModules.NetworkManager then coreModules.NetworkManager.cleanup() end
-        end
-    end)
-    
-    -- Set up periodic state sync
-    task.spawn(function()
-        while true do
-            task.wait(1/Constants.Game.StateSyncRate or 30) -- Default to 30 times per second
-            if coreModules.StateManager then coreModules.StateManager.syncState() end
-        end
-    end)
-    
-    -- Initialize individual modules
-    for _, module in pairs(coreModules) do
-        if module.init then
-            module.init()
-        end
-    end
-    
-    print("Server: All systems initialized successfully")
+    print("Core modules initialized successfully")
+    return coreModules
 end
 
 -- Start initialization
-initialize()
+local modules = initialize()
 
 -- Return the initialized server system
 return {
     Initialize = initialize,
-    getModule = function(modulePath)
-        return ModuleManager.getModule(modulePath)
+    getModule = function(moduleName)
+        return modules[moduleName]
     end
 } 

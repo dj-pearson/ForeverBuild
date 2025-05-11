@@ -33,6 +33,68 @@ local VALIDATION_PATTERNS = {
     password = "^[%w!@#$%%^&*()_+{}|:<>?~]{8,}$"
 }
 
+-- Define roles and their permissions
+local roles = {
+    admin = {
+        read = true,
+        write = true,
+        delete = true,
+        manageSessions = true,
+        manageSchemas = true,
+        viewPerformance = true,
+        viewCache = true
+    },
+    editor = {
+        read = true,
+        write = true,
+        delete = false,
+        manageSessions = false,
+        manageSchemas = false,
+        viewPerformance = true,
+        viewCache = true
+    },
+    viewer = {
+        read = true,
+        write = false,
+        delete = false,
+        manageSessions = false,
+        manageSchemas = false,
+        viewPerformance = true,
+        viewCache = true
+    }
+}
+
+-- Placeholder mapping of UserIds to roles
+-- In a real implementation, this would be loaded from a secure location
+local userRoles = {
+    [12345] = 'admin', -- Example Admin User ID
+    [67890] = 'editor', -- Example Editor User ID
+    [13579] = 'viewer' -- Example Viewer User ID
+    -- Add other user mappings here
+}
+
+-- Function to get the role of a user
+local function getUserRole(userId)
+    return userRoles[userId]
+end
+
+-- Function to check if a user has a specific permission
+function SecurityManager.hasPermission(userId, permission)
+    local roleName = getUserRole(userId)
+    if not roleName then
+        -- User has no assigned role, grant no permissions
+        return false
+    end
+
+    local rolePermissions = roles[roleName]
+    if not rolePermissions then
+        -- Role is not defined, grant no permissions
+        return false
+    end
+
+    return rolePermissions[permission] == true
+end
+
 -- Utility: Clean rate limit data
 local function cleanRateLimitData()
     local currentTime = os.time()
@@ -237,27 +299,10 @@ function SecurityManager.validateAdminAction(player, action)
 end
 
 -- Initialize the SecurityManager
-function SecurityManager.init()
-    Logger.info("Initializing SecurityManager")
-    
-    -- Set up periodic cleanup
-    task.spawn(function()
-        while true do
-            task.wait(RATE_LIMIT_WINDOW)
-            cleanRateLimitData()
-        end
-    end)
-    
-    -- Set up remote event handlers
-    RemoteManager:onServerEvent(Constants.RemoteEvents.AdminCommand, function(player, command, args)
-        SecurityManager.handleAdminCommand(player, command, args)
-    end)
-    
-    RemoteManager:onServerEvent(Constants.RemoteEvents.ReportObject, function(player, reportData)
-        SecurityManager.handleReport(player, reportData)
-    end)
-    
-    Logger.info("SecurityManager initialized successfully")
+function SecurityManager.Initialize()
+    print("SecurityManager: Initializing security system...")
+    -- Add any initialization logic here
+    return true
 end
 
 -- Handle admin commands

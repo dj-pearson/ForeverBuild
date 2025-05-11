@@ -27,7 +27,7 @@ function TutorialHandler.completeTutorial(player)
 end
 
 -- Initialize
-function TutorialHandler.init()
+function TutorialHandler.Initialize()
     -- Set up remote event handlers
     RemoteManager:onServerEvent(Constants.RemoteEvents.CompleteTutorial, function(player)
         TutorialHandler.completeTutorial(player)
@@ -36,6 +36,9 @@ function TutorialHandler.init()
     RemoteManager:setServerCallback(Constants.RemoteFunctions.GetTutorialStatus, function(player)
         return TutorialHandler.getTutorialStatus(player)
     end)
+    
+    print("TutorialHandler: Initialized successfully")
+    return true
 end
 
 return TutorialHandler 

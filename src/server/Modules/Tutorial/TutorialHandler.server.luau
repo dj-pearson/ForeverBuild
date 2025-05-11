@@ -1,24 +1,18 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
-local DataStoreManager = require(ServerScriptService.Server.Modules.Data.DataStoreManager)
 local Players = game:GetService("Players")
+
+-- Get the server module resolver
+local Server = require(ServerScriptService.server)
+local DataStoreManager = Server.getModule("Data.DataStoreManager")
+local remoteManager = Server.Remotes
 
 -- Load shared modules
 local Shared = require(ReplicatedStorage.Shared)
-local Constants = Shared.Constants
-local Types = Shared.Types
+local Constants = Shared.getType("Constants")
+local Types = Shared.getType("Types")
 
 local TutorialHandler = {}
-
--- Remote events
-local remotes = ReplicatedStorage:WaitForChild("Remotes")
-local getTutorialStatusEvent = Instance.new("RemoteFunction")
-getTutorialStatusEvent.Name = "GetTutorialStatus"
-getTutorialStatusEvent.Parent = remotes
-
-local completeTutorialEvent = Instance.new("RemoteEvent")
-completeTutorialEvent.Name = "CompleteTutorial"
-completeTutorialEvent.Parent = remotes
 
 -- Get tutorial status for a player
 function TutorialHandler.getTutorialStatus(player)
@@ -36,11 +30,11 @@ end
 -- Initialize
 function TutorialHandler.init()
     -- Set up remote event handlers
-    getTutorialStatusEvent.OnServerInvoke = function(player)
+    remoteManager:setServerCallback("GetTutorialStatus", function(player)
         return TutorialHandler.getTutorialStatus(player)
-    end
+    end)
     
-    completeTutorialEvent.OnServerEvent:Connect(function(player)
+    remoteManager:onServerEvent("CompleteTutorial", function(player)
         TutorialHandler.completeTutorial(player)
     end)
 end

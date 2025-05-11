@@ -6,13 +6,16 @@ local Shared = require(ReplicatedStorage.Shared)
 local Logger = require(ReplicatedStorage.Shared.Modules.Logger)
 local ModuleManager = require(ReplicatedStorage.Shared.Modules.ModuleManager)
 
+-- Create module manager instance
+local moduleManager = ModuleManager.new()
+
 -- Load client modules
 local ClientManager = require(script.Parent.Modules.ClientManager)
 local AdminCommandHandler = require(script.Parent.Modules.Admin.AdminCommandHandler)
-local ReportUI = require(script.Parent.Modules.UI.ReportUI)
+local ReportUI = require(script.Parent.Modules.Admin.ReportUI)
 local AdminReportUI = require(script.Parent.Modules.Admin.AdminReport)
 local ReportContextMenu = require(script.Parent.Modules.Admin.ReportContextMenu)
-local TutorialManager = require(script.Parent.Modules.UI.TutorialManager)
+local TutorialManager = require(script.Parent.Modules.TutorialManager)
 local InventoryUI = require(script.Parent.Modules.UI.InventoryUI)
 local MarketplaceUI = require(script.Parent.Modules.UI.MarketplaceUI)
 local DailyRewardsUI = require(script.Parent.Modules.UI.DailyRewardsUI)
@@ -29,53 +32,48 @@ local BuildingTemplateUI = require(script.Parent.Modules.UI.BuildingTemplateUI)
 local BuildingChallengeUI = require(script.Parent.Modules.UI.BuildingChallengeUI)
 
 -- Register modules with their dependencies
-ModuleManager.registerModule("ClientManager", ClientManager)
-ModuleManager.registerModule("AdminCommandHandler", AdminCommandHandler, { "ClientManager" })
-ModuleManager.registerModule("ReportUI", ReportUI, { "ClientManager" })
-ModuleManager.registerModule("AdminReportUI", AdminReportUI, { "ClientManager", "ReportUI" })
-ModuleManager.registerModule("ReportContextMenu", ReportContextMenu, { "ClientManager", "ReportUI" })
-ModuleManager.registerModule("TutorialManager", TutorialManager, { "ClientManager" })
-ModuleManager.registerModule("InventoryUI", InventoryUI, { "ClientManager" })
-ModuleManager.registerModule("MarketplaceUI", MarketplaceUI, { "ClientManager" })
-ModuleManager.registerModule("DailyRewardsUI", DailyRewardsUI, { "ClientManager" })
-ModuleManager.registerModule("ObjectInteractionManager", ObjectInteractionManager, { "ClientManager" })
-ModuleManager.registerModule("LeaderboardUI", LeaderboardUI, { "ClientManager" })
-ModuleManager.registerModule("AchievementUI", AchievementUI, { "ClientManager" })
-ModuleManager.registerModule("FriendsUI", FriendsUI, { "ClientManager" })
-ModuleManager.registerModule("SocialHubUI", SocialHubUI, { "ClientManager" })
-ModuleManager.registerModule("SocialInteractionUI", SocialInteractionUI, { "ClientManager" })
-ModuleManager.registerModule("PlayerProfileUI", PlayerProfileUI, { "ClientManager" })
-ModuleManager.registerModule("SocialMediaUI", SocialMediaUI, { "ClientManager" })
-ModuleManager.registerModule("BuildingToolsUI", BuildingToolsUI, { "ClientManager" })
-ModuleManager.registerModule("BuildingTemplateUI", BuildingTemplateUI, { "ClientManager" })
-ModuleManager.registerModule("BuildingChallengeUI", BuildingChallengeUI, { "ClientManager" })
+moduleManager:registerModule("ClientManager", ClientManager)
+moduleManager:registerModule("AdminCommandHandler", AdminCommandHandler, { "ClientManager" })
+moduleManager:registerModule("ReportUI", ReportUI, { "ClientManager" })
+moduleManager:registerModule("AdminReportUI", AdminReportUI, { "ClientManager", "ReportUI" })
+moduleManager:registerModule("ReportContextMenu", ReportContextMenu, { "ClientManager", "ReportUI" })
+moduleManager:registerModule("TutorialManager", TutorialManager, { "ClientManager" })
+moduleManager:registerModule("InventoryUI", InventoryUI, { "ClientManager" })
+moduleManager:registerModule("MarketplaceUI", MarketplaceUI, { "ClientManager" })
+moduleManager:registerModule("DailyRewardsUI", DailyRewardsUI, { "ClientManager" })
+moduleManager:registerModule("ObjectInteractionManager", ObjectInteractionManager, { "ClientManager" })
+moduleManager:registerModule("LeaderboardUI", LeaderboardUI, { "ClientManager" })
+moduleManager:registerModule("AchievementUI", AchievementUI, { "ClientManager" })
+moduleManager:registerModule("FriendsUI", FriendsUI, { "ClientManager" })
+moduleManager:registerModule("SocialHubUI", SocialHubUI, { "ClientManager" })
+moduleManager:registerModule("SocialInteractionUI", SocialInteractionUI, { "ClientManager" })
+moduleManager:registerModule("PlayerProfileUI", PlayerProfileUI, { "ClientManager" })
+moduleManager:registerModule("SocialMediaUI", SocialMediaUI, { "ClientManager" })
+moduleManager:registerModule("BuildingToolsUI", BuildingToolsUI, { "ClientManager" })
+moduleManager:registerModule("BuildingTemplateUI", BuildingTemplateUI, { "ClientManager" })
+moduleManager:registerModule("BuildingChallengeUI", BuildingChallengeUI, { "ClientManager" })
 
 -- Initialize all modules
-local success = ModuleManager.initializeAll()
+local success = moduleManager:initializeAll()
 if not success then
+    local moduleStatuses = moduleManager:getAllModuleStatuses()
+    local failedModules = {}
+    
+    for name, status in pairs(moduleStatuses) do
+        if status.status == "ERROR" then
+            table.insert(failedModules, {
+                name = name,
+                error = status.error
+            })
+        end
+    end
+    
     Logger.fatal("Client initialization failed", {
-        moduleStatuses = ModuleManager.getAllModuleStatuses()
+        failedModules = failedModules
     })
     error("Client initialization failed - check logs for details")
 end
 
 Logger.info("Client initialized successfully", {
-    moduleStatuses = ModuleManager.getAllModuleStatuses()
-})
-
--- Initialize UI modules
-InventoryUI.init()
-MarketplaceUI.init()
-DailyRewardsUI.init()
-ObjectInteractionManager.init()
-LeaderboardUI.init()
-AchievementUI.init()
-TutorialManager.init()
-FriendsUI.init()
-SocialHubUI.init()
-SocialInteractionUI.init()
-PlayerProfileUI.init()
-SocialMediaUI.init()
-BuildingToolsUI.init()
-BuildingTemplateUI.init()
-BuildingChallengeUI.init() 
+    moduleStatuses = moduleManager:getAllModuleStatuses()
+}) 

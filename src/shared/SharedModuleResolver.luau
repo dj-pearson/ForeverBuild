@@ -3,12 +3,23 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SharedModuleResolver = {}
 SharedModuleResolver.__index = SharedModuleResolver
 
+-- Create necessary folders if they don't exist
+local function ensureFolder(parent, name)
+    local folder = parent:FindFirstChild(name)
+    if not folder then
+        folder = Instance.new("Folder")
+        folder.Name = name
+        folder.Parent = parent
+    end
+    return folder
+end
+
 -- Initialize the resolver
 function SharedModuleResolver.new()
     local self = setmetatable({}, SharedModuleResolver)
-    self.sharedFolder = ReplicatedStorage:WaitForChild("Shared")
-    self.modulesFolder = self.sharedFolder:WaitForChild("Modules")
-    self.typesFolder = self.sharedFolder:WaitForChild("Types")
+    self.sharedFolder = ensureFolder(ReplicatedStorage, "Shared")
+    self.modulesFolder = ensureFolder(self.sharedFolder, "Modules")
+    self.typesFolder = ensureFolder(self.sharedFolder, "Types")
     return self
 end
 

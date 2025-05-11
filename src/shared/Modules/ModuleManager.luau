@@ -1,184 +1,163 @@
 local Logger = require(script.Parent.Logger)
 
 local ModuleManager = {}
+ModuleManager.__index = ModuleManager
 
--- Module states
-local ModuleState = {
-    UNINITIALIZED = "UNINITIALIZED",
-    INITIALIZING = "INITIALIZING",
-    INITIALIZED = "INITIALIZED",
-    FAILED = "FAILED"
+-- Module status constants
+local ModuleStatus = {
+    NOT_LOADED = "NOT_LOADED",
+    LOADING = "LOADING",
+    LOADED = "LOADED",
+    ERROR = "ERROR"
 }
 
--- Module registry
-local modules = {}
-local initializationOrder = {}
-local initializationStatus = {}
+-- Initialize the ModuleManager
+function ModuleManager.new()
+    local self = setmetatable({}, ModuleManager)
+    self.modules = {}
+    self.moduleStatuses = {}
+    self.moduleErrors = {}
+    return self
+end
 
 -- Register a module with its dependencies
-function ModuleManager.registerModule(name, module, dependencies)
-    if modules[name] then
-        Logger.error("Module already registered", { moduleName = name })
+function ModuleManager:registerModule(name, module, dependencies)
+    if not name or not module then
+        warn("ModuleManager: Invalid module registration - name and module are required")
         return false
     end
-    
-    modules[name] = {
-        instance = module,
+
+    self.modules[name] = {
+        module = module,
         dependencies = dependencies or {},
-        state = ModuleState.UNINITIALIZED
+        status = ModuleStatus.NOT_LOADED
     }
-    
-    Logger.info("Module registered", { moduleName = name, dependencies = dependencies })
     return true
 end
 
--- Check for circular dependencies
-local function hasCircularDependency(moduleName, visited, recursionStack)
-    visited[moduleName] = true
-    recursionStack[moduleName] = true
-    
-    local module = modules[moduleName]
-    if not module then return false end
-    
-    for _, depName in ipairs(module.dependencies) do
-        if not visited[depName] then
-            if hasCircularDependency(depName, visited, recursionStack) then
-                return true
-            end
-        elseif recursionStack[depName] then
-            return true
-        end
-    end
-    
-    recursionStack[moduleName] = false
-    return false
+-- Get a module's status
+function ModuleManager:getModuleStatus(name)
+    return self.modules[name] and self.modules[name].status or ModuleStatus.NOT_LOADED
 end
 
--- Sort modules by dependencies
-local function sortModules()
-    local visited = {}
-    local temp = {}
-    local order = {}
-    
-    -- Check for circular dependencies
-    for moduleName, _ in pairs(modules) do
-        if hasCircularDependency(moduleName, {}, {}) then
-            Logger.error("Circular dependency detected", { moduleName = moduleName })
+-- Get a module's error if any
+function ModuleManager:getModuleError(name)
+    return self.moduleErrors[name]
+end
+
+-- Get all module statuses
+function ModuleManager:getAllModuleStatuses()
+    local statuses = {}
+    for name, moduleData in pairs(self.modules) do
+        statuses[name] = {
+            status = moduleData.status,
+            error = self.moduleErrors[name]
+        }
+    end
+    return statuses
+end
+
+-- Check if a module's dependencies are loaded
+local function checkDependencies(moduleData, moduleStatuses)
+    for _, depName in ipairs(moduleData.dependencies) do
+        local depStatus = moduleStatuses[depName]
+        if not depStatus or depStatus ~= ModuleStatus.LOADED then
             return false
         end
     end
-    
-    -- Topological sort
-    local function visit(moduleName)
-        if temp[moduleName] then
-            return false
-        end
-        if visited[moduleName] then
-            return true
-        end
-        
-        temp[moduleName] = true
-        
-        local module = modules[moduleName]
-        for _, depName in ipairs(module.dependencies) do
-            if not visit(depName) then
-                return false
-            end
-        end
-        
-        temp[moduleName] = false
-        visited[moduleName] = true
-        table.insert(order, 1, moduleName)
-        return true
-    end
-    
-    for moduleName, _ in pairs(modules) do
-        if not visit(moduleName) then
-            return false
-        end
-    end
-    
-    initializationOrder = order
     return true
 end
 
 -- Initialize a single module
-local function initializeModule(moduleName)
-    local module = modules[moduleName]
-    if not module then
-        Logger.error("Module not found", { moduleName = moduleName })
+function ModuleManager:initializeModule(name)
+    local moduleData = self.modules[name]
+    if not moduleData then
+        warn("ModuleManager: Module not found:", name)
         return false
     end
-    
-    if module.state == ModuleState.INITIALIZED then
+
+    -- Skip if already loaded or loading
+    if moduleData.status == ModuleStatus.LOADED then
         return true
     end
-    
-    if module.state == ModuleState.INITIALIZING then
-        Logger.error("Circular initialization detected", { moduleName = moduleName })
+    if moduleData.status == ModuleStatus.LOADING then
+        warn("ModuleManager: Circular dependency detected for module:", name)
         return false
     end
-    
-    module.state = ModuleState.INITIALIZING
-    Logger.info("Initializing module", { moduleName = moduleName })
-    
-    local success, result = pcall(function()
-        if type(module.instance.init) == "function" then
-            return module.instance.init()
+
+    -- Check dependencies
+    if not checkDependencies(moduleData, self.moduleStatuses) then
+        warn("ModuleManager: Dependencies not met for module:", name)
+        return false
+    end
+
+    -- Mark as loading
+    moduleData.status = ModuleStatus.LOADING
+    self.moduleStatuses[name] = ModuleStatus.LOADING
+
+    -- Initialize the module
+    local success, err = pcall(function()
+        if type(moduleData.module.init) == "function" then
+            moduleData.module.init()
         end
-        return true
     end)
-    
+
     if success then
-        module.state = ModuleState.INITIALIZED
-        Logger.info("Module initialized successfully", { moduleName = moduleName })
+        moduleData.status = ModuleStatus.LOADED
+        self.moduleStatuses[name] = ModuleStatus.LOADED
         return true
     else
-        module.state = ModuleState.FAILED
-        Logger.error("Module initialization failed", {
-            moduleName = moduleName,
-            error = result
-        })
+        moduleData.status = ModuleStatus.ERROR
+        self.moduleStatuses[name] = ModuleStatus.ERROR
+        self.moduleErrors[name] = err
+        warn("ModuleManager: Failed to initialize module:", name, "- Error:", err)
         return false
     end
 end
 
--- Initialize all modules in the correct order
-function ModuleManager.initializeAll()
-    if not sortModules() then
-        Logger.error("Failed to sort modules")
-        return false
-    end
-    
-    Logger.info("Starting module initialization", { order = initializationOrder })
-    
-    for _, moduleName in ipairs(initializationOrder) do
-        if not initializeModule(moduleName) then
-            Logger.error("Module initialization failed", { moduleName = moduleName })
-            return false
+-- Initialize all modules
+function ModuleManager:initializeAll()
+    local success = true
+    local maxAttempts = #self.modules
+    local attempts = 0
+
+    while attempts < maxAttempts do
+        local allLoaded = true
+        local anyProgress = false
+
+        for name, moduleData in pairs(self.modules) do
+            if moduleData.status ~= ModuleStatus.LOADED then
+                allLoaded = false
+                if self:initializeModule(name) then
+                    anyProgress = true
+                end
+            end
         end
+
+        if allLoaded then
+            return true
+        end
+
+        if not anyProgress then
+            -- No progress made in this iteration, some modules must have failed
+            success = false
+            break
+        end
+
+        attempts += 1
     end
-    
-    Logger.info("All modules initialized successfully")
-    return true
+
+    return success
 end
 
--- Get module initialization status
-function ModuleManager.getModuleStatus(moduleName)
-    local module = modules[moduleName]
-    if not module then
+-- Get a module by name
+function ModuleManager:getModule(name)
+    local moduleData = self.modules[name]
+    if not moduleData then
+        warn("ModuleManager: Module not found:", name)
         return nil
     end
-    return module.state
-end
-
--- Get all module statuses
-function ModuleManager.getAllModuleStatuses()
-    local statuses = {}
-    for name, module in pairs(modules) do
-        statuses[name] = module.state
-    end
-    return statuses
+    return moduleData.module
 end
 
 return ModuleManager 

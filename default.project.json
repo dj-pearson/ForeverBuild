@@ -11,6 +11,18 @@
         },
         "Types": {
           "$path": "src/shared/Shared"
+        },
+        "RemoteManager": {
+          "$path": "src/shared/RemoteManager.luau"
+        },
+        "SharedModuleResolver": {
+          "$path": "src/shared/SharedModuleResolver.luau"
+        },
+        "RemoteEventManager": {
+          "$path": "src/shared/RemoteEventManager.luau"
+        },
+        "AchievementManager": {
+          "$path": "src/shared/AchievementManager.luau"
         }
       },
       "Remotes": {
@@ -20,7 +32,10 @@
     "ServerScriptService": {
       "$className": "ServerScriptService",
       "server": {
-        "$path": "src/server"
+        "$path": "src/server",
+        "Modules": {
+          "$path": "src/server/Modules"
+        }
       }
     },
     "StarterGui": {
@@ -34,7 +49,10 @@
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
         "client": {
-          "$path": "src/client"
+          "$path": "src/client",
+          "Modules": {
+            "$path": "src/client/Modules"
+          }
         }
       }
     }

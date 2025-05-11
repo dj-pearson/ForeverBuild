@@ -1,0 +1,141 @@
+# ForeverBuild Roblox Issues Tracking Document
+Last updated: May 10, 2025
+
+This document lists all identified issues in our Roblox project, categorized by priority. 
+Each issue has a tracking ID, status, and assigned priority level.
+
+## Issue Status Legend
+- [ ] = Not started
+- [P] = In progress
+- [X] = Completed
+- [D] = Deferred
+
+## Priority Levels
+- P0: Critical (Game-breaking issues that prevent the game from running)
+- P1: High (Significant issues that impact core functionality)
+- P2: Medium (Issues that affect gameplay but have workarounds)
+- P3: Low (Minor issues, quality of life improvements)
+
+---
+
+## P0: Critical Issues
+
+### 🔄 Path Structure and Module Access Issues
+
+- [ ] **P0-001**: Structure mismatch between `shared` folder and `ReplicatedStorage.Shared`
+  - Multiple "Shared is not a valid member of ReplicatedStorage" errors
+  - Affects all UI scripts
+  - Files: Multiple UI files in Players.Xdjpearsonx.PlayerGui.server
+
+- [ ] **P0-002**: Server module access issues
+  - "Server is not a valid member of ServerScriptService"
+  - File: ServerScriptService.server.Modules.Tutorial.TutorialHandler:3
+
+- [ ] **P0-003**: Modules folder not accessible
+  - "Modules is not a valid member of ServerScriptService"
+  - File: ServerScriptService.server:14
+
+- [ ] **P0-004**: Missing Remotes folder in ReplicatedStorage
+  - Multiple "Infinite yield possible on 'ReplicatedStorage:WaitForChild("Remotes")'" errors
+  - Affects client modules like ReportUI, AdminReport, AdminCommandHandler
+
+### 🔄 DataStore and Module Resolution Issues
+
+- [ ] **P0-005**: Core DataStoreManager module not found
+  - "Module not found: DataStoreManager"
+  - Affects DataStoreManagerPro plugin functionality
+
+---
+
+## P1: High Priority Issues
+
+### 🔄 Player Module Access Issues
+
+- [ ] **P1-001**: ReportUI module not found
+  - "ReportUI is not a valid member of Folder 'Players.Xdjpearsonx.PlayerScripts.client.Modules.Admin'"
+  - File: ReportContextMenu:8
+
+### 🔄 Invalid Require Calls
+
+- [ ] **P1-002**: Invalid require calls in shared scripts
+  - "Attempted to call require with invalid argument(s)"
+  - File: ReplicatedStorage.shared:4
+
+- [ ] **P1-003**: Module load errors cascading to other scripts
+  - "Requested module experienced an error while loading"
+  - Files: TutorialManager:6, client:5
+
+---
+
+## P2: Medium Priority Issues
+
+### 🔄 DataStoreManagerPro Issues
+
+- [ ] **P2-001**: Missing modules in DataStoreManagerPro plugin
+  - Multiple "Failed to resolve module" errors
+  - Modules affected: CacheManager, SchemaManager, SchemaValidator, SessionManager, etc.
+
+- [ ] **P2-002**: UI Component access errors in DataStoreManagerPro
+  - Multiple "X is not a valid member of Folder/Script" errors
+  - Components: APIIntegration, AccessControl, SchemaManager, StyleGuide, etc.
+
+- [ ] **P2-003**: Invalid callback in DataExplorer
+  - "Attempt to connect failed: Passed value is not a function"
+  - File: DataStoreManagerPro.src.server.DataExplorer:472
+
+---
+
+## P3: Low Priority Issues
+
+### 🔄 DataStore Client Access Issues
+
+- [ ] **P3-001**: Client attempting to access DataStore
+  - "DataStore can't be accessed from client"
+  - File: DataStoreManagerPro.src.server.SessionManager:27
+
+### 🔄 Init Script Issues
+
+- [ ] **P3-002**: Missing init.server script
+  - "init.server is not a valid member of Script"
+  - File: DataStoreManagerPro.src
+
+### 🔄 Nil Value Calls
+
+- [ ] **P3-003**: Attempting to call nil values
+  - "attempt to call a nil value"
+  - File: DataStoreManagerPro.src.server.DataExplorer:549
+
+---
+
+## Completion Tracking
+
+**Total Issues**: 14
+- P0 Critical: 5
+- P1 High: 3
+- P2 Medium: 3
+- P3 Low: 3
+
+**Progress**:
+- Completed: 0/14 (0%)
+- In Progress: 0/14 (0%)
+- Not Started: 14/14 (100%)
+- Deferred: 0/14 (0%)
+
+---
+
+## Notes and Guidelines
+
+### Key Problem Categories:
+1. Path structure mismatches between code and project.json
+2. Missing required folders (Remotes, Shared)
+3. Missing modules causing cascading failures
+4. External plugin (DataStoreManagerPro) integration issues
+
+### Recommended Solution Approach:
+1. First fix P0 issues related to path structure and module access
+2. Create missing folders and ensure correct paths in project.json
+3. Fix module reference issues
+4. Address DataStoreManagerPro integration
+5. Test incremental fixes by category to avoid introducing new issues
+
+### Review this document after fixing each category of issues and update status accordingly.

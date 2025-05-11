@@ -1,4 +1,7 @@
-﻿local ServerScriptService = game:GetService("ServerScriptService")
+-- DataStoreManagerPro init.server.luau
+-- This script initializes the DataStoreManagerPro plugin on the server
+
+local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Create necessary folders if they don't exist
@@ -103,4 +106,4 @@ end
 return {
     Initialize = initialize,
     ModuleResolver = moduleResolver
-}
+} 

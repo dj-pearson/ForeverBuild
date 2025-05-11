@@ -17,7 +17,15 @@ end
 -- Initialize the RemoteManager
 function RemoteManager.new()
     local self = setmetatable({}, RemoteManager)
-    self.remotesFolder = ensureRemotesFolder()
+    
+    -- Ensure Remotes folder exists
+    if not ReplicatedStorage:FindFirstChild("Remotes") then
+        local remotesFolder = Instance.new("Folder")
+        remotesFolder.Name = "Remotes"
+        remotesFolder.Parent = ReplicatedStorage
+    end
+    
+    self.remotes = ReplicatedStorage:WaitForChild("Remotes")
     self.remoteEvents = {}
     self.remoteFunctions = {}
     return self
@@ -26,11 +34,11 @@ end
 -- Create or get a RemoteEvent
 function RemoteManager:getRemoteEvent(name)
     if not self.remoteEvents[name] then
-        local remoteEvent = self.remotesFolder:FindFirstChild(name)
+        local remoteEvent = self.remotes:FindFirstChild(name)
         if not remoteEvent then
             remoteEvent = Instance.new("RemoteEvent")
             remoteEvent.Name = name
-            remoteEvent.Parent = self.remotesFolder
+            remoteEvent.Parent = self.remotes
         end
         self.remoteEvents[name] = remoteEvent
     end
@@ -40,11 +48,11 @@ end
 -- Create or get a RemoteFunction
 function RemoteManager:getRemoteFunction(name)
     if not self.remoteFunctions[name] then
-        local remoteFunction = self.remotesFolder:FindFirstChild(name)
+        local remoteFunction = self.remotes:FindFirstChild(name)
         if not remoteFunction then
             remoteFunction = Instance.new("RemoteFunction")
             remoteFunction.Name = name
-            remoteFunction.Parent = self.remotesFolder
+            remoteFunction.Parent = self.remotes
         end
         self.remoteFunctions[name] = remoteFunction
     end
@@ -108,7 +116,7 @@ end
 -- Get all remote events
 function RemoteManager:getAllRemoteEvents()
     local events = {}
-    for _, child in ipairs(self.remotesFolder:GetChildren()) do
+    for _, child in ipairs(self.remotes:GetChildren()) do
         if child:IsA("RemoteEvent") then
             events[child.Name] = child
         end
@@ -119,7 +127,7 @@ end
 -- Get all remote functions
 function RemoteManager:getAllRemoteFunctions()
     local functions = {}
-    for _, child in ipairs(self.remotesFolder:GetChildren()) do
+    for _, child in ipairs(self.remotes:GetChildren()) do
         if child:IsA("RemoteFunction") then
             functions[child.Name] = child
         end

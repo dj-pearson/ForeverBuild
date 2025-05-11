@@ -1,5 +1,5 @@
 # ForeverBuild Roblox Issues Tracking Document
-Last updated: May 10, 2025
+Last updated: May 15, 2025
 
 This document lists all identified issues in our Roblox project, categorized by priority. 
 Each issue has a tracking ID, status, and assigned priority level.
@@ -41,8 +41,9 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### 🔄 DataStore and Module Resolution Issues
 
-- [ ] **P0-005**: Core DataStoreManager module not found
+- [P] **P0-005**: Core DataStoreManager module not found
   - "Module not found: DataStoreManager"
+  - File moved to src/server directory but still experiencing issues in DataStoreManagerPro plugin
   - Affects DataStoreManagerPro plugin functionality
 
 ---
@@ -65,6 +66,17 @@ Each issue has a tracking ID, status, and assigned priority level.
   - "Requested module experienced an error while loading"
   - Files: TutorialManager:6, client:5
 
+### 🔄 Missing Module Errors
+
+- [ ] **P1-004**: SharedModuleResolver not found in ReplicatedStorage
+  - "SharedModuleResolver is not a valid member of ReplicatedStorage"
+  - File: ReplicatedStorage.Shared:20
+  - Cascades to multiple other module errors
+
+- [X] **P1-005**: AchievementManager missing variable definitions
+  - Fixed by properly defining required variables
+  - Removing unused imports and implementing necessary caching
+
 ---
 
 ## P2: Medium Priority Issues
@@ -82,6 +94,18 @@ Each issue has a tracking ID, status, and assigned priority level.
 - [ ] **P2-003**: Invalid callback in DataExplorer
   - "Attempt to connect failed: Passed value is not a function"
   - File: DataStoreManagerPro.src.server.DataExplorer:472
+
+### 🔄 UI Module Dependencies
+
+- [ ] **P2-004**: Constants module missing in UI scripts 
+  - Multiple "Constants is not a valid member of ModuleScript 'ReplicatedStorage.Shared'" errors
+  - Affects nearly all UI scripts in PlayerGui
+  
+- [X] **P2-005**: BuildingChallengeManager code structure issues
+  - Fixed duplicate if blocks by refactoring with a `shouldAward` variable
+  - Fixed empty if block implementation
+  - Properly prefixed unused parameters with underscore
+  - Commented out unused imports
 
 ---
 
@@ -105,21 +129,27 @@ Each issue has a tracking ID, status, and assigned priority level.
   - "attempt to call a nil value"
   - File: DataStoreManagerPro.src.server.DataExplorer:549
 
+### 🔄 ModuleManager Dependencies
+
+- [ ] **P3-004**: Missing ModuleManager reference
+  - "ModuleManager is not a valid member of ModuleScript 'ReplicatedStorage.Shared'"
+  - File: Players.Xdjpearsonx.PlayerGui.Gui:4
+
 ---
 
 ## Completion Tracking
 
-**Total Issues**: 14
+**Total Issues**: 17
 - P0 Critical: 5
-- P1 High: 3
-- P2 Medium: 3
-- P3 Low: 3
+- P1 High: 5
+- P2 Medium: 5
+- P3 Low: 4
 
 **Progress**:
-- Completed: 0/14 (0%)
-- In Progress: 0/14 (0%)
-- Not Started: 14/14 (100%)
-- Deferred: 0/14 (0%)
+- Completed: 2/17 (12%)
+- In Progress: 1/17 (6%)
+- Not Started: 14/17 (82%)
+- Deferred: 0/17 (0%)
 
 ---
 
@@ -127,9 +157,16 @@ Each issue has a tracking ID, status, and assigned priority level.
 
 ### Key Problem Categories:
 1. Path structure mismatches between code and project.json
-2. Missing required folders (Remotes, Shared)
+2. Missing required folders (Remotes, Shared) and modules (Constants, SharedModuleResolver)
 3. Missing modules causing cascading failures
 4. External plugin (DataStoreManagerPro) integration issues
+
+### Resolved Issues:
+1. ✅ AchievementManager.luau missing variables and undefined references
+2. ✅ BuildingChallengeManager.luau code structure issues
+
+### In Progress:
+1. 🔄 DataStoreManager.server.lua has been moved to the correct location but still has integration issues with the DataStoreManagerPro plugin
 
 ### Recommended Solution Approach:
 1. First fix P0 issues related to path structure and module access

@@ -1,11 +1,20 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
--- Get the remote manager
+-- Get the shared modules
 local Shared = require(ReplicatedStorage.Shared)
-local remoteManager = Shared.Remotes
+local RemoteManager = Shared.RemoteManager
+local Logger = Shared.Modules.Logger
 
 local ReportUI = {}
+ReportUI.__index = ReportUI
+
+function ReportUI.new()
+    local self = setmetatable({}, ReportUI)
+    self.remoteManager = RemoteManager.new()
+    self.logger = Logger.new("ReportUI")
+    return self
+end
 
 -- Create the report menu
 local function createReportMenu()
@@ -68,7 +77,7 @@ local function createReportMenu()
 end
 
 -- Show the report menu
-function ReportUI.showReportMenu(object)
+function ReportUI:showReportMenu(object)
     local reportMenu = createReportMenu()
     local frame = reportMenu.ReportFrame
     frame.Visible = true
@@ -81,7 +90,7 @@ function ReportUI.showReportMenu(object)
         local reason = frame.ReasonInput.Text
         if reason and reason ~= "" then
             -- Send report to server
-            remoteManager:fireRemote("SubmitReport", {
+            self.remoteManager:fireRemote("SubmitReport", {
                 objectId = object:GetFullName(),
                 reason = reason,
                 timestamp = os.time()

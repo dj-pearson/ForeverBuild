@@ -1,6 +1,11 @@
 --luau
 -- DataStore Plugin/SessionManager.luau
 
+-- Ensure this module can only run on the server
+if not game:GetService("RunService"):IsServer() then
+    error("SessionManager can only be used on the server")
+end
+
 local SessionManager = {}
 
 local DataStoreService = game:GetService("DataStoreService")

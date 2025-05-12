@@ -22,28 +22,12 @@ end
 -- Initialize core modules
 local function initializeCoreModules()
     -- Load core modules
-    local dataStoreManager = safeRequire(script.Parent.Modules.Data.DataStoreManager)
+    local dataStoreManager = safeRequire(script.Parent.DataStoreManager)
     if not dataStoreManager then return false end
-    
-    local securityManager = safeRequire(script.Parent.Modules.Security.SecurityManager)
-    if not securityManager then return false end
-    
-    local tutorialHandler = safeRequire(script.Parent.Modules.Tutorial.TutorialHandler)
-    if not tutorialHandler then return false end
     
     -- Initialize modules in correct order
     if not dataStoreManager.Initialize() then
         Logger:error("Failed to initialize DataStoreManager")
-        return false
-    end
-    
-    if not securityManager.Initialize() then
-        Logger:error("Failed to initialize SecurityManager")
-        return false
-    end
-    
-    if not tutorialHandler.Initialize() then
-        Logger:error("Failed to initialize TutorialHandler")
         return false
     end
     
@@ -52,13 +36,6 @@ end
 
 -- Main initialization
 local success, result = pcall(function()
-    -- Create necessary folders
-    if not script.Parent:FindFirstChild("Modules") then
-        local modules = Instance.new("Folder")
-        modules.Name = "Modules"
-        modules.Parent = script.Parent
-    end
-    
     -- Initialize modules
     if not initializeCoreModules() then
         error("Failed to initialize core modules")

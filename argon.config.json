@@ -1,0 +1,11 @@
+{
+    "projectFile": "default.project.json",
+    "includePath": ["src"],
+    "rojo": {
+        "port": 34872
+    },
+    "compiler": {
+        "type": "rbxts",
+        "config": "tsconfig.json"
+    }
+} 

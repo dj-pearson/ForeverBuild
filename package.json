@@ -1,0 +1,29 @@
+{
+  "name": "foreverbuild",
+  "version": "1.0.0",
+  "description": "A continuously growing Roblox world inspired by the Million Dollar Homepage, allowing players to purchase and place objects on an infinite map.",
+  "main": "index.js",
+  "scripts": {
+    "build": "rbxtsc",
+    "watch": "rbxtsc -w",
+    "dev": "rojo serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dj-pearson/ForeverBuild.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dj-pearson/ForeverBuild/issues"
+  },
+  "homepage": "https://github.com/dj-pearson/ForeverBuild#readme",
+  "devDependencies": {
+    "@rbxts/compiler-types": "^1.3.3",
+    "@rbxts/types": "^1.0.852",
+    "roblox-ts": "^2.0.0"
+  }
+}

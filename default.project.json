@@ -29,5 +29,13 @@
         }
       }
     }
-  }
+  },
+  "servePort": 34872,
+  "globIgnorePaths": [
+    "**/*.spec.lua",
+    "**/*.test.lua",
+    "**/node_modules/**",
+    "**/.git/**"
+  ],
+  "emitLegacyScripts": false
 }

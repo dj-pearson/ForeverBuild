@@ -20,7 +20,7 @@
         "$path": "src/StarterGui"
       }
     },
-    "StarterPlayer": {
+    "StarterPlayerScripts": {
       "$className": "StarterPlayerScripts",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",

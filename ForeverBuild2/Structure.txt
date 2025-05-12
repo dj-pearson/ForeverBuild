@@ -1,0 +1,412 @@
+  15:02:32.621  > -- WorkspaceTreeViewer.lua
+-- Run this in the Command Bar to see your workspace structure
+
+local function getObjectIcon(object)
+    if object:IsA("Folder") then
+        return "📁"
+    elseif object:IsA("Model") then
+        return "📋"
+    elseif object:IsA("Part") then
+        return "🧊"
+    elseif object:IsA("UnionOperation") then
+        return "🔗"
+    elseif object:IsA("Script") then
+        return "📝"
+    elseif object:IsA("LocalScript") then
+        return "📜"
+    elseif object:IsA("PointLight") then
+        return "💡"
+    elseif object:IsA("Camera") then
+        return "📷"
+    elseif object:IsA("SpawnLocation") then
+        return "🏁"
+    else
+        return "❓"
+    end
+end
+
+local function printTree(object, depth, isLast, prefix)
+    depth = depth or 0
+    prefix = prefix or ""
+    
+    -- Create the tree structure
+    local connector = isLast and "└─ " or "├─ "
+    local nextPrefix = prefix .. (isLast and "   " or "│  ")
+    
+    -- Get object info
+    local icon = getObjectIcon(object)
+    local info = string.format("%s (%s)", object.Name, object.ClassName)
+    
+    -- Add attribute info if exists
+    local attributes = object:GetAttributes()
+    local attrCount = 0
+    local attrStr = ""
+    
+    for key, value in pairs(attributes) do
+        attrCount = attrCount + 1
+        if attrCount == 1 then
+            attrStr = string.format(" [%s=%s", key, tostring(value))
+        else
+            attrStr = attrStr .. string.format(", %s=%s", key, tostring(value))
+        end
+    end
+    
+    if attrCount > 0 then
+        attrStr = attrStr .. "]"
+        info = info .. attrStr
+    end
+    
+    -- Print the current object
+    print(prefix .. connector .. icon .. " " .. info)
+    
+    -- Get children and sort them (Folders first, then alphabetically)
+    local children = object:GetChildren()
+    table.sort(children, function(a, b)
+        if a:IsA("Folder") and not b:IsA("Folder") then
+            return true
+        elseif not a:IsA("Folder") and b:IsA("Folder") then
+            return false
+        else
+            return a.Name < b.Name
+        end
+    end)
+    
+    -- Print children
+    for i, child in ipairs(children) do
+        local isLastChild = (i == #children)
+        printTree(child, depth + 1, isLastChild, nextPrefix)
+    end
+end
+
+-- Add a collapsible version for large structures
+local function printTreeCollapsible(object, depth, isLast, prefix, maxDepth)
+    depth = depth or 0
+    maxDepth = maxDepth or 3  -- Default max depth
+    prefix = prefix or ""
+    
+    if depth > maxDepth then
+        return
+    end
+    
+    -- Same tree printing logic as above
+    local connector = isLast and "└─ " or "├─ "
+    local nextPrefix = prefix .. (isLast and "   " or "│  ")
+    
+    local icon = getObjectIcon(object)
+    local info = string.format("%s (%s)", object.Name, object.ClassName)
+    
+    local attributes = object:GetAttributes()
+    local attrCount = 0
+    local attrStr = ""
+    
+    for key, value in pairs(attributes) do
+        attrCount = attrCount + 1
+        if attrCount == 1 then
+            attrStr = string.format(" [%s=%s", key, tostring(value))
+        else
+            attrStr = attrStr .. string.format(", %s=%s", key, tostring(value))
+        end
+    end
+    
+    if attrCount > 0 then
+        attrStr = attrStr .. "]"
+        info = info .. attrStr
+    end
+    
+    print(prefix .. connector .. icon .. " " .. info)
+    
+    local children = object:GetChildren()
+    table.sort(children, function(a, b)
+        if a:IsA("Folder") and not b:IsA("Folder") then
+            return true
+        elseif not a:IsA("Folder") and b:IsA("Folder") then
+            return false
+        else
+            return a.Name < b.Name
+        end
+    end)
+    
+    -- Show truncation if we've hit max depth and there are children
+    if depth == maxDepth and #children > 0 then
+        print(nextPrefix .. "└─ " .. "📂 ... (" .. #children .. " more items)")
+        return
+    end
+    
+    for i, child in ipairs(children) do
+        local isLastChild = (i == #children)
+        printTreeCollapsible(child, depth + 1, isLastChild, nextPrefix, maxDepth)
+    end
+end
+
+-- Statistics function
+local function getWorkspaceStats()
+    local stats = {
+        totalModels = 0,
+        totalParts = 0,
+        totalFolders = 0,
+        totalScripts = 0,
+        totalOthers = 0
+    }
+    
+    local function countObjects(parent)
+        for _, child in ipairs(parent:GetChildren()) do
+            if child:IsA("Model") then
+                stats.totalModels = stats.totalModels + 1
+            elseif child:IsA("BasePart") then
+                stats.totalParts = stats.totalParts + 1
+            elseif child:IsA("Folder") then
+                stats.totalFolders = stats.totalFolders + 1
+            elseif child:IsA("BaseScript") then
+                stats.totalScripts = stats.totalScripts + 1
+            else
+                stats.totalOthers = stats.totalOthers + 1
+            end
+            countObjects(child)
+        end
+    end
+    
+    countObjects(workspace)
+    return stats
+end
+
+-- Main execution
+print("=== WORKSPACE STRUCTURE ===")
+print("🌎 " .. workspace.Name .. " (Workspace)")
+print("│")
+
+local children = workspace:GetChildren()
+for i, child in ipairs(children) do
+    local isLast = (i == #children)
+    printTree(child, 1, isLast, "")
+end
+
+print("\n=== WORKSPACE STATISTICS ===")
+local stats = getWorkspaceStats()
+print("📁 Folders: " .. stats.totalFolders)
+print("📋 Models: " .. stats.totalModels)
+print("🧊 Parts: " .. stats.totalParts)
+print("📝 Scripts: " .. stats.totalScripts)
+print("❓ Others: " .. stats.totalOthers)
+print("📊 Total Objects: " .. (stats.totalFolders + stats.totalModels + stats.totalParts + stats.totalScripts + stats.totalOthers))
+
+-- Alternative collapsible view for large workspaces
+print("\n=== COLLAPSED VIEW (Max Depth: 3) ===")
+print("🌎 " .. workspace.Name .. " (Workspace)")
+print("│")
+
+for i, child in ipairs(children) do
+    local isLast = (i == #children)
+    printTreeCollapsible(child, 1, isLast, "", 3)
+end  -  Studio
+  15:02:32.629  === WORKSPACE STRUCTURE ===  -  Edit
+  15:02:32.629  🌎 Workspace (Workspace)  -  Edit
+  15:02:32.629  │  -  Edit
+  15:02:32.629  ├─ ❓ Terrain (Terrain)  -  Edit
+  15:02:32.629  ├─ 📷 Camera (Camera)  -  Edit
+  15:02:32.629  ├─ 📁 Items (Folder)  -  Edit
+  15:02:32.630  │  ├─ 📁 Basic (Folder)  -  Edit
+  15:02:32.630  │  │  ├─ 📁 Glow (Folder)  -  Edit
+  15:02:32.630  │  │  │  ├─ 📋 Glow_Blue_Cube (Model) [GlowColor=Blue]  -  Edit
+  15:02:32.630  │  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.630  │  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.630  │  │  │  ├─ 📋 Glow_Green_Cube (Model) [GlowColor=Green]  -  Edit
+  15:02:32.630  │  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.631  │  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.631  │  │  │  ├─ 📋 Glow_Purple_Cube (Model) [GlowColor=Purple]  -  Edit
+  15:02:32.631  │  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.631  │  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.631  │  │  │  ├─ 📋 Glow_Red_Cube (Model) [GlowColor=Red]  -  Edit
+  15:02:32.632  │  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.632  │  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.632  │  │  │  ├─ 📋 Glow_White_Cube (Model) [GlowColor=White]  -  Edit
+  15:02:32.632  │  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.632  │  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.632  │  │  │  └─ 📋 Glow_Yellow_Cube (Model) [GlowColor=Yellow]  -  Edit
+  15:02:32.633  │  │  │     └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.633  │  │  │        └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.633  │  │  ├─ 📋 Brick_Cube (Model)  -  Edit
+  15:02:32.633  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.633  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.633  │  │  ├─ 📋 Fabric_Cube (Model)  -  Edit
+  15:02:32.634  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.634  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.634  │  │  ├─ 📋 Fire_Cube (Model)  -  Edit
+  15:02:32.634  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.635  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.635  │  │  ├─ 📋 Gear (Model)  -  Edit
+  15:02:32.635  │  │  │  └─ 🔗 Gear (UnionOperation)  -  Edit
+  15:02:32.635  │  │  │     └─ 📝 Spinning Script (Script)  -  Edit
+  15:02:32.635  │  │  ├─ 📋 Glass_Cube (Model)  -  Edit
+  15:02:32.636  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.636  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.636  │  │  ├─ 📋 Grass_Cube (Model)  -  Edit
+  15:02:32.636  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.636  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.636  │  │  ├─ 📋 Stone_Cube (Model)  -  Edit
+  15:02:32.636  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.636  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.636  │  │  ├─ 📋 Water_Cube (Model)  -  Edit
+  15:02:32.637  │  │  │  └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.637  │  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.637  │  │  └─ 📋 Wood_Cube (Model)  -  Edit
+  15:02:32.637  │  │     └─ 🔗 SmoothCube (UnionOperation)  -  Edit
+  15:02:32.637  │  │        └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.637  │  ├─ 📁 Exclusive (Folder)  -  Edit
+  15:02:32.637  │  ├─ 📁 Free_items (Folder)  -  Edit
+  15:02:32.637  │  ├─ 📁 Random_Drop (Folder)  -  Edit
+  15:02:32.637  │  ├─ 📁 Rare (Folder)  -  Edit
+  15:02:32.637  │  ├─ 📁 Secondary (Folder)  -  Edit
+  15:02:32.638  │  │  └─ 📁 Teleport Portals (Folder)  -  Edit
+  15:02:32.638  │  │     ├─ 📋 PortalBlue (Model)  -  Edit
+  15:02:32.638  │  │     │  ├─ 🧊 BlueArrive (Part)  -  Edit
+  15:02:32.638  │  │     │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.638  │  │     │  ├─ 🧊 BlueTeleport (Part)  -  Edit
+  15:02:32.639  │  │     │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.639  │  │     │  ├─ 📋 Model (Model)  -  Edit
+  15:02:32.639  │  │     │  │  ├─ 🧊 Part (Part)  -  Edit
+  15:02:32.640  │  │     │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.640  │  │     │  │  ├─ 🧊 Part (Part)  -  Edit
+  15:02:32.640  │  │     │  │  │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.640  │  │     │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.640  │  │     │  │  └─ 🔗 Union (UnionOperation)  -  Edit
+  15:02:32.640  │  │     │  │     └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.640  │  │     │  └─ 🧊 Part (Part)  -  Edit
+  15:02:32.640  │  │     ├─ 📋 PortalRed (Model)  -  Edit
+  15:02:32.640  │  │     │  ├─ 📋 Model (Model)  -  Edit
+  15:02:32.641  │  │     │  │  ├─ 🧊 Part (Part)  -  Edit
+  15:02:32.641  │  │     │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.641  │  │     │  │  ├─ 🧊 Part (Part)  -  Edit
+  15:02:32.641  │  │     │  │  │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.641  │  │     │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.641  │  │     │  │  └─ 🔗 Union (UnionOperation)  -  Edit
+  15:02:32.641  │  │     │  │     └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.642  │  │     │  ├─ 🧊 Part (Part)  -  Edit
+  15:02:32.642  │  │     │  ├─ 🧊 RedArrive (Part)  -  Edit
+  15:02:32.642  │  │     │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.642  │  │     │  └─ 🧊 RedTeleport (Part)  -  Edit
+  15:02:32.643  │  │     │     └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.643  │  │     ├─ 📝 Script (Script)  -  Edit
+  15:02:32.643  │  │     └─ 📷 ThumbnailCamera (Camera)  -  Edit
+  15:02:32.643  │  └─ 📁 Weapons (Folder)  -  Edit
+  15:02:32.643  ├─ 📁 World_Items (Folder)  -  Edit
+  15:02:32.643  │  ├─ 📋 Trampoline (Model)  -  Edit
+  15:02:32.643  │  │  ├─ 🔗 Trampoline (UnionOperation)  -  Edit
+  15:02:32.644  │  │  │  └─ ❓ Texture (Texture)  -  Edit
+  15:02:32.644  │  │  ├─ 🧊 TrampolineBouncyThing (Part)  -  Edit
+  15:02:32.644  │  │  │  ├─ 📝 BouncePad (Script)  -  Edit
+  15:02:32.645  │  │  │  └─ ❓ Texture (Texture)  -  Edit
+  15:02:32.645  │  │  ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.645  │  │  │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.645  │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.645  │  │  ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.645  │  │  │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.646  │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.646  │  │  ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.646  │  │  │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.646  │  │  │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.646  │  │  └─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.646  │  │     ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.646  │  │     └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.646  │  └─ 📋 Trampoline (Model)  -  Edit
+  15:02:32.647  │     ├─ 🔗 Trampoline (UnionOperation)  -  Edit
+  15:02:32.649  │     │  └─ ❓ Texture (Texture)  -  Edit
+  15:02:32.649  │     ├─ 🧊 TrampolineBouncyThing (Part)  -  Edit
+  15:02:32.650  │     │  ├─ 📝 BouncePad (Script)  -  Edit
+  15:02:32.652  │     │  └─ ❓ Texture (Texture)  -  Edit
+  15:02:32.653  │     ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.653  │     │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.653  │     │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.653  │     ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.654  │     │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.654  │     │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.654  │     ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.655  │     │  ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.655  │     │  └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.656  │     └─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.656  │        ├─ ❓ Weld (Weld)  -  Edit
+  15:02:32.657  │        └─ ❓ Weld (Weld)  -  Edit
+  15:02:32.657  └─ 📁 Main (Folder)  -  Edit
+  15:02:32.657     ├─ 🧊 Baseplate (Part)  -  Edit
+  15:02:32.658     │  └─ ❓ Texture (Texture)  -  Edit
+  15:02:32.658     └─ 📋 Board (Model)  -  Edit
+  15:02:32.658        ├─ 🧊 Board (Part)  -  Edit
+  15:02:32.658        └─ 🧊 SpawnLocation (SpawnLocation)  -  Edit
+  15:02:32.659           └─ ❓ Decal (Decal)  -  Edit
+  15:02:32.659  
+=== WORKSPACE STATISTICS ===  -  Edit
+  15:02:32.659  📁 Folders: 12  -  Edit
+  15:02:32.659  📋 Models: 22  -  Edit
+  15:02:32.660  🧊 Parts: 43  -  Edit
+  15:02:32.660  📝 Scripts: 4  -  Edit
+  15:02:32.660  ❓ Others: 84  -  Edit
+  15:02:32.660  📊 Total Objects: 165  -  Edit
+  15:02:32.660  
+=== COLLAPSED VIEW (Max Depth: 3) ===  -  Edit
+  15:02:32.661  🌎 Workspace (Workspace)  -  Edit
+  15:02:32.661  │  -  Edit
+  15:02:32.661  ├─ ❓ Terrain (Terrain)  -  Edit
+  15:02:32.661  ├─ 📷 Camera (Camera)  -  Edit
+  15:02:32.662  ├─ 📁 Items (Folder)  -  Edit
+  15:02:32.662  │  ├─ 📁 Basic (Folder)  -  Edit
+  15:02:32.662  │  │  ├─ 📁 Glow (Folder)  -  Edit
+  15:02:32.662  │  │  │  └─ 📂 ... (6 more items)  -  Edit
+  15:02:32.663  │  │  ├─ 📋 Brick_Cube (Model)  -  Edit
+  15:02:32.663  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.663  │  │  ├─ 📋 Fabric_Cube (Model)  -  Edit
+  15:02:32.663  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.663  │  │  ├─ 📋 Fire_Cube (Model)  -  Edit
+  15:02:32.663  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.663  │  │  ├─ 📋 Gear (Model)  -  Edit
+  15:02:32.664  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.664  │  │  ├─ 📋 Glass_Cube (Model)  -  Edit
+  15:02:32.664  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.664  │  │  ├─ 📋 Grass_Cube (Model)  -  Edit
+  15:02:32.664  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.665  │  │  ├─ 📋 Stone_Cube (Model)  -  Edit
+  15:02:32.665  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.665  │  │  ├─ 📋 Water_Cube (Model)  -  Edit
+  15:02:32.665  │  │  │  └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.666  │  │  └─ 📋 Wood_Cube (Model)  -  Edit
+  15:02:32.666  │  │     └─ 📂 ... (1 more items)  -  Edit
+  15:02:32.666  │  ├─ 📁 Exclusive (Folder)  -  Edit
+  15:02:32.667  │  ├─ 📁 Free_items (Folder)  -  Edit
+  15:02:32.667  │  ├─ 📁 Random_Drop (Folder)  -  Edit
+  15:02:32.667  │  ├─ 📁 Rare (Folder)  -  Edit
+  15:02:32.668  │  ├─ 📁 Secondary (Folder)  -  Edit
+  15:02:32.668  │  │  └─ 📁 Teleport Portals (Folder)  -  Edit
+  15:02:32.668  │  │     └─ 📂 ... (4 more items)  -  Edit
+  15:02:32.668  │  └─ 📁 Weapons (Folder)  -  Edit
+  15:02:32.668  ├─ 📁 World_Items (Folder)  -  Edit
+  15:02:32.668  │  ├─ 📋 Trampoline (Model)  -  Edit
+  15:02:32.669  │  │  ├─ 🔗 Trampoline (UnionOperation)  -  Edit
+  15:02:32.669  │  │  │  └─ 📂 ... (6 more items)  -  Edit
+  15:02:32.669  │  │  ├─ 🧊 TrampolineBouncyThing (Part)  -  Edit
+  15:02:32.670  │  │  │  └─ 📂 ... (7 more items)  -  Edit
+  15:02:32.670  │  │  ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.670  │  │  │  └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.670  │  │  ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.670  │  │  │  └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.670  │  │  ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.670  │  │  │  └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.671  │  │  └─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.671  │  │     └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.671  │  └─ 📋 Trampoline (Model)  -  Edit
+  15:02:32.671  │     ├─ 🔗 Trampoline (UnionOperation)  -  Edit
+  15:02:32.672  │     │  └─ 📂 ... (6 more items)  -  Edit
+  15:02:32.672  │     ├─ 🧊 TrampolineBouncyThing (Part)  -  Edit
+  15:02:32.672  │     │  └─ 📂 ... (7 more items)  -  Edit
+  15:02:32.672  │     ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.672  │     │  └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.673  │     ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.673  │     │  └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.673  │     ├─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.673  │     │  └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.673  │     └─ 🔗 TrampolineLeg (UnionOperation)  -  Edit
+  15:02:32.673  │        └─ 📂 ... (2 more items)  -  Edit
+  15:02:32.674  └─ 📁 Main (Folder)  -  Edit
+  15:02:32.674     ├─ 🧊 Baseplate (Part)  -  Edit
+  15:02:32.674     │  └─ ❓ Texture (Texture)  -  Edit
+  15:02:32.674     └─ 📋 Board (Model)  -  Edit
+  15:02:32.674        ├─ 🧊 Board (Part)  -  Edit
+  15:02:32.675        └─ 🧊 SpawnLocation (SpawnLocation)  -  Edit
+  15:02:32.675           └─ 📂 ... (1 more items)  -  Edit

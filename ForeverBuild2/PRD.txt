@@ -1,0 +1,598 @@
+# Roblox Infinite Canvas - Enhanced PRD
+
+## Game Architecture Overview
+
+### Core Philosophy
+- **Modular Design**: Each system operates independently with clear interfaces
+- **Data-Driven**: Game behavior controlled through configuration files
+- **Scalable Structure**: Designed for growth with minimal refactoring
+- **Agent-Friendly**: Complete automation with minimal human intervention
+
+## File Structure (VS Code/Rojo Compatible)
+
+```
+src/
+├── core/                     # Core game systems
+│   ├── init.lua             # Game initialization manager
+│   ├── GameManager.lua      # Central game state manager
+│   ├── EventBus.lua         # Event communication system
+│   └── Constants.lua        # Game-wide constants
+│
+├── economy/                 # Economic systems
+│   ├── init.lua
+│   ├── CurrencyManager.lua  # Robux transactions
+│   ├── PricingManager.lua   # Dynamic pricing logic
+│   ├── TransactionLog.lua   # All money movements
+│   └── config/             # Economic configuration
+│       ├── BasePrices.lua
+│       └── DynamicRules.lua
+│
+├── inventory/               # Inventory management
+│   ├── init.lua
+│   ├── PlayerInventory.lua  # Individual player inventories
+│   ├── InventoryUI.lua      # Inventory interface
+│   ├── ItemDefinitions.lua  # All item configurations
+│   └── ItemFactory.lua      # Item creation system
+│
+├── placement/               # World placement system
+│   ├── init.lua
+│   ├── PlacementValidator.lua # Validation logic
+│   ├── GridManager.lua      # World grid system
+│   ├── PlacementUI.lua      # Placement interface
+│   └── PlacementHistory.lua # Track all placements
+│
+├── items/                   # Item system architecture
+│   ├── init.lua
+│   ├── ItemRegistry.lua     # Central item registry
+│   ├── ItemLoader.lua       # Dynamic item loading
+│   ├── ItemEffects.lua      # Special item behaviors
+│   └── categories/          # Item category managers
+│       ├── Basic.lua
+│       ├── Glow.lua
+│       ├── Secondary.lua
+│       ├── Rare.lua
+│       └── Exclusive.lua
+│
+├── effects/                 # Visual and interactive effects
+│   ├── init.lua
+│   ├── GlowSystem.lua       # Enhanced from our earlier work
+│   ├── ParticleEffects.lua  # Particle systems
+│   ├── SoundManager.lua     # Audio effects
+│   └── AnimationManager.lua # Object animations
+│
+├── data/                    # Data management
+│   ├── init.lua
+│   ├── DataStore.lua        # Roblox DataStore wrapper
+│   ├── BackupManager.lua    # Data backup systems
+│   ├── MigrationManager.lua # Schema updates
+│   └── schemas/             # Data schemas
+│       ├── PlayerSchema.lua
+│       ├── WorldSchema.lua
+│       └── ItemSchema.lua
+│
+├── ui/                      # User interface
+│   ├── init.lua
+│   ├── UIManager.lua        # UI state management
+│   ├── components/          # Reusable UI components
+│   │   ├── Button.lua
+│   │   ├── Panel.lua
+│   │   ├── Inventory.lua
+│   │   └── Shop.lua
+│   └── screens/             # Full screen interfaces
+│       ├── MainMenu.lua
+│       ├── Shop.lua
+│       └── Inventory.lua
+│
+├── moderation/              # Content moderation
+│   ├── init.lua
+│   ├── ContentFilter.lua    # Text/image filtering
+│   ├── ReportSystem.lua     # Player reporting
+│   ├── AdminTools.lua       # Admin commands
+│   └── AutoModerator.lua    # Automated moderation
+│
+├── social/                  # Social features
+│   ├── init.lua
+│   ├── FriendSystem.lua     # Friends management
+│   ├── ChatManager.lua      # In-game chat
+│   ├── SocialHubs.lua       # Social gathering spaces
+│   └── Sharing.lua          # Content sharing
+│
+├── events/                  # Dynamic events
+│   ├── init.lua
+│   ├── EventScheduler.lua   # Event timing
+│   ├── RandomEvents.lua     # Random world events
+│   ├── SeasonalEvents.lua   # Holiday events
+│   └── CommunityEvents.lua  # Player-driven events
+│
+├── config/                  # Configuration files
+│   ├── Items.lua            # Item definitions
+│   ├── Economy.lua          # Economic settings
+│   ├── World.lua            # World parameters
+│   ├── UI.lua               # UI configurations
+│   └── Permissions.lua      # Player permissions
+│
+├── utilities/               # Helper functions
+│   ├── init.lua
+│   ├── Logger.lua           # Logging system
+│   ├── Validator.lua        # Input validation
+│   ├── Random.lua           # Random number generation
+│   └── Math.lua             # Mathematical utilities
+│
+└── tests/                   # Testing framework
+    ├── init.lua
+    ├── TestRunner.lua       # Test execution
+    ├── MockServices.lua     # Service mocking
+    └── suites/              # Test suites
+        ├── EconomyTests.lua
+        ├── PlacementTests.lua
+        └── InventoryTests.lua
+```
+
+## Item System Architecture
+
+### Item Configuration System
+
+All items in the `Items` folder are automatically registered using a standardized configuration:
+
+```lua
+-- src/config/Items.lua
+return {
+    categories = {
+        Basic = {
+            folder = "Items.Basic",
+            freeItems = {"Stone_Cube", "Wood_Cube"},
+            defaultPrice = {
+                buy = 5,
+                move = 3,
+                remove = 2,
+                clone = 4
+            }
+        },
+        Glow = {
+            folder = "Items.Basic.Glow",
+            freeItems = {},
+            defaultPrice = {
+                buy = 10,
+                move = 5,
+                remove = 3,
+                clone = 7
+            },
+            specialEffects = true
+        },
+        Secondary = {
+            folder = "Items.Secondary",
+            freeItems = {},
+            defaultPrice = {
+                buy = 15,
+                move = 7,
+                remove = 5,
+                clone = 10
+            }
+        }
+    }
+}
+```
+
+### Automatic Item Registration
+
+```lua
+-- src/items/ItemLoader.lua
+local ItemLoader = {}
+local ItemRegistry = require(script.Parent.ItemRegistry)
+local ItemConfigs = require(script.Parent.Parent.config.Items)
+
+function ItemLoader:Initialize()
+    for categoryName, categoryConfig in pairs(ItemConfigs.categories) do
+        self:LoadCategory(categoryName, categoryConfig)
+    end
+end
+
+function ItemLoader:LoadCategory(name, config)
+    local folderPath = workspace.Items
+    for segment in string.gmatch(config.folder, "[^.]+") do
+        folderPath = folderPath:FindFirstChild(segment)
+    end
+    
+    -- Auto-register all models in folder
+    for _, model in ipairs(folderPath:GetChildren()) do
+        if model:IsA("Model") then
+            self:RegisterItem(model, name, config)
+        end
+    end
+end
+
+function ItemLoader:RegisterItem(model, category, config)
+    local itemData = {
+        name = model.Name,
+        category = category,
+        model = model,
+        prices = {
+            buy = config.defaultPrice.buy,
+            move = config.defaultPrice.move,
+            remove = config.defaultPrice.remove,
+            clone = config.defaultPrice.clone
+        },
+        isFree = table.find(config.freeItems or {}, model.Name) ~= nil,
+        specialEffects = config.specialEffects or false
+    }
+    
+    -- Extract color from name if applicable
+    self:ExtractProperties(itemData)
+    
+    ItemRegistry:Register(itemData)
+    print(string.format("Registered %s.%s", category, model.Name))
+end
+
+return ItemLoader
+```
+
+## Core Initialization Flow
+
+### 1. Game Bootstrap (src/core/init.lua)
+
+```lua
+-- src/core/init.lua
+local Core = {}
+
+-- Service dependencies
+local ItemLoader = require(script.Parent.items.ItemLoader)
+local EffectsManager = require(script.Parent.effects)
+local EconomyManager = require(script.Parent.economy)
+local PlacementSystem = require(script.Parent.placement)
+local UIManager = require(script.Parent.ui)
+
+-- Configuration
+local GameConfig = require(script.Parent.config.World)
+
+function Core:Initialize()
+    print("=== Initializing Roblox Infinite Canvas ===")
+    
+    -- 1. Load all items from workspace structure
+    ItemLoader:Initialize()
+    
+    -- 2. Initialize core systems
+    EffectsManager:Initialize()
+    EconomyManager:Initialize()
+    PlacementSystem:Initialize()
+    UIManager:Initialize()
+    
+    -- 3. Set up event handlers
+    self:SetupEventHandlers()
+    
+    -- 4. Start services
+    self:StartServices()
+    
+    print("=== Game initialization complete ===")
+end
+
+function Core:SetupEventHandlers()
+    -- Player join/leave
+    game.Players.PlayerAdded:Connect(function(player)
+        self:OnPlayerJoined(player)
+    end)
+    
+    game.Players.PlayerRemoving:Connect(function(player)
+        self:OnPlayerLeaving(player)
+    end)
+end
+
+function Core:OnPlayerJoined(player)
+    -- Initialize player data
+    local Inventory = require(script.Parent.inventory)
+    local UIManager = require(script.Parent.ui)
+    
+    Inventory:SetupPlayer(player)
+    UIManager:SetupPlayer(player)
+    
+    -- Load player data
+    local DataStore = require(script.Parent.data.DataStore)
+    DataStore:LoadPlayerData(player)
+end
+
+return Core
+```
+
+### 2. Economy Integration
+
+```lua
+-- src/economy/PricingManager.lua
+local PricingManager = {}
+local ItemRegistry = require(script.Parent.Parent.items.ItemRegistry)
+
+function PricingManager:CalculatePrice(itemName, action, playerData)
+    local item = ItemRegistry:GetItem(itemName)
+    if not item then return 0 end
+    
+    -- Free items remain free
+    if item.isFree and action == "buy" then
+        return 0
+    end
+    
+    local basePrice = item.prices[action]
+    
+    -- Apply dynamic pricing rules
+    local multiplier = 1
+    
+    -- Rarity multiplier
+    if item.category == "Rare" then
+        multiplier = multiplier * 2
+    elseif item.category == "Exclusive" then
+        multiplier = multiplier * 5
+    end
+    
+    -- Demand multiplier (based on recent purchases)
+    local demand = self:GetItemDemand(itemName)
+    multiplier = multiplier * (1 + demand * 0.1)
+    
+    return math.ceil(basePrice * multiplier)
+end
+
+function PricingManager:GetItemDemand(itemName)
+    -- Calculate based on recent transaction data
+    local TransactionLog = require(script.Parent.TransactionLog)
+    return TransactionLog:GetRecentDemand(itemName)
+end
+
+return PricingManager
+```
+
+## Special Effects Integration
+
+### Glow System Enhancement
+
+```lua
+-- src/effects/GlowSystem.lua
+local GlowSystem = {}
+local ItemRegistry = require(script.Parent.Parent.items.ItemRegistry)
+
+function GlowSystem:Initialize()
+    -- Auto-detect all glow items
+    for itemName, itemData in pairs(ItemRegistry:GetAllItems()) do
+        if itemData.category == "Glow" then
+            self:RegisterGlowItem(itemData)
+        end
+    end
+end
+
+function GlowSystem:RegisterGlowItem(itemData)
+    local color = self:ExtractColorFromName(itemData.name)
+    if color then
+        self:ApplyGlowEffect(itemData.model, color)
+    end
+end
+
+function GlowSystem:ExtractColorFromName(name)
+    local colors = {
+        Red = Color3.fromRGB(255, 0, 0),
+        Blue = Color3.fromRGB(0, 0, 255),
+        Green = Color3.fromRGB(0, 255, 0),
+        -- ... other colors
+    }
+    
+    for colorName, colorValue in pairs(colors) do
+        if string.find(name, colorName) then
+            return colorValue
+        end
+    end
+    return nil
+end
+
+return GlowSystem
+```
+
+## Configuration-Driven Behavior
+
+### Dynamic Item Properties
+
+```lua
+-- src/config/Items.lua
+return {
+    globalSettings = {
+        maxInventorySlots = 50,
+        placementCooldown = 0.5,
+        maxPlacementsPerPlayer = 1000
+    },
+    
+    categories = {
+        Basic = {
+            folder = "Items.Basic",
+            freeItems = {"Stone_Cube", "Wood_Cube", "Grass_Cube"},
+            permissions = {
+                canBuy = true,
+                canGift = false,
+                canTrade = true
+            },
+            defaultPrice = {
+                buy = 5,
+                move = 3,
+                remove = 2,
+                clone = 4
+            },
+            colorVariations = {
+                enabled = true,
+                hueShift = 30,       -- degrees
+                saturationShift = 0.2,
+                brightnessShift = 0.1
+            }
+        },
+        
+        Glow = {
+            folder = "Items.Basic.Glow",
+            freeItems = {},
+            permissions = {
+                canBuy = true,
+                canGift = true,
+                canTrade = true
+            },
+            defaultPrice = {
+                buy = 10,
+                move = 5,
+                remove = 3,
+                clone = 7
+            },
+            specialEffects = {
+                enabled = true,
+                type = "glow",
+                connectionBehavior = "chain"
+            },
+            colorVariations = {
+                enabled = false  -- Fixed colors for glow items
+            }
+        }
+    }
+}
+```
+
+## Agent Automation Features
+
+### 1. Automatic Content Management
+
+```lua
+-- src/core/ContentManager.lua
+local ContentManager = {}
+
+function ContentManager:ScanAndRegister()
+    -- Automatically scan for new items
+    local newItems = self:FindNewItems()
+    
+    for _, item in ipairs(newItems) do
+        -- Auto-categorize based on folder location
+        local category = self:DetermineCategoryFromPath(item)
+        
+        -- Generate default configuration
+        local config = self:GenerateDefaultConfig(item, category)
+        
+        -- Register with system
+        self:RegisterNewItem(item, config)
+        
+        -- Apply any special effects
+        self:ApplyEffects(item, config)
+    end
+end
+
+function ContentManager:GenerateDefaultConfig(item, category)
+    -- AI could enhance this to make smarter decisions
+    return {
+        name = item.Name,
+        category = category,
+        price = self:EstimatePrice(item),
+        effects = self:DetectEffects(item),
+        permissions = self:GetCategoryPermissions(category)
+    }
+end
+
+return ContentManager
+```
+
+### 2. Dynamic Balancing
+
+```lua
+-- src/economy/BalancingAgent.lua
+local BalancingAgent = {}
+
+function BalancingAgent:MonitorAndAdjust()
+    -- Monitor economic metrics
+    local metrics = self:GatherEconomicMetrics()
+    
+    -- Detect issues
+    if metrics.inflation > 0.15 then
+        self:ImplementAntiInflationMeasures()
+    end
+    
+    -- Adjust prices based on popularity
+    self:AdjustPricesBasedOnDemand()
+    
+    -- Balance inventory distribution
+    self:BalanceItemAvailability()
+end
+
+return BalancingAgent
+```
+
+## Testing Framework
+
+### Automated Testing Suite
+
+```lua
+-- src/tests/ItemSystemTests.lua
+local ItemSystemTests = {}
+local TestRunner = require(script.Parent.TestRunner)
+
+function ItemSystemTests:RunAll()
+    TestRunner:RunTest("ItemRegistration", self.TestItemRegistration)
+    TestRunner:RunTest("PriceCalculation", self.TestPriceCalculation)
+    TestRunner:RunTest("EffectApplication", self.TestEffectApplication)
+end
+
+function ItemSystemTests:TestItemRegistration()
+    -- Test automatic item detection
+    local ItemLoader = require(game.ServerScriptService.src.items.ItemLoader)
+    local ItemRegistry = require(game.ServerScriptService.src.items.ItemRegistry)
+    
+    local initialCount = ItemRegistry:GetItemCount()
+    ItemLoader:Initialize()
+    local finalCount = ItemRegistry:GetItemCount()
+    
+    assert(finalCount > initialCount, "Items should be registered automatically")
+end
+
+return ItemSystemTests
+```
+
+## Deployment and Maintenance
+
+### 1. Version Control Integration
+
+```yaml
+# .github/workflows/validate-items.yml
+name: Validate Item Structure
+on:
+  push:
+    paths:
+      - 'src/config/Items.lua'
+      - 'workspace/Items/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate Item Configuration
+        run: |
+          # Run validation scripts
+          lua src/tests/ItemValidation.lua
+```
+
+### 2. Monitoring and Analytics
+
+```lua
+-- src/utilities/Analytics.lua
+local Analytics = {}
+
+function Analytics:TrackItemUsage(itemName, action, player)
+    local data = {
+        timestamp = tick(),
+        player = player.UserId,
+        item = itemName,
+        action = action
+    }
+    
+    -- Send to analytics service
+    self:SendAnalytics("item_usage", data)
+end
+
+return Analytics
+```
+
+## Summary
+
+This enhanced architecture provides:
+
+1. **Complete Automation**: Agents can run the entire system with minimal intervention
+2. **Scalable Structure**: Easy to add new items and features
+3. **Configuration-Driven**: Behavior controlled through config files
+4. **Modular Design**: Each system operates independently
+5. **Testable**: Comprehensive testing framework
+6. **Maintainable**: Clear file organization and naming conventions
+
+The system automatically detects items in your workspace structure, applies appropriate pricing and effects, and manages all economic transactions. The modular approach allows for easy expansion and maintenance as your game grows.

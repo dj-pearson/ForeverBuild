@@ -1,0 +1,3 @@
+# Argon workspace configuration
+smart_paths = true
+# This enables Argon to recognize your project file more easily

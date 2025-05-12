@@ -1,0 +1,42 @@
+{
+  "name": "ForeverBuild",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "server": {
+        "$path": "src/server"
+      }
+    },
+    "StarterGui": {
+      "$className": "StarterGui",
+      "StarterGui": {
+        "$path": "src/StarterGui"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "client": {
+          "$path": "src/client"
+        }
+      }
+    }
+  },
+  "exclude": [
+    "**/*.meta.json",
+    "**/init.lua",
+    "**/init.luau",
+    "**/init.client.lua",
+    "**/init.client.luau",
+    "**/init.server.lua",
+    "**/init.server.luau"
+  ]
+}

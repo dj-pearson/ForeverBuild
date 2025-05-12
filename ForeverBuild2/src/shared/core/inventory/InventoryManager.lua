@@ -1,3 +1,6 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Constants = require(script.Parent.Parent.Constants)
+
 local InventoryManager = {}
 InventoryManager.__index = InventoryManager
 
@@ -8,70 +11,72 @@ function InventoryManager.new()
 end
 
 function InventoryManager:Initialize()
-    print("Initializing InventoryManager...")
-    -- Set up player handlers
+    print("InventoryManager initialized")
 end
 
 function InventoryManager:InitializePlayer(player)
-    -- Initialize a new player inventory
-    local userId = typeof(player) == "number" and player or player.UserId
-    self.playerInventories[userId] = {
+    self.playerInventories[player.UserId] = {
         items = {},
-        lastUpdated = os.time()
+        maxSlots = Constants.GAME.MAX_INVENTORY_SLOTS
     }
-    return true
 end
 
 function InventoryManager:CleanupPlayer(player)
-    -- Clean up player inventory data
-    local userId = typeof(player) == "number" and player or player.UserId
-    -- Here you would normally save to datastore first
-    self.playerInventories[userId] = nil
-    return true
+    self.playerInventories[player.UserId] = nil
 end
 
-function InventoryManager:GetPlayerInventory(player)
-    local userId = typeof(player) == "number" and player or player.UserId
-    if not self.playerInventories[userId] then
-        self.playerInventories[userId] = {
-            items = {},
-            lastUpdated = os.time()
-        }
-    end
-    
-    return self.playerInventories[userId]
+function InventoryManager:GetInventory(player)
+    return self.playerInventories[player.UserId]
 end
 
-function InventoryManager:AddItemToInventory(player, itemId, quantity)
+function InventoryManager:AddItem(player, itemId, quantity)
     quantity = quantity or 1
+    local inventory = self:GetInventory(player)
+    if not inventory then return false end
     
-    local inventory = self:GetPlayerInventory(player)
-    if not inventory.items[itemId] then
-        inventory.items[itemId] = 0
-    end
-    
-    inventory.items[itemId] = inventory.items[itemId] + quantity
-    inventory.lastUpdated = os.time()
-    
-    return true
-end
-
-function InventoryManager:RemoveItemFromInventory(player, itemId, quantity)
-    quantity = quantity or 1
-    
-    local inventory = self:GetPlayerInventory(player)
-    if not inventory.items[itemId] or inventory.items[itemId] < quantity then
+    if #inventory.items >= inventory.maxSlots then
         return false
     end
     
-    inventory.items[itemId] = inventory.items[itemId] - quantity
-    if inventory.items[itemId] <= 0 then
-        inventory.items[itemId] = nil
-    end
-    
-    inventory.lastUpdated = os.time()
+    table.insert(inventory.items, {
+        id = itemId,
+        quantity = quantity
+    })
     
     return true
+end
+
+function InventoryManager:RemoveItem(player, itemId, quantity)
+    quantity = quantity or 1
+    local inventory = self:GetInventory(player)
+    if not inventory then return false end
+    
+    for i, item in ipairs(inventory.items) do
+        if item.id == itemId then
+            if item.quantity > quantity then
+                item.quantity = item.quantity - quantity
+            else
+                table.remove(inventory.items, i)
+            end
+            return true
+        end
+    end
+    
+    return false
+end
+
+function InventoryManager:HasItem(player, itemId, quantity)
+    quantity = quantity or 1
+    local inventory = self:GetInventory(player)
+    if not inventory then return false end
+    
+    for _, item in ipairs(inventory.items) do
+        if item.id == itemId and item.quantity >= quantity then
+            return true
+        end
+    end
+    
+    return false
 end
 
 return InventoryManager

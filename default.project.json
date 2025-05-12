@@ -1,114 +1,33 @@
 {
-  "name": "RobloxProject",
+  "name": "ForeverBuild",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "Modules": {
-        "$path": "src/ReplicatedStorage/Modules"
-      },
-      "Shared": {
-        "$path": "src/ReplicatedStorage/Shared"
-      },
-      "init": {
-        "$path": "src/ReplicatedStorage/Shared/init.luau"
-      },
-      "SharedModuleResolver": {
-        "$path": "src/ReplicatedStorage/SharedModuleResolver.luau"
-      },
-      "RemoteManager": {
-        "$path": "src/ReplicatedStorage/RemoteManager.luau"
-      },
-      "RemoteEventManager": {
-        "$path": "src/ReplicatedStorage/RemoteEventManager.luau"
-      },
-      "AchievementManager": {
-        "$path": "src/ReplicatedStorage/AchievementManager.luau"
-      },
-      "Remotes": {
-        "$className": "Folder"
+      "ReplicatedStorage": {
+        "$path": "src/ReplicatedStorage"
       }
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "Modules": {
-        "$path": "src/ServerScriptService/Modules"
-      },
-      "init": {
-        "$path": "src/ServerScriptService/init.server.lua"
-      },
-      "DataStoreManager": {
-        "$path": "src/ServerScriptService/Modules/DataStoreManager.server.lua"
-      },
-      "ServerModuleResolver": {
-        "$path": "src/ServerScriptService/Modules/ServerModuleResolver.luau"
-      }
-    },
-    "StarterPlayer": {
-      "$className": "StarterPlayer",
-      "StarterPlayerScripts": {
-        "$className": "StarterPlayerScripts",
-        "Modules": {
-          "$path": "src/StarterPlayer/StarterPlayerScripts/Modules"
-        },
-        "TutorialClient": {
-          "$path": "src/StarterPlayer/StarterPlayerScripts/TutorialClient"
-        },
-        "UI": {
-          "$path": "src/StarterPlayer/StarterPlayerScripts/UI"
-        },
-        "init": {
-          "$path": "src/StarterPlayer/StarterPlayerScripts/init.client.lua"
-        }
+      "ServerScriptService": {
+        "$path": "src/ServerScriptService"
       }
     },
     "StarterGui": {
       "$className": "StarterGui",
-        "MainUI": {
-          "$path": "src/StarterGui/MainUI"
-        },
-        "AchievementUI": {
-          "$path": "src/StarterGui/AchievementUI.client.luau"
-        },
-        "AmmoUI": {
-          "$path": "src/StarterGui/AmmoUI.client.luau"
-        },
-        "BuildingChallengeUI": {
-          "$path": "src/StarterGui/BuildingChallengeUI.client.luau"
-        },
-        "BuildingTemplateUI": {
-          "$path": "src/StarterGui/BuildingTemplateUI.client.luau"
-        },
-        "BuildingToolsUI": {
-          "$path": "src/StarterGui/BuildingToolsUI.client.luau"
-        },
-        "ChatUI": {
-          "$path": "src/StarterGui/ChatUI.client.luau"
-        },
-        "ConfirmationUI": {
-          "$path": "src/StarterGui/ConfirmationUI.client.luau"
-        },
-        "CrosshairUI": {
-          "$path": "src/StarterGui/CrosshairUI.client.luau"
-        },
-        "DailyRewardsUI": {
-          "$path": "src/StarterGui/DailyRewardsUI.client.luau"
-        },
-        "EndUI": {
-          "$path": "src/StarterGui/EndUI.client.luau"
-        },
-        "ErrorUI": {
-          "$path": "src/StarterGui/ErrorUI.client.luau"
-        },
-        "FriendsUI": {
-          "$path": "src/StarterGui/FriendsUI.client.luau"
-        },
-        "HealthUI": {
-          "$path": "src/StarterGui/HealthUI.client.luau"
-        },
-        "HelpUI": {
-          "$path": "src/StarterGui/HelpUI.client.luau"
+      "StarterGui": {
+        "$path": "src/StarterGui"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayerScripts",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "StarterPlayerScripts": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts"
         }
       }
+    }
   }
 }

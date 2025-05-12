@@ -133,6 +133,7 @@ function Logger:log(level, message, data)
     elseif level == self.levels.INFO then prefix = "[INFO]"
     elseif level == self.levels.WARN then prefix = "[WARN]"
     elseif level == self.levels.ERROR then prefix = "[ERROR]"
+    end
     
     if data then
         print(prefix, message, data)
@@ -163,5 +164,4 @@ return {
     Constants = Constants,
     RemoteManager = RemoteManager,
     Logger = Logger
-} 
-end
+}

@@ -2,11 +2,47 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
--- Load shared modules
-local Shared = require(ReplicatedStorage.Shared)
-local Constants = Shared.Constants
-local Types = Shared.Types
-local RemoteManager = Shared.RemoteManager
+-- Try to load shared modules with error handling
+local Shared, Constants, Types, RemoteManager
+local success = pcall(function()
+    Shared = require(ReplicatedStorage.Shared)
+    Constants = Shared.Constants
+    Types = Shared.Types
+    RemoteManager = Shared.RemoteManager
+end)
+
+if not success then
+    -- Create fallback objects if shared modules aren't available
+    print("BuildingToolsUI: Failed to load shared modules, using fallbacks")
+    Shared = {}
+    Constants = {
+        BUILDING_CATEGORIES = {
+            "Foundations",
+            "Walls",
+            "Floors",
+            "Roofs",
+            "Doors",
+            "Windows",
+            "Furniture",
+            "Decorations"
+        },
+        BUILDING_TOOLS = {
+            PLACE = "place",
+            MOVE = "move",
+            REMOVE = "remove"
+        }
+    }
+    Types = {}
+    RemoteManager = {
+        getRemoteEvent = function(name)
+            local Remotes = ReplicatedStorage:FindFirstChild("Remotes")
+            if Remotes then
+                return Remotes:FindFirstChild(name)
+            end
+            return nil
+        end
+    }
+end
 
 local BuildingToolsUI = {}
 
@@ -14,7 +50,30 @@ local BuildingToolsUI = {}
 local screenGui
 local mainFrame
 local toolList
+local itemList
 local closeButton
+local currentTool = Constants.BUILDING_TOOLS and Constants.BUILDING_TOOLS.PLACE or "place"
+local selectedItemId = nil
+local buildingToolHandler = nil
+
+-- Try to get the building tool handler
+local function getBuildingToolHandler()
+    if _G.BuildingToolHandler then
+        return _G.BuildingToolHandler
+    end
+    
+    -- Wait for up to 5 seconds for the handler to become available
+    local startTime = tick()
+    while tick() - startTime < 5 do
+        if _G.BuildingToolHandler then
+            return _G.BuildingToolHandler
+        end
+        task.wait(0.1)
+    end
+    
+    -- If we still don't have it, return nil
+    return nil
+end
 
 -- Create UI
 function BuildingToolsUI.create()
@@ -132,10 +191,20 @@ function BuildingToolsUI.updateTools(tools)
         descLabel.Font = Enum.Font.Gotham
         descLabel.TextXAlignment = Enum.TextXAlignment.Left
         descLabel.Parent = toolButton
-        
-        -- Tool button click handler
+          -- Tool button click handler
         toolButton.MouseButton1Click:Connect(function()
-            RemoteManager:fireServer(Constants.RemoteEvents.SelectTool, tool.id)
+            -- Use our local selectTool function
+            selectTool(tool.id)
+            
+            -- Also fire the server event if RemoteManager is available
+            if RemoteManager and RemoteManager.fireServer and Constants.RemoteEvents then
+                RemoteManager:fireServer(Constants.RemoteEvents.SelectTool, tool.id)
+            elseif RemoteManager and RemoteManager.getRemoteEvent then
+                local selectToolEvent = RemoteManager.getRemoteEvent("SelectTool")
+                if selectToolEvent then
+                    selectToolEvent:FireServer(tool.id)
+                end
+            end
         end)
         
         yOffset = yOffset + 60
@@ -143,6 +212,62 @@ function BuildingToolsUI.updateTools(tools)
     
     -- Update canvas size
     toolList.CanvasSize = UDim2.new(0, 0, 0, yOffset)
+end
+
+-- Create a function to handle item selection
+local function selectItem(itemId)
+    selectedItemId = itemId
+    
+    -- Get the building tool handler
+    buildingToolHandler = getBuildingToolHandler()
+    
+    -- If the handler is available, use it to start placing the item
+    if buildingToolHandler and currentTool and selectedItemId then
+        buildingToolHandler.useBuilderTool(currentTool, selectedItemId)
+    else
+        print("BuildingToolsUI: Unable to use building tool - handler not available")
+    end
+    
+    -- Update the UI to highlight the selected item
+    if itemList then
+        for _, button in pairs(itemList:GetChildren()) do
+            if button:IsA("TextButton") then
+                if button.Name == itemId then
+                    button.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+                else
+                    button.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+                end
+            end
+        end
+    end
+end
+
+-- Create a function to handle tool selection
+local function selectTool(toolType)
+    currentTool = toolType
+    
+    -- Update the UI to highlight the selected tool
+    if toolList then
+        for _, button in pairs(toolList:GetChildren()) do
+            if button:IsA("TextButton") then
+                if button.Name == toolType then
+                    button.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+                else
+                    button.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+                end
+            end
+        end
+    end
+    
+    -- If an item is selected, update the building tool
+    if selectedItemId then
+        -- Get the building tool handler
+        buildingToolHandler = getBuildingToolHandler()
+        
+        if buildingToolHandler and currentTool and selectedItemId then
+            buildingToolHandler.useBuilderTool(currentTool, selectedItemId)
+        end
+    end
 end
 
 -- Initialize
@@ -155,4 +280,4 @@ function BuildingToolsUI.init()
     end)
 end
 
-return BuildingToolsUI 
+return BuildingToolsUI

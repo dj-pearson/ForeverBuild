@@ -1,3 +1,5 @@
+--init file for client modules - Tutorial
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer

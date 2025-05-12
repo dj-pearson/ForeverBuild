@@ -1,3 +1,5 @@
+--init file for client modules - UI 
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -21,7 +23,6 @@ local uiState = {
 
 -- Create UI elements
 local function createUI()
-    -- Create main UI container
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "GameUI"
     screenGui.ResetOnSpawn = false

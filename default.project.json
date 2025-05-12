@@ -1,17 +1,17 @@
 {
-  "name": "RobloxProject",
+  "name": "ForeverBuild",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "ReplicatedStorage": {
-        "$path": "src/ReplicatedStorage"
+      "shared": {
+        "$path": "src/shared"
       }
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "ServerScriptService": {
-        "$path": "src/ServerScriptService"
+      "server": {
+        "$path": "src/server"
       }
     },
     "StarterGui": {
@@ -24,10 +24,19 @@
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "StarterPlayerScripts": {
-          "$path": "src/StarterPlayer/StarterPlayerScripts"
+        "client": {
+          "$path": "src/client"
         }
       }
     }
-  }
+  },
+  "exclude": [
+    "**/*.meta.json",
+    "**/init.lua",
+    "**/init.luau",
+    "**/init.client.lua",
+    "**/init.client.luau",
+    "**/init.server.lua",
+    "**/init.server.luau"
+  ]
 }

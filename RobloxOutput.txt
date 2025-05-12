@@ -1,108 +1,677 @@
-  08:00:17.881  Attempted to call require with invalid argument(s).  -  Server - Shared:49
-  08:00:17.881  Stack Begin  -  Studio
-  08:00:17.881  Script 'ReplicatedStorage.Shared', Line 49  -  Studio - Shared:49
-  08:00:17.882  Stack End  -  Studio
-  08:00:17.882  Requested module experienced an error while loading  -  Server - TutorialHandler:6
-  08:00:17.882  Stack Begin  -  Studio
-  08:00:17.883  Script 'ServerScriptService.init.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
-  08:00:17.883  Stack End  -  Studio
-  08:00:17.884  Requested module experienced an error while loading  -  Server - SecurityManager:7
-  08:00:17.884  Stack Begin  -  Studio
-  08:00:17.885  Script 'ServerScriptService.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
-  08:00:17.885  Stack End  -  Studio
-  08:00:17.886  Requested module experienced an error while loading  -  Server - SecurityManager:7
-  08:00:17.886  Stack Begin  -  Studio
-  08:00:17.886  Script 'ServerScriptService.init.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
-  08:00:17.887  Stack End  -  Studio
-  08:00:17.887  Requested module experienced an error while loading  -  Server - init:5
-  08:00:17.887  Stack Begin  -  Studio
-  08:00:17.887  Script 'ServerScriptService.init', Line 5  -  Studio - init:5
-  08:00:17.887  Stack End  -  Studio
-  08:00:17.888  Requested module experienced an error while loading  -  Server - DataStoreManager:8
-  08:00:17.888  Stack Begin  -  Studio
-  08:00:17.888  Script 'ServerScriptService.init.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
-  08:00:17.888  Stack End  -  Studio
-  08:00:17.889  Requested module experienced an error while loading  -  Server - TutorialHandler:6
-  08:00:17.889  Stack Begin  -  Studio
-  08:00:17.889  Script 'ServerScriptService.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
-  08:00:17.889  Stack End  -  Studio
-  08:00:17.890  Requested module experienced an error while loading  -  Server - DataStoreManager:8
-  08:00:17.890  Stack Begin  -  Studio
-  08:00:17.890  Script 'ServerScriptService.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
-  08:00:17.890  Stack End  -  Studio
-  08:00:17.992  Attempted to call require with invalid argument(s).  -  Client - Shared:49
-  08:00:17.992  Stack Begin  -  Studio
-  08:00:17.992  Script 'ReplicatedStorage.Shared', Line 49  -  Studio - Shared:49
-  08:00:17.992  Stack End  -  Studio
-  08:00:17.992  Requested module experienced an error while loading  -  Client - TutorialManager:5
-  08:00:17.993  Stack Begin  -  Studio
-  08:00:17.993  Script 'Players.Xdjpearsonx.PlayerScripts.init.TutorialManager', Line 5  -  Studio - TutorialManager:5
-  08:00:17.993  Stack End  -  Studio
-  08:00:17.993  Requested module experienced an error while loading  -  Client - init:6
-  08:00:17.993  Stack Begin  -  Studio
-  08:00:17.993  Script 'Players.Xdjpearsonx.PlayerScripts.init', Line 6  -  Studio - init:6
-  08:00:17.993  Stack End  -  Studio
-  08:00:18.743  Requested module experienced an error while loading  -  Client - AchievementUI:6
-  08:00:18.743  Stack Begin  -  Studio
-  08:00:18.744  Script 'Players.Xdjpearsonx.PlayerGui.AchievementUI', Line 6  -  Studio - AchievementUI:6
-  08:00:18.744  Stack End  -  Studio
-  08:00:18.744  Requested module experienced an error while loading  -  Client - AmmoUI:6
-  08:00:18.744  Stack Begin  -  Studio
-  08:00:18.745  Script 'Players.Xdjpearsonx.PlayerGui.AmmoUI', Line 6  -  Studio - AmmoUI:6
-  08:00:18.745  Stack End  -  Studio
-  08:00:18.745  Requested module experienced an error while loading  -  Client - BuildingChallengeUI:6
-  08:00:18.745  Stack Begin  -  Studio
-  08:00:18.745  Script 'Players.Xdjpearsonx.PlayerGui.BuildingChallengeUI', Line 6  -  Studio - BuildingChallengeUI:6
-  08:00:18.745  Stack End  -  Studio
-  08:00:18.746  Requested module experienced an error while loading  -  Client - BuildingTemplateUI:6
-  08:00:18.746  Stack Begin  -  Studio
-  08:00:18.746  Script 'Players.Xdjpearsonx.PlayerGui.BuildingTemplateUI', Line 6  -  Studio - BuildingTemplateUI:6
-  08:00:18.746  Stack End  -  Studio
-  08:00:18.746  Requested module experienced an error while loading  -  Client - BuildingToolsUI:6
-  08:00:18.746  Stack Begin  -  Studio
-  08:00:18.746  Script 'Players.Xdjpearsonx.PlayerGui.BuildingToolsUI', Line 6  -  Studio - BuildingToolsUI:6
-  08:00:18.747  Stack End  -  Studio
-  08:00:18.747  Requested module experienced an error while loading  -  Client - ChatUI:7
-  08:00:18.747  Stack Begin  -  Studio
-  08:00:18.747  Script 'Players.Xdjpearsonx.PlayerGui.ChatUI', Line 7  -  Studio - ChatUI:7
-  08:00:18.747  Stack End  -  Studio
-  08:00:18.748  Requested module experienced an error while loading  -  Client - ConfirmationUI:6
-  08:00:18.748  Stack Begin  -  Studio
-  08:00:18.748  Script 'Players.Xdjpearsonx.PlayerGui.ConfirmationUI', Line 6  -  Studio - ConfirmationUI:6
-  08:00:18.748  Stack End  -  Studio
-  08:00:18.748  Requested module experienced an error while loading  -  Client - CrosshairUI:7
-  08:00:18.748  Stack Begin  -  Studio
-  08:00:18.748  Script 'Players.Xdjpearsonx.PlayerGui.CrosshairUI', Line 7  -  Studio - CrosshairUI:7
-  08:00:18.748  Stack End  -  Studio
-  08:00:18.749  Attempted to call require with invalid argument(s).  -  Client - DailyRewardsUI:4
-  08:00:18.749  Stack Begin  -  Studio
-  08:00:18.749  Script 'Players.Xdjpearsonx.PlayerGui.DailyRewardsUI', Line 4  -  Studio - DailyRewardsUI:4
-  08:00:18.749  Stack End  -  Studio
-  08:00:18.750  Requested module experienced an error while loading  -  Client - EndUI:6
-  08:00:18.750  Stack Begin  -  Studio
-  08:00:18.750  Script 'Players.Xdjpearsonx.PlayerGui.EndUI', Line 6  -  Studio - EndUI:6
-  08:00:18.750  Stack End  -  Studio
-  08:00:18.750  Requested module experienced an error while loading  -  Client - ErrorUI:6
-  08:00:18.751  Stack Begin  -  Studio
-  08:00:18.751  Script 'Players.Xdjpearsonx.PlayerGui.ErrorUI', Line 6  -  Studio - ErrorUI:6
-  08:00:18.751  Stack End  -  Studio
-  08:00:18.751  Requested module experienced an error while loading  -  Client - FriendsUI:5
-  08:00:18.751  Stack Begin  -  Studio
-  08:00:18.752  Script 'Players.Xdjpearsonx.PlayerGui.FriendsUI', Line 5  -  Studio - FriendsUI:5
-  08:00:18.752  Stack End  -  Studio
-  08:00:18.752  Requested module experienced an error while loading  -  Client - HealthUI:6
-  08:00:18.752  Stack Begin  -  Studio
-  08:00:18.752  Script 'Players.Xdjpearsonx.PlayerGui.HealthUI', Line 6  -  Studio - HealthUI:6
-  08:00:18.752  Stack End  -  Studio
-  08:00:18.752  Requested module experienced an error while loading  -  Client - HelpUI:6
-  08:00:18.752  Stack Begin  -  Studio
-  08:00:18.752  Script 'Players.Xdjpearsonx.PlayerGui.HelpUI', Line 6  -  Studio - HelpUI:6
-  08:00:18.752  Stack End  -  Studio
-  08:00:18.753  Attempted to call require with invalid argument(s).  -  Client - InventoryUI:4
-  08:00:18.753  Stack Begin  -  Studio
-  08:00:18.753  Script 'Players.Xdjpearsonx.PlayerGui.MainUI.InventoryUI', Line 4  -  Studio - InventoryUI:4
-  08:00:18.753  Stack End  -  Studio
-  08:00:18.753  Attempted to call require with invalid argument(s).  -  Client - MarketplaceUI:4
-  08:00:18.754  Stack Begin  -  Studio
-  08:00:18.754  Script 'Players.Xdjpearsonx.PlayerGui.MainUI.MarketplaceUI', Line 4  -  Studio - MarketplaceUI:4
-  08:00:18.754  Stack End  -  Studio
+  13:29:32.817  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Server - server:4
+  13:29:32.817  Stack Begin  -  Studio
+  13:29:32.817  Script 'ServerScriptService.server', Line 4  -  Studio - server:4
+  13:29:32.817  Stack End  -  Studio
+  13:29:32.817  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Server - TutorialHandler:6
+  13:29:32.817  Stack Begin  -  Studio
+  13:29:32.818  Script 'ServerScriptService.server.Modules.Tutorial.TutorialHandler', Line 6  -  Studio - TutorialHandler:6
+  13:29:32.818  Stack End  -  Studio
+  13:29:32.818  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Server - SecurityManager:7
+  13:29:32.818  Stack Begin  -  Studio
+  13:29:32.818  Script 'ServerScriptService.server.Modules.Security.SecurityManager', Line 7  -  Studio - SecurityManager:7
+  13:29:32.818  Stack End  -  Studio
+  13:29:32.818  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Server - DataStoreManager:8
+  13:29:32.818  Stack Begin  -  Studio
+  13:29:32.818  Script 'ServerScriptService.server.Modules.Data.DataStoreManager', Line 8  -  Studio - DataStoreManager:8
+  13:29:32.818  Stack End  -  Studio
+  13:29:32.819  GameStateManager is not a valid member of ServerScriptService "ServerScriptService"  -  Server - GameSystemsManager:5
+  13:29:32.819  Stack Begin  -  Studio
+  13:29:32.819  Script 'ServerScriptService.server.GameSystemsManager', Line 5  -  Studio - GameSystemsManager:5
+  13:29:32.819  Stack End  -  Studio
+  13:29:32.819  DataStoreManager is not a valid member of ServerScriptService "ServerScriptService"  -  Server - GameStateManager:5
+  13:29:32.819  Stack Begin  -  Studio
+  13:29:32.819  Script 'ServerScriptService.server.GameStateManager', Line 5  -  Studio - GameStateManager:5
+  13:29:32.819  Stack End  -  Studio
+  13:29:32.959  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - TutorialManager:5
+  13:29:32.959  Stack Begin  -  Studio
+  13:29:32.959  Script 'Players.Xdjpearsonx.PlayerScripts.client.StarterPlayerScripts.TutorialManager', Line 5  -  Studio - TutorialManager:5
+  13:29:32.959  Stack End  -  Studio
+  13:29:32.959  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - StarterPlayerScripts:6
+  13:29:32.960  Stack Begin  -  Studio
+  13:29:32.960  Script 'Players.Xdjpearsonx.PlayerScripts.client.StarterPlayerScripts', Line 6  -  Studio - StarterPlayerScripts:6
+  13:29:32.960  Stack End  -  Studio
+  13:29:33.210  shared is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro"  -  Server
+  13:29:33.210  Stack Begin  -  Studio
+  13:29:33.211  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src', Line 18 - function resolveModule  -  Studio
+  13:29:33.211  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src', Line 54  -  Studio
+  13:29:33.211  Stack End  -  Studio
+  13:29:33.213  APIIntegration is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.214  Stack Begin  -  Studio
+  13:29:33.214  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.APIIntegrationUI', Line 9  -  Studio
+  13:29:33.214  Stack End  -  Studio
+  13:29:33.216  AccessControl is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.216  Stack Begin  -  Studio
+  13:29:33.216  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.AccessControlUI', Line 13  -  Studio
+  13:29:33.217  Stack End  -  Studio
+  13:29:33.217  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.217  Stack Begin  -  Studio
+  13:29:33.217  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.BulkOperationsUI', Line 6  -  Studio
+  13:29:33.217  Stack End  -  Studio
+  13:29:33.217  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.218  Stack Begin  -  Studio
+  13:29:33.218  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.CachingSystemUI', Line 6  -  Studio
+  13:29:33.218  Stack End  -  Studio
+  13:29:33.219  SchemaManager is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.219  Stack Begin  -  Studio
+  13:29:33.219  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.CodeGeneratorUI', Line 9  -  Studio
+  13:29:33.219  Stack End  -  Studio
+  13:29:33.219  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.220  Stack Begin  -  Studio
+  13:29:33.220  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.DataMigrationUI', Line 6  -  Studio
+  13:29:33.220  Stack End  -  Studio
+  13:29:33.221  StyleGuide is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.221  Stack Begin  -  Studio
+  13:29:33.222  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.LoadTestingUI', Line 9  -  Studio
+  13:29:33.222  Stack End  -  Studio
+  13:29:33.222  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.222  Stack Begin  -  Studio
+  13:29:33.222  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.MonitoringDashboardUI', Line 6  -  Studio
+  13:29:33.222  Stack End  -  Studio
+  13:29:33.222  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.223  Stack Begin  -  Studio
+  13:29:33.223  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.MultiServerCoordinationUI', Line 6  -  Studio
+  13:29:33.223  Stack End  -  Studio
+  13:29:33.223  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.224  Stack Begin  -  Studio
+  13:29:33.224  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.PerformanceAnalyzerUI', Line 6  -  Studio
+  13:29:33.224  Stack End  -  Studio
+  13:29:33.224  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.224  Stack Begin  -  Studio
+  13:29:33.224  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.SchemaBuilderUI', Line 6  -  Studio
+  13:29:33.224  Stack End  -  Studio
+  13:29:33.225  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.225  Stack Begin  -  Studio
+  13:29:33.225  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.SessionManagementUI', Line 6  -  Studio
+  13:29:33.225  Stack End  -  Studio
+  13:29:33.225  user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server:37: Module not found: DataStoreManager  -  Server
+  13:29:33.226  Stack Begin  -  Studio
+  13:29:33.226  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server', Line 37 - function resolveModule  -  Studio
+  13:29:33.226  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server', Line 49  -  Studio
+  13:29:33.226  Stack End  -  Studio
+  13:29:33.226  APIIntegrationUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server"  -  Server
+  13:29:33.226  Stack Begin  -  Studio
+  13:29:33.226  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.APIIntegrationIntegration', Line 9  -  Studio
+  13:29:33.226  Stack End  -  Studio
+  13:29:33.227  AccessControl is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server"  -  Server
+  13:29:33.227  Stack Begin  -  Studio
+  13:29:33.227  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.AccessControlIntegration', Line 9  -  Studio
+  13:29:33.227  Stack End  -  Studio
+  13:29:33.228  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.228  Stack Begin  -  Studio
+  13:29:33.228  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.BulkOperationsManager', Line 7  -  Studio
+  13:29:33.228  Stack End  -  Studio
+  13:29:33.229  CodeGeneratorUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server"  -  Server
+  13:29:33.229  Stack Begin  -  Studio
+  13:29:33.229  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.CodeGeneratorIntegration', Line 9  -  Studio
+  13:29:33.230  Stack End  -  Studio
+  13:29:33.233  Attempt to connect failed: Passed value is not a function  -  Studio
+  13:29:33.233  Stack Begin  -  Studio
+  13:29:33.233  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataExplorer', Line 472  -  Studio
+  13:29:33.233  Stack End  -  Studio
+  13:29:33.234  user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataExplorer:549: attempt to call a nil value  -  Server
+  13:29:33.234  Stack Begin  -  Studio
+  13:29:33.234  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataExplorer', Line 549  -  Studio
+  13:29:33.234  Stack End  -  Studio
+  13:29:33.235  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.235  Stack Begin  -  Studio
+  13:29:33.235  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataMigrationTools', Line 23  -  Studio
+  13:29:33.236  Stack End  -  Studio
+  13:29:33.236  Failed to resolve module: CacheManager  -  Server
+  13:29:33.236  Failed to resolve module: SchemaManager  -  Server
+  13:29:33.237  Failed to resolve module: SchemaValidator  -  Server
+  13:29:33.237  Failed to resolve module: SessionManager  -  Server
+  13:29:33.237  Failed to resolve module: PerformanceMonitor  -  Server
+  13:29:33.237  Failed to resolve module: SecurityManager  -  Server
+  13:29:33.238  Running module resolver update...  -  Server
+  13:29:33.238  Could not find init script  -  Server
+  13:29:33.240  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.240  Stack Begin  -  Studio
+  13:29:33.240  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.MonitoringDashboard', Line 8  -  Studio
+  13:29:33.240  Stack End  -  Studio
+  13:29:33.241  Failed to resolve module: SessionManager  -  Server
+  13:29:33.241  Failed to resolve module: DataVisualization  -  Server
+  13:29:33.242  Failed to resolve module: StyleGuide  -  Server
+  13:29:33.242  Failed to resolve module: DataExplorer  -  Server
+  13:29:33.243  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.243  Stack Begin  -  Studio
+  13:29:33.243  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.PerformanceAnalyzer', Line 12  -  Studio
+  13:29:33.243  Stack End  -  Studio
+  13:29:33.243  Failed to resolve module: DataExplorer  -  Server
+  13:29:33.245  Failed to resolve module: SchemaManager  -  Server
+  13:29:33.246  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.246  Stack Begin  -  Studio
+  13:29:33.246  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.SchemaEditor', Line 4  -  Studio
+  13:29:33.246  Stack End  -  Studio
+  13:29:33.246  Failed to resolve module: SchemaVersioning  -  Server
+  13:29:33.247  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.247  Stack Begin  -  Studio
+  13:29:33.247  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.SchemaVersionViewer', Line 5  -  Studio
+  13:29:33.248  Stack End  -  Studio
+  13:29:33.249  user_DataStorePlugin.rbxmx.DataStoreManagerPro.src:1: Expected identifier when parsing expression, got Unicode character U+feff  -  Studio
+  13:29:33.249  Hello world, from client!  -  Server
+  13:29:33.251  AccessControl is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.251  Stack Begin  -  Studio
+  13:29:33.251  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.AccessControlUI', Line 13  -  Studio
+  13:29:33.251  Stack End  -  Studio
+  13:29:33.254  APIIntegration is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.254  Stack Begin  -  Studio
+  13:29:33.254  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.APIIntegrationUI', Line 9  -  Studio
+  13:29:33.254  Stack End  -  Studio
+  13:29:33.255  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.255  Stack Begin  -  Studio
+  13:29:33.255  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.BulkOperationsUI', Line 6  -  Studio
+  13:29:33.255  Stack End  -  Studio
+  13:29:33.256  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.256  Stack Begin  -  Studio
+  13:29:33.256  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.CachingSystemUI', Line 6  -  Studio
+  13:29:33.256  Stack End  -  Studio
+  13:29:33.257  SchemaManager is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.257  Stack Begin  -  Studio
+  13:29:33.257  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.CodeGeneratorUI', Line 9  -  Studio
+  13:29:33.257  Stack End  -  Studio
+  13:29:33.258  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.258  Stack Begin  -  Studio
+  13:29:33.258  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.DataMigrationUI', Line 6  -  Studio
+  13:29:33.258  Stack End  -  Studio
+  13:29:33.259  StyleGuide is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Server
+  13:29:33.259  Stack Begin  -  Studio
+  13:29:33.259  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.LoadTestingUI', Line 9  -  Studio
+  13:29:33.260  Stack End  -  Studio
+  13:29:33.260  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.260  Stack Begin  -  Studio
+  13:29:33.260  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.MonitoringDashboardUI', Line 6  -  Studio
+  13:29:33.261  Stack End  -  Studio
+  13:29:33.261  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.261  Stack Begin  -  Studio
+  13:29:33.261  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.MultiServerCoordinationUI', Line 6  -  Studio
+  13:29:33.261  Stack End  -  Studio
+  13:29:33.262  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.262  Stack Begin  -  Studio
+  13:29:33.262  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.PerformanceAnalyzerUI', Line 6  -  Studio
+  13:29:33.262  Stack End  -  Studio
+  13:29:33.262  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.262  Stack Begin  -  Studio
+  13:29:33.263  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.SchemaBuilderUI', Line 6  -  Studio
+  13:29:33.263  Stack End  -  Studio
+  13:29:33.263  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.263  Stack Begin  -  Studio
+  13:29:33.263  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.SessionManagementUI', Line 6  -  Studio
+  13:29:33.263  Stack End  -  Studio
+  13:29:33.264  user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server:37: Module not found: DataStoreManager  -  Server
+  13:29:33.264  Stack Begin  -  Studio
+  13:29:33.264  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server', Line 37 - function resolveModule  -  Studio
+  13:29:33.264  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server', Line 49  -  Studio
+  13:29:33.264  Stack End  -  Studio
+  13:29:33.264  AccessControl is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server"  -  Server
+  13:29:33.264  Stack Begin  -  Studio
+  13:29:33.265  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.AccessControlIntegration', Line 9  -  Studio
+  13:29:33.265  Stack End  -  Studio
+  13:29:33.265  APIIntegrationUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server"  -  Server
+  13:29:33.265  Stack Begin  -  Studio
+  13:29:33.265  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.APIIntegrationIntegration', Line 9  -  Studio
+  13:29:33.265  Stack End  -  Studio
+  13:29:33.266  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.266  Stack Begin  -  Studio
+  13:29:33.267  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.BulkOperationsManager', Line 7  -  Studio
+  13:29:33.267  Stack End  -  Studio
+  13:29:33.267  CodeGeneratorUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server"  -  Server
+  13:29:33.268  Stack Begin  -  Studio
+  13:29:33.268  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.CodeGeneratorIntegration', Line 9  -  Studio
+  13:29:33.268  Stack End  -  Studio
+  13:29:33.271  Attempt to connect failed: Passed value is not a function  -  Studio
+  13:29:33.272  Stack Begin  -  Studio
+  13:29:33.272  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataExplorer', Line 472  -  Studio
+  13:29:33.272  Stack End  -  Studio
+  13:29:33.272  user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataExplorer:549: attempt to call a nil value  -  Server
+  13:29:33.273  Stack Begin  -  Studio
+  13:29:33.273  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataExplorer', Line 549  -  Studio
+  13:29:33.273  Stack End  -  Studio
+  13:29:33.274  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.274  Stack Begin  -  Studio
+  13:29:33.275  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataMigrationTools', Line 23  -  Studio
+  13:29:33.275  Stack End  -  Studio
+  13:29:33.275  Failed to resolve module: CacheManager  -  Server
+  13:29:33.275  Failed to resolve module: SchemaManager  -  Server
+  13:29:33.275  Failed to resolve module: SchemaValidator  -  Server
+  13:29:33.276  Failed to resolve module: SessionManager  -  Server
+  13:29:33.276  Failed to resolve module: PerformanceMonitor  -  Server
+  13:29:33.276  Failed to resolve module: SecurityManager  -  Server
+  13:29:33.277  Running module resolver update...  -  Server
+  13:29:33.277  Could not find init script  -  Server
+  13:29:33.278  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.278  Stack Begin  -  Studio
+  13:29:33.278  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.MonitoringDashboard', Line 8  -  Studio
+  13:29:33.278  Stack End  -  Studio
+  13:29:33.279  Failed to resolve module: SessionManager  -  Server
+  13:29:33.279  Failed to resolve module: DataVisualization  -  Server
+  13:29:33.279  Failed to resolve module: StyleGuide  -  Server
+  13:29:33.280  Failed to resolve module: DataExplorer  -  Server
+  13:29:33.280  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.280  Stack Begin  -  Studio
+  13:29:33.280  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.PerformanceAnalyzer', Line 12  -  Studio
+  13:29:33.280  Stack End  -  Studio
+  13:29:33.281  Failed to resolve module: DataExplorer  -  Server
+  13:29:33.282  Failed to resolve module: SchemaManager  -  Server
+  13:29:33.283  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.283  Stack Begin  -  Studio
+  13:29:33.283  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.SchemaEditor', Line 4  -  Studio
+  13:29:33.283  Stack End  -  Studio
+  13:29:33.283  Failed to resolve module: SchemaVersioning  -  Server
+  13:29:33.284  Attempted to call require with invalid argument(s).  -  Server
+  13:29:33.284  Stack Begin  -  Studio
+  13:29:33.285  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.SchemaVersionViewer', Line 5  -  Studio
+  13:29:33.285  Stack End  -  Studio
+  13:29:33.286  user_DataStorePlugin.rbxmx.DataStoreManagerPro.test.src:1: Expected identifier when parsing expression, got Unicode character U+feff  -  Studio
+  13:29:33.387  shared is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro"  -  Client
+  13:29:33.388  Stack Begin  -  Studio
+  13:29:33.388  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src', Line 18 - function resolveModule  -  Studio
+  13:29:33.388  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src', Line 54  -  Studio
+  13:29:33.389  Stack End  -  Studio
+  13:29:33.391  APIIntegration is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.391  Stack Begin  -  Studio
+  13:29:33.391  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.APIIntegrationUI', Line 9  -  Studio
+  13:29:33.391  Stack End  -  Studio
+  13:29:33.394  AccessControl is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.394  Stack Begin  -  Studio
+  13:29:33.394  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.AccessControlUI', Line 13  -  Studio
+  13:29:33.394  Stack End  -  Studio
+  13:29:33.395  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.395  Stack Begin  -  Studio
+  13:29:33.395  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.BulkOperationsUI', Line 6  -  Studio
+  13:29:33.395  Stack End  -  Studio
+  13:29:33.396  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.396  Stack Begin  -  Studio
+  13:29:33.396  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.CachingSystemUI', Line 6  -  Studio
+  13:29:33.396  Stack End  -  Studio
+  13:29:33.397  SchemaManager is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.398  Stack Begin  -  Studio
+  13:29:33.398  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.CodeGeneratorUI', Line 9  -  Studio
+  13:29:33.398  Stack End  -  Studio
+  13:29:33.398  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.398  Stack Begin  -  Studio
+  13:29:33.398  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.DataMigrationUI', Line 6  -  Studio
+  13:29:33.399  Stack End  -  Studio
+  13:29:33.400  StyleGuide is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.400  Stack Begin  -  Studio
+  13:29:33.400  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.LoadTestingUI', Line 9  -  Studio
+  13:29:33.401  Stack End  -  Studio
+  13:29:33.401  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.401  Stack Begin  -  Studio
+  13:29:33.401  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.MonitoringDashboardUI', Line 6  -  Studio
+  13:29:33.401  Stack End  -  Studio
+  13:29:33.402  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.402  Stack Begin  -  Studio
+  13:29:33.402  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.MultiServerCoordinationUI', Line 6  -  Studio
+  13:29:33.402  Stack End  -  Studio
+  13:29:33.402  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.403  Stack Begin  -  Studio
+  13:29:33.403  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.PerformanceAnalyzerUI', Line 6  -  Studio
+  13:29:33.403  Stack End  -  Studio
+  13:29:33.403  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.403  Stack Begin  -  Studio
+  13:29:33.403  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.SchemaBuilderUI', Line 6  -  Studio
+  13:29:33.404  Stack End  -  Studio
+  13:29:33.404  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.404  Stack Begin  -  Studio
+  13:29:33.404  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.clientScripts.SessionManagementUI', Line 6  -  Studio
+  13:29:33.405  Stack End  -  Studio
+  13:29:33.405  user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server:37: Module not found: DataStoreManager  -  Client
+  13:29:33.406  Stack Begin  -  Studio
+  13:29:33.406  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server', Line 37 - function resolveModule  -  Studio
+  13:29:33.406  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server', Line 49  -  Studio
+  13:29:33.406  Stack End  -  Studio
+  13:29:33.407  APIIntegrationUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server"  -  Client
+  13:29:33.407  Stack Begin  -  Studio
+  13:29:33.407  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.APIIntegrationIntegration', Line 9  -  Studio
+  13:29:33.407  Stack End  -  Studio
+  13:29:33.408  AccessControl is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server"  -  Client
+  13:29:33.408  Stack Begin  -  Studio
+  13:29:33.409  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.AccessControlIntegration', Line 9  -  Studio
+  13:29:33.409  Stack End  -  Studio
+  13:29:33.410  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.411  Stack Begin  -  Studio
+  13:29:33.411  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.BulkOperationsManager', Line 7  -  Studio
+  13:29:33.411  Stack End  -  Studio
+  13:29:33.412  CodeGeneratorUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server"  -  Client
+  13:29:33.412  Stack Begin  -  Studio
+  13:29:33.412  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.CodeGeneratorIntegration', Line 9  -  Studio
+  13:29:33.413  Stack End  -  Studio
+  13:29:33.419  Attempt to connect failed: Passed value is not a function  -  Studio
+  13:29:33.419  Stack Begin  -  Studio
+  13:29:33.419  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataExplorer', Line 472  -  Studio
+  13:29:33.419  Stack End  -  Studio
+  13:29:33.420  user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataExplorer:549: attempt to call a nil value  -  Client
+  13:29:33.420  Stack Begin  -  Studio
+  13:29:33.420  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataExplorer', Line 549  -  Studio
+  13:29:33.420  Stack End  -  Studio
+  13:29:33.421  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.422  Stack Begin  -  Studio
+  13:29:33.422  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.DataMigrationTools', Line 23  -  Studio
+  13:29:33.422  Stack End  -  Studio
+  13:29:33.423  Failed to resolve module: CacheManager  -  Client
+  13:29:33.424  Failed to resolve module: SchemaManager  -  Client
+  13:29:33.424  Failed to resolve module: SchemaValidator  -  Client
+  13:29:33.424  Failed to resolve module: SessionManager  -  Client
+  13:29:33.424  Failed to resolve module: PerformanceMonitor  -  Client
+  13:29:33.425  Failed to resolve module: SecurityManager  -  Client
+  13:29:33.426  Running module resolver update...  -  Client
+  13:29:33.427  Could not find init script  -  Client
+  13:29:33.429  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.429  Stack Begin  -  Studio
+  13:29:33.429  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.MonitoringDashboard', Line 8  -  Studio
+  13:29:33.430  Stack End  -  Studio
+  13:29:33.431  Failed to resolve module: SessionManager  -  Client
+  13:29:33.432  Failed to resolve module: DataVisualization  -  Client
+  13:29:33.432  Failed to resolve module: StyleGuide  -  Client
+  13:29:33.433  Failed to resolve module: DataExplorer  -  Client
+  13:29:33.434  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.434  Stack Begin  -  Studio
+  13:29:33.434  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.PerformanceAnalyzer', Line 12  -  Studio
+  13:29:33.434  Stack End  -  Studio
+  13:29:33.435  Failed to resolve module: DataExplorer  -  Client
+  13:29:33.436  Failed to resolve module: SchemaManager  -  Client
+  13:29:33.438  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.438  Stack Begin  -  Studio
+  13:29:33.438  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.SchemaEditor', Line 4  -  Studio
+  13:29:33.438  Stack End  -  Studio
+  13:29:33.439  Failed to resolve module: SchemaVersioning  -  Client
+  13:29:33.441  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.441  Stack Begin  -  Studio
+  13:29:33.442  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.SchemaVersionViewer', Line 5  -  Studio
+  13:29:33.442  Stack End  -  Studio
+  13:29:33.443  DataStore can't be accessed from client  -  Client
+  13:29:33.443  Stack Begin  -  Studio
+  13:29:33.443  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src.server.SessionManager', Line 27  -  Studio
+  13:29:33.443  Stack End  -  Studio
+  13:29:33.445  user_DataStorePlugin.rbxmx.DataStoreManagerPro.src:1: Expected identifier when parsing expression, got Unicode character U+feff  -  Studio
+  13:29:33.445  Hello world, from client!  -  Client
+  13:29:33.447  AccessControl is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.447  Stack Begin  -  Studio
+  13:29:33.447  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.AccessControlUI', Line 13  -  Studio
+  13:29:33.447  Stack End  -  Studio
+  13:29:33.449  APIIntegration is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.449  Stack Begin  -  Studio
+  13:29:33.449  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.APIIntegrationUI', Line 9  -  Studio
+  13:29:33.449  Stack End  -  Studio
+  13:29:33.449  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.450  Stack Begin  -  Studio
+  13:29:33.450  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.BulkOperationsUI', Line 6  -  Studio
+  13:29:33.450  Stack End  -  Studio
+  13:29:33.450  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.450  Stack Begin  -  Studio
+  13:29:33.450  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.CachingSystemUI', Line 6  -  Studio
+  13:29:33.451  Stack End  -  Studio
+  13:29:33.452  SchemaManager is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.452  Stack Begin  -  Studio
+  13:29:33.452  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.CodeGeneratorUI', Line 9  -  Studio
+  13:29:33.452  Stack End  -  Studio
+  13:29:33.453  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.453  Stack Begin  -  Studio
+  13:29:33.453  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.DataMigrationUI', Line 6  -  Studio
+  13:29:33.453  Stack End  -  Studio
+  13:29:33.456  StyleGuide is not a valid member of Folder "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts"  -  Client
+  13:29:33.456  Stack Begin  -  Studio
+  13:29:33.456  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.LoadTestingUI', Line 9  -  Studio
+  13:29:33.457  Stack End  -  Studio
+  13:29:33.457  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.457  Stack Begin  -  Studio
+  13:29:33.458  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.MonitoringDashboardUI', Line 6  -  Studio
+  13:29:33.458  Stack End  -  Studio
+  13:29:33.458  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.458  Stack Begin  -  Studio
+  13:29:33.458  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.MultiServerCoordinationUI', Line 6  -  Studio
+  13:29:33.459  Stack End  -  Studio
+  13:29:33.459  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.459  Stack Begin  -  Studio
+  13:29:33.459  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.PerformanceAnalyzerUI', Line 6  -  Studio
+  13:29:33.460  Stack End  -  Studio
+  13:29:33.460  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.460  Stack Begin  -  Studio
+  13:29:33.460  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.SchemaBuilderUI', Line 6  -  Studio
+  13:29:33.460  Stack End  -  Studio
+  13:29:33.461  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.461  Stack Begin  -  Studio
+  13:29:33.461  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.clientScripts.SessionManagementUI', Line 6  -  Studio
+  13:29:33.461  Stack End  -  Studio
+  13:29:33.462  user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server:37: Module not found: DataStoreManager  -  Client
+  13:29:33.462  Stack Begin  -  Studio
+  13:29:33.463  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server', Line 37 - function resolveModule  -  Studio
+  13:29:33.463  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server', Line 49  -  Studio
+  13:29:33.463  Stack End  -  Studio
+  13:29:33.464  AccessControl is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server"  -  Client
+  13:29:33.464  Stack Begin  -  Studio
+  13:29:33.464  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.AccessControlIntegration', Line 9  -  Studio
+  13:29:33.464  Stack End  -  Studio
+  13:29:33.465  APIIntegrationUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server"  -  Client
+  13:29:33.465  Stack Begin  -  Studio
+  13:29:33.465  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.APIIntegrationIntegration', Line 9  -  Studio
+  13:29:33.465  Stack End  -  Studio
+  13:29:33.467  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.467  Stack Begin  -  Studio
+  13:29:33.467  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.BulkOperationsManager', Line 7  -  Studio
+  13:29:33.467  Stack End  -  Studio
+  13:29:33.468  CodeGeneratorUI is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server"  -  Client
+  13:29:33.468  Stack Begin  -  Studio
+  13:29:33.469  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.CodeGeneratorIntegration', Line 9  -  Studio
+  13:29:33.469  Stack End  -  Studio
+  13:29:33.474  Attempt to connect failed: Passed value is not a function  -  Studio
+  13:29:33.474  Stack Begin  -  Studio
+  13:29:33.474  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataExplorer', Line 472  -  Studio
+  13:29:33.474  Stack End  -  Studio
+  13:29:33.475  user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataExplorer:549: attempt to call a nil value  -  Client
+  13:29:33.475  Stack Begin  -  Studio
+  13:29:33.475  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataExplorer', Line 549  -  Studio
+  13:29:33.475  Stack End  -  Studio
+  13:29:33.476  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.476  Stack Begin  -  Studio
+  13:29:33.477  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.DataMigrationTools', Line 23  -  Studio
+  13:29:33.477  Stack End  -  Studio
+  13:29:33.478  Failed to resolve module: CacheManager  -  Client
+  13:29:33.478  Failed to resolve module: SchemaManager  -  Client
+  13:29:33.478  Failed to resolve module: SchemaValidator  -  Client
+  13:29:33.478  Failed to resolve module: SessionManager  -  Client
+  13:29:33.478  Failed to resolve module: PerformanceMonitor  -  Client
+  13:29:33.478  Failed to resolve module: SecurityManager  -  Client
+  13:29:33.480  Running module resolver update...  -  Client
+  13:29:33.480  Could not find init script  -  Client
+  13:29:33.481  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.481  Stack Begin  -  Studio
+  13:29:33.481  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.MonitoringDashboard', Line 8  -  Studio
+  13:29:33.482  Stack End  -  Studio
+  13:29:33.482  Failed to resolve module: SessionManager  -  Client
+  13:29:33.482  Failed to resolve module: DataVisualization  -  Client
+  13:29:33.483  Failed to resolve module: StyleGuide  -  Client
+  13:29:33.483  Failed to resolve module: DataExplorer  -  Client
+  13:29:33.484  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.484  Stack Begin  -  Studio
+  13:29:33.484  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.PerformanceAnalyzer', Line 12  -  Studio
+  13:29:33.484  Stack End  -  Studio
+  13:29:33.485  Failed to resolve module: DataExplorer  -  Client
+  13:29:33.485  Failed to resolve module: SchemaManager  -  Client
+  13:29:33.486  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.487  Stack Begin  -  Studio
+  13:29:33.487  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.SchemaEditor', Line 4  -  Studio
+  13:29:33.487  Stack End  -  Studio
+  13:29:33.487  Failed to resolve module: SchemaVersioning  -  Client
+  13:29:33.488  Attempted to call require with invalid argument(s).  -  Client
+  13:29:33.488  Stack Begin  -  Studio
+  13:29:33.488  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.SchemaVersionViewer', Line 5  -  Studio
+  13:29:33.489  Stack End  -  Studio
+  13:29:33.489  DataStore can't be accessed from client  -  Client
+  13:29:33.490  Stack Begin  -  Studio
+  13:29:33.490  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.src.server.SessionManager', Line 27  -  Studio
+  13:29:33.490  Stack End  -  Studio
+  13:29:33.491  user_DataStorePlugin.rbxmx.DataStoreManagerPro.test.src:1: Expected identifier when parsing expression, got Unicode character U+feff  -  Studio
+  13:29:33.720  init.server is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src"  -  Server
+  13:29:33.720  Stack Begin  -  Studio
+  13:29:33.720  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.Main', Line 20  -  Studio
+  13:29:33.720  Stack End  -  Studio
+  13:29:33.834  init.server is not a valid member of Script "user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.src"  -  Client
+  13:29:33.834  Stack Begin  -  Studio
+  13:29:33.834  Script 'user_DataStorePlugin.rbxmx.DataStoreManagerPro.DataStoreManagerPro.Main', Line 20  -  Studio
+  13:29:33.835  Stack End  -  Studio
+  13:29:34.004  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - AchievementUI:6
+  13:29:34.004  Stack Begin  -  Studio
+  13:29:34.005  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.AchievementUI', Line 6  -  Studio - AchievementUI:6
+  13:29:34.005  Stack End  -  Studio
+  13:29:34.005  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - AmmoUI:6
+  13:29:34.005  Stack Begin  -  Studio
+  13:29:34.005  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.AmmoUI', Line 6  -  Studio - AmmoUI:6
+  13:29:34.005  Stack End  -  Studio
+  13:29:34.005  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - BuildingChallengeUI:6
+  13:29:34.006  Stack Begin  -  Studio
+  13:29:34.006  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.BuildingChallengeUI', Line 6  -  Studio - BuildingChallengeUI:6
+  13:29:34.006  Stack End  -  Studio
+  13:29:34.006  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - BuildingTemplateUI:6
+  13:29:34.006  Stack Begin  -  Studio
+  13:29:34.006  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.BuildingTemplateUI', Line 6  -  Studio - BuildingTemplateUI:6
+  13:29:34.006  Stack End  -  Studio
+  13:29:34.007  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - BuildingToolsUI:6
+  13:29:34.007  Stack Begin  -  Studio
+  13:29:34.007  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.BuildingToolsUI', Line 6  -  Studio - BuildingToolsUI:6
+  13:29:34.007  Stack End  -  Studio
+  13:29:34.007  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ChatUI:7
+  13:29:34.008  Stack Begin  -  Studio
+  13:29:34.008  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ChatUI', Line 7  -  Studio - ChatUI:7
+  13:29:34.008  Stack End  -  Studio
+  13:29:34.009  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ConfirmationUI:6
+  13:29:34.009  Stack Begin  -  Studio
+  13:29:34.009  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ConfirmationUI', Line 6  -  Studio - ConfirmationUI:6
+  13:29:34.009  Stack End  -  Studio
+  13:29:34.010  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - CrosshairUI:7
+  13:29:34.010  Stack Begin  -  Studio
+  13:29:34.010  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.CrosshairUI', Line 7  -  Studio - CrosshairUI:7
+  13:29:34.010  Stack End  -  Studio
+  13:29:34.011  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - DailyRewardsUI:4
+  13:29:34.011  Stack Begin  -  Studio
+  13:29:34.011  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.DailyRewardsUI', Line 4  -  Studio - DailyRewardsUI:4
+  13:29:34.011  Stack End  -  Studio
+  13:29:34.012  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - EndUI:6
+  13:29:34.012  Stack Begin  -  Studio
+  13:29:34.012  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.EndUI', Line 6  -  Studio - EndUI:6
+  13:29:34.012  Stack End  -  Studio
+  13:29:34.012  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ErrorUI:6
+  13:29:34.013  Stack Begin  -  Studio
+  13:29:34.013  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ErrorUI', Line 6  -  Studio - ErrorUI:6
+  13:29:34.013  Stack End  -  Studio
+  13:29:34.013  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - FriendsUI:5
+  13:29:34.013  Stack Begin  -  Studio
+  13:29:34.014  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.FriendsUI', Line 5  -  Studio - FriendsUI:5
+  13:29:34.014  Stack End  -  Studio
+  13:29:34.014  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - HealthUI:6
+  13:29:34.014  Stack Begin  -  Studio
+  13:29:34.015  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.HealthUI', Line 6  -  Studio - HealthUI:6
+  13:29:34.015  Stack End  -  Studio
+  13:29:34.015  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - HelpUI:6
+  13:29:34.015  Stack Begin  -  Studio
+  13:29:34.016  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.HelpUI', Line 6  -  Studio - HelpUI:6
+  13:29:34.016  Stack End  -  Studio
+  13:29:34.016  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - InputUI:6
+  13:29:34.016  Stack Begin  -  Studio
+  13:29:34.017  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.InputUI', Line 6  -  Studio - InputUI:6
+  13:29:34.017  Stack End  -  Studio
+  13:29:34.017  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - InventoryUI:6
+  13:29:34.017  Stack Begin  -  Studio
+  13:29:34.018  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.InventoryUI', Line 6  -  Studio - InventoryUI:6
+  13:29:34.018  Stack End  -  Studio
+  13:29:34.018  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - KillFeedUI:6
+  13:29:34.019  Stack Begin  -  Studio
+  13:29:34.019  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.KillFeedUI', Line 6  -  Studio - KillFeedUI:6
+  13:29:34.019  Stack End  -  Studio
+  13:29:34.019  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - LeaderboardUI:6
+  13:29:34.019  Stack Begin  -  Studio
+  13:29:34.020  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.LeaderboardUI', Line 6  -  Studio - LeaderboardUI:6
+  13:29:34.020  Stack End  -  Studio
+  13:29:34.020  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - LoadingUI:6
+  13:29:34.020  Stack Begin  -  Studio
+  13:29:34.020  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.LoadingUI', Line 6  -  Studio - LoadingUI:6
+  13:29:34.021  Stack End  -  Studio
+  13:29:34.021  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - InventoryUI:4
+  13:29:34.021  Stack Begin  -  Studio
+  13:29:34.021  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.MainUI.InventoryUI', Line 4  -  Studio - InventoryUI:4
+  13:29:34.021  Stack End  -  Studio
+  13:29:34.022  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - MarketplaceUI:4
+  13:29:34.022  Stack Begin  -  Studio
+  13:29:34.022  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.MainUI.MarketplaceUI', Line 4  -  Studio - MarketplaceUI:4
+  13:29:34.023  Stack End  -  Studio
+  13:29:34.023  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - Marketplace:5
+  13:29:34.023  Stack Begin  -  Studio
+  13:29:34.023  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.Marketplace', Line 5  -  Studio - Marketplace:5
+  13:29:34.023  Stack End  -  Studio
+  13:29:34.024  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - MenuUI:7
+  13:29:34.024  Stack Begin  -  Studio
+  13:29:34.024  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.MenuUI', Line 7  -  Studio - MenuUI:7
+  13:29:34.025  Stack End  -  Studio
+  13:29:34.025  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - MinimapUI:7
+  13:29:34.025  Stack Begin  -  Studio
+  13:29:34.025  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.MinimapUI', Line 7  -  Studio - MinimapUI:7
+  13:29:34.026  Stack End  -  Studio
+  13:29:34.026  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - NotificationUI:6
+  13:29:34.026  Stack Begin  -  Studio
+  13:29:34.027  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.NotificationUI', Line 6  -  Studio - NotificationUI:6
+  13:29:34.027  Stack End  -  Studio
+  13:29:34.027  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - PauseUI:7
+  13:29:34.027  Stack Begin  -  Studio
+  13:29:34.028  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.PauseUI', Line 7  -  Studio - PauseUI:7
+  13:29:34.028  Stack End  -  Studio
+  13:29:34.029  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - PlayerProfileUI:5
+  13:29:34.029  Stack Begin  -  Studio
+  13:29:34.029  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.PlayerProfileUI', Line 5  -  Studio - PlayerProfileUI:5
+  13:29:34.030  Stack End  -  Studio
+  13:29:34.030  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ProgressionUI:6
+  13:29:34.030  Stack Begin  -  Studio
+  13:29:34.031  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ProgressionUI', Line 6  -  Studio - ProgressionUI:6
+  13:29:34.031  Stack End  -  Studio
+  13:29:34.031  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - RoundUI:6
+  13:29:34.031  Stack Begin  -  Studio
+  13:29:34.031  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.RoundUI', Line 6  -  Studio - RoundUI:6
+  13:29:34.031  Stack End  -  Studio
+  13:29:34.032  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ScoreboardUI:7
+  13:29:34.032  Stack Begin  -  Studio
+  13:29:34.032  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ScoreboardUI', Line 7  -  Studio - ScoreboardUI:7
+  13:29:34.032  Stack End  -  Studio
+  13:29:34.032  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ScoreUI:6
+  13:29:34.032  Stack Begin  -  Studio
+  13:29:34.032  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ScoreUI', Line 6  -  Studio - ScoreUI:6
+  13:29:34.033  Stack End  -  Studio
+  13:29:34.033  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - SettingsUI:6
+  13:29:34.033  Stack Begin  -  Studio
+  13:29:34.033  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.SettingsUI', Line 6  -  Studio - SettingsUI:6
+  13:29:34.033  Stack End  -  Studio
+  13:29:34.034  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - ShopUI:6
+  13:29:34.034  Stack Begin  -  Studio
+  13:29:34.034  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.ShopUI', Line 6  -  Studio - ShopUI:6
+  13:29:34.034  Stack End  -  Studio
+  13:29:34.035  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - SocialHubUI:5
+  13:29:34.035  Stack Begin  -  Studio
+  13:29:34.035  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.SocialHubUI', Line 5  -  Studio - SocialHubUI:5
+  13:29:34.035  Stack End  -  Studio
+  13:29:34.036  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - SocialInteractionUI:5
+  13:29:34.036  Stack Begin  -  Studio
+  13:29:34.036  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.SocialInteractionUI', Line 5  -  Studio - SocialInteractionUI:5
+  13:29:34.036  Stack End  -  Studio
+  13:29:34.037  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - SocialMediaUI:4
+  13:29:34.037  Stack Begin  -  Studio
+  13:29:34.037  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.SocialMediaUI', Line 4  -  Studio - SocialMediaUI:4
+  13:29:34.037  Stack End  -  Studio
+  13:29:34.038  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - SpectatorUI:7
+  13:29:34.038  Stack Begin  -  Studio
+  13:29:34.038  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.SpectatorUI', Line 7  -  Studio - SpectatorUI:7
+  13:29:34.038  Stack End  -  Studio
+  13:29:34.039  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - TeamScoreUI:6
+  13:29:34.039  Stack Begin  -  Studio
+  13:29:34.040  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.TeamScoreUI', Line 6  -  Studio - TeamScoreUI:6
+  13:29:34.040  Stack End  -  Studio
+  13:29:34.040  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - TeamUI:6
+  13:29:34.040  Stack Begin  -  Studio
+  13:29:34.041  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.TeamUI', Line 6  -  Studio - TeamUI:6
+  13:29:34.041  Stack End  -  Studio
+  13:29:34.042  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - WeaponUI:6
+  13:29:34.042  Stack Begin  -  Studio
+  13:29:34.042  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui.WeaponUI', Line 6  -  Studio - WeaponUI:6
+  13:29:34.042  Stack End  -  Studio
+  13:29:34.043  Shared is not a valid member of ReplicatedStorage "ReplicatedStorage"  -  Client - StarterGui:5
+  13:29:34.043  Stack Begin  -  Studio
+  13:29:34.043  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui', Line 5  -  Studio - StarterGui:5
+  13:29:34.043  Stack End  -  Studio
+  13:29:42.382  Disconnect from ::ffff:127.0.0.1|62687  -  Studio

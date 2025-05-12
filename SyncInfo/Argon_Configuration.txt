@@ -1,0 +1,93 @@
+Configuration
+One of the main features of Argon is the extreme ability to customize it to your liking. This page will guide you through the process of configuring Argon to fit your needs!
+
+Argon CLI
+Argon command line interface is configurable through two main ways.
+
+Command Options
+When running argon, you can add options to customize the behavior of the Commands. Here are some examples:
+
+--docs or -d - Include documentation in the project
+--template or -T - Select the project template
+Global Config
+Argon has a global config file that can be used to set default settings for the CLI. The configuration file is located at:
+
+Windows: %USERPROFILE%\.argon\config.toml
+macOS & Linux: ~/.argon/config.toml
+And can have the following settings:
+
+Setting	Default	Description
+host	localhost	Default server host name when live syncing
+port	8000	Default server port when live syncing
+template	place	Default project Template to use when creating a new project with argon init. Argon comes with five templates: place, plugin, package, model, empty and quick. But you can add your own! Just create a new folder with the desired name and contents in .argon/templates/
+license	Apache-2.0	Default project license SPDX identifier to use when creating a new project with argon init. Argon will pull license template from GitHub so if there is no internet connection, placeholder will be used instead
+include_docs	true	Controls whether documentation files: README, LICENSE or CHANGELOG should be included in the project (when running argon init and present in the project template)
+use_git	true	Toggles the use of Git for source control. If enabled Argon will initialize a new repository and add .gitignore file (when running argon init and present in the project template )
+use_wally	false	Whether to use Wally for package management. When enabled Argon will install dependencies automatically, add wally.toml file and append Packages path to the project file (when running argon init and present in the project template )
+use_selene	false	Whether to use selene for codebase linting. If enabled Argon will add selene.toml configuration file (when running argon init and present in the project template )
+run_async	false	Whether to run Argon asynchronously every time you use argon serve, argon build or argon sourcemap (with --watch enabled). Useful when running multiple Argon instances as it will free up the terminal. To stop running Argon sessions use argon stop command
+scan_ports	true	When enabled Argon will scan for the first available port if selected one is already in use
+detect_project	true	Whether Argon should intelligently detect the project type. This allows to run roblox-ts or to install Wally packages automatically, regardless if use_wally or ts_mode settings are enabled
+smart_paths	false	If enabled smart path resolver will be used which makes providing path arguments or options easier and faster. When active Argon will try to locate the file with its shorter form e.g. argon serve dev instead of argon serve dev.project.json
+with_sourcemap	false	Whether Argon should generate sourcemap by default when running Serve or Build command. Useful for Luau LSP users
+build_xml	false	If no path is provided, Build command will always use the Roblox XML format instead of binary
+check_updates	true	Whether to check for new Argon releases on CLI startup (limited to once per hour). This setting also updates Argon plugin if install_plugin is enabled and project templates if update_templates is enabled
+auto_update	false	When enabled Argon will automatically install Argon updates if available. Otherwise you will be prompted for confirmation. This setting also works with install_plugin and update_templates
+install_plugin	true	Whether to install Roblox plugin locally by default and keep it updated when above settings are enabled
+update_templates	true	Whether to update default project templates when new ones are available and check_updates setting is enabled
+rojo_mode	true	When enabled Argon will use Rojo namespace by default when creating a new project
+ts_mode	false	Whether to use roblox-ts by default when creating, serving or building any project
+rename_instances	true	If enabled Argon will automatically rename improperly named instances by removing all Forbidden Characters from their names
+keep_duplicates	false	If enabled Argon will automatically rename instances that already exist in the filesystem by adding UUID v4 to their names
+move_to_bin	false	Controls whether to move files to the system bin instead of permanently deleting them (only applies when syncing changes from Roblox Studio to the file system)
+changes_threshold	5	Maximum number of incoming changes allowed before prompting for confirmation
+max_unsynced_changes	10	Maximum number of unsynced changes before showing a warning that the client is not connected and changes are not synced
+lua_extension	false	Toggles between .lua and .luau file extension when writing and transforming scripts
+ignore_line_endings	true	Ignore line endings when reading files to avoid unnecessary script diffs in Roblox Studio
+package_manager	npm	Package manager to use when running roblox-ts related scripts. Currently Argon supports every major package manager: bun, npm, pnpm and yarn however, any binary that has "create" command and can execute dynamic packages will work
+share_stats	true	Toggles sharing of anonymous Argon usage statistics which are displayed on the argon.wiki home page to show the size of the Argon community
+Workspace Config
+Works exactly the same as the Global Config but is specified at workspace level. To initialize one you need to create argon.toml file in the root of your project (right next to the Project File). If workspace config exists, it will override the global one.
+
+note
+Argon will only be able to load workspace config if it exists in the current working directory or parent directory of the PROJECT argument (only applies to init, serve, build and sourcemap commands)
+
+Argon Plugin
+Argon Roblox Studio plugin is configurable through the settings menu that can be accessed by clicking on the gear icon in the main plugin window. At the very top you can control whether to toggle settings on the:
+
+Global level
+Game level
+Place level
+Here are the settings you can change:
+
+Setting	Default	Description
+Initial Sync Priority	Server	Which side should be considered as up to date when initially connecting (Server, Client, None)
+Server Host	localhost	The host name of the server that plugin should connect to in order to start live syncing
+Server Port	8000	The port of the server that plugin should connect to in order to start live syncing
+Auto Connect	true	Automatically attempt to connect to the server when you opening a new place
+Auto Reconnect	false	If the connection is lost, automatically reconnect to the server after 5 second delay
+Live Hydrate	true	If the target instance doesn't exist in Studio, automatically hydrate it with the server
+Keep Unknowns	false	By default keep instances that are not present in the file system instead of destroying them
+Two-Way Sync	false	Sync changes made in Roblox Studio back to the server (local file system)
+Syncback Properties	false	Whether all properties should be synced back to the server when Two-Way Sync is enabled or Initial Sync Priority is set to Client (does not affect scripts)
+Only Code Mode	true	Syncback only scripts and instances that have descendant scripts
+Open In Editor	false	Open scripts in your OS default editor instead of the Roblox Studio one
+Display Prompts	Always	When to show prompts for actions that require confirmation (Always, Initial, Never)
+Changes Threshold	5	The maximum number of changes that will be automatically applied before prompting the user for confirmation
+Log Level	Warn	The level of logging you want to see in the output (Off, Error, Warn, Info, Debug, Trace)
+Override Packages	true	Allow writing changes made on the server side to the instances affected by PackageLink
+Argon Extension
+Argon Visual Studio Code extension is configurable by selecting checkboxes when running specific commands and through the editor settings that can be accessed by running Argon: Open Menu and selecting Settings from the list (it will filter the settings to only show Argon related ones).
+
+Here are the settings that can be changed:
+
+Setting	Default	Description
+Auto Update	true	Whether Argon should update the CLI automatically
+Auto Run	true	Whether Argon should serve the last used project when launching VS Code
+Auto Launch Studio	false	Whether Roblox Studio should be launched automatically when running a project
+Focus Studio	true	Whether Roblox Studio window should get focused when executing code
+Notification Level	Info	Level of notifications to show in the bottom right corner (Info, Warning, Error, Off)
+Default Host	localhost	Host name of the serve address
+Default Port	8000	Port number of the serve address
+Global Config	{}	Editable contents of the CLI Global Config file
+Verbose	false	Log verbose tracing of the CLI to the output panel

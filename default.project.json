@@ -4,27 +4,27 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "ReplicatedStorage": {
+      "ForeverBuild": {
         "$path": "src/ReplicatedStorage"
       }
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "ServerScriptService": {
+      "ForeverBuild": {
         "$path": "src/ServerScriptService"
       }
     },
     "StarterGui": {
       "$className": "StarterGui",
-      "StarterGui": {
+      "ForeverBuild": {
         "$path": "src/StarterGui"
       }
     },
-    "StarterPlayerScripts": {
-      "$className": "StarterPlayerScripts",
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "StarterPlayerScripts": {
+        "ForeverBuild": {
           "$path": "src/StarterPlayer/StarterPlayerScripts"
         }
       }

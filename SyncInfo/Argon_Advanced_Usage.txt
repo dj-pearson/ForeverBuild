@@ -1,0 +1,102 @@
+Advanced Argon Usage
+Learn how to use Argon in more advanced use cases!
+
+TypeScript
+TypeScript is a strongly typed programming language that gives you better tooling at any scale. With static types, you'll never run into errors caused by typos, indexing an undefined value, or passing the wrong type of value into a function ever again. Use industry standard tools like React, Prettier, ESLint, and more!
+
+To learn more read roblox-ts documentation.
+
+info
+Argon greatly integrates with roblox-ts and you can use it in the following commands:
+
+argon init
+argon serve
+argon build
+Automation
+Argon allows you to automate your workflows with its powerful CLI. You can add it to your CI/CD pipeline to make sure your project is always up-to-date and working as expected or to even deploy it! Here is an example GitHub Action that builds a plugin and then releases it on GitHub:
+
+name: Build and Release
+
+on:
+  push:
+    tags: ["*"]
+
+jobs:
+  # Create a draft release on GitHub
+  draft-release:
+    name: Draft Release
+    runs-on: ubuntu-latest
+
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
+      release_id: ${{ steps.create-release.outputs.id }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Release
+        id: create-release
+        uses: shogo82148/actions-create-release@v1
+        with:
+          release_name: ${{ github.ref_name }}
+          draft: true
+
+  # Build the plugin and upload it to GitHub
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: draft-release
+
+    steps:
+      - uses: actions/checkout@v4
+
+        # Setup Aftman that installs Argon and Wally
+      - name: Setup Aftman
+        uses: ok-nick/setup-aftman@v0.4.2
+
+        # Install Wally dependencies that our plugin uses
+      - name: Install dependencies
+        run: wally install
+
+        # Build the plugin
+      - name: Build
+        run: argon build -vvvv
+
+        # Upload the plugin to GitHub artifacts
+      - name: Upload to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin.rbxm
+          path: plugin.rbxm
+
+        # Upload the plugin to the draft release
+      - name: Upload to Release
+        uses: shogo82148/actions-upload-release-asset@v1
+        with:
+          upload_url: ${{ needs.draft-release.outputs.upload_url }}
+          asset_name: plugin.rbxm
+          asset_path: plugin.rbxm
+
+  # Publish the release
+  publish-release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    needs: [build, draft-release]
+
+    steps:
+      - uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ needs.draft-release.outputs.release_id }}
+
+warning
+Not all Argon commands are supported on Linux (Ubuntu) yet. Here is exhaustive list of unsupported commands:
+
+argon studio
+argon debug
+And some options of these commands are not supported:
+
+argon build (--plugin)
+argon exec (--focus , --standalone)
+argon plugin (if path was not provided)

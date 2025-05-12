@@ -1,0 +1,33 @@
+Common Argon Usage
+Learn how to use Argon in most common scenarios!
+
+Live Sync
+Live Sync is a feature that allows you to sync changes made in file system to the Roblox Studio and vice versa. All of this is done in real-time, so you can see the changes immediately. Most commonly used for creating Roblox games.
+
+In order to start Live Sync session you need to:
+
+Open Project you want to sync
+Run Argon Serve command
+Read more here if you use CLI
+Read more here if you use VS Code
+Open place to sync with in Roblox Studio
+Connect Argon plugin to the server
+Accept potential changes and done!
+tip
+To improve your experience you can enable Two-Way Sync and many other useful features!
+
+Project Building
+Argon allows you to build your project into Roblox binary (rbxl / rbxm) or XML (rbxlx / rbxmx) file. This is extremely useful when:
+
+You want to build you own plugin or model
+You want to share your project with others
+You want to publish your project to Roblox or just open it in Roblox Studio
+To build your project you have to run Argon Build command:
+
+Read more here if you use CLI
+Read more here if you use VS Code
+tip
+When building plugin you can make it reload automatically every time you update its code and see how it changes in Roblox Studio in real time! To do that make sure:
+
+you have Reload plugins on file changed setting enabled in Roblox Studio > File > Studio Settings > Directories
+you use --plugin option (CLI) or Build plugin setting (VS Code)

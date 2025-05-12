@@ -29,14 +29,15 @@
         }
       }
     }
-  },
-  "exclude": [
+  },  "exclude": [
     "**/*.meta.json",
-    "**/init.lua",
-    "**/init.luau",
-    "**/init.client.lua",
-    "**/init.client.luau",
-    "**/init.server.lua",
-    "**/init.server.luau"
+    "src/server/init.lua",
+    "src/server/init.luau",
+    "src/server/init.server.lua",
+    "src/server/init.server.luau",
+    "src/client/init.lua",
+    "src/client/init.luau",
+    "src/client/init.client.lua",
+    "src/client/init.client.luau"
   ]
 }

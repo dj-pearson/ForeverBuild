@@ -1,0 +1,8 @@
+  16:09:34.548  inventory is not a valid member of Folder "ReplicatedStorage.shared.core"  -  Server - GameManager:5
+  16:09:34.548  Stack Begin  -  Studio
+  16:09:34.549  Script 'ReplicatedStorage.shared.core.GameManager', Line 5  -  Studio - GameManager:5
+  16:09:34.549  Stack End  -  Studio
+  16:09:34.549  Requested module experienced an error while loading  -  Server - server:5
+  16:09:34.549  Stack Begin  -  Studio
+  16:09:34.550  Script 'ServerScriptService.server', Line 5  -  Studio - server:5
+  16:09:34.550  Stack End  -  Studio

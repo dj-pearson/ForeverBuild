@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 
-local Constants = require(script.Parent.Parent.core.Constants)
+local Constants = require(script.Parent.Parent.Constants)
 
 local CurrencyUI = {}
 CurrencyUI.__index = CurrencyUI
@@ -42,7 +42,7 @@ function CurrencyUI:CreateUI()
     mainFrame.Size = UDim2.new(0, 200, 0, 50)
     mainFrame.Position = UDim2.new(1, -220, 0, 20)
     mainFrame.BackgroundTransparency = 0.5
-    mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    mainFrame.BackgroundColor3 = Constants.UI_COLORS.SECONDARY
     mainFrame.BorderSizePixel = 0
     mainFrame.Parent = screenGui
     
@@ -61,7 +61,7 @@ function CurrencyUI:CreateUI()
     balanceLabel.Size = UDim2.new(1, -50, 1, 0)
     balanceLabel.Position = UDim2.new(0, 50, 0, 0)
     balanceLabel.BackgroundTransparency = 1
-    balanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    balanceLabel.TextColor3 = Constants.UI_COLORS.TEXT
     balanceLabel.TextSize = 24
     balanceLabel.Font = Enum.Font.GothamBold
     balanceLabel.Text = "0"
@@ -73,9 +73,9 @@ function CurrencyUI:CreateUI()
     purchaseButton.Name = "PurchaseButton"
     purchaseButton.Size = UDim2.new(0, 100, 0, 30)
     purchaseButton.Position = UDim2.new(1, -110, 1, 10)
-    purchaseButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    purchaseButton.BackgroundColor3 = Constants.UI_COLORS.PRIMARY
     purchaseButton.BorderSizePixel = 0
-    purchaseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    purchaseButton.TextColor3 = Constants.UI_COLORS.TEXT
     purchaseButton.TextSize = 18
     purchaseButton.Font = Enum.Font.GothamBold
     purchaseButton.Text = "Buy Coins"
@@ -88,9 +88,14 @@ end
 -- Set up event handling
 function CurrencyUI:SetupEventHandling()
     -- Handle balance updates
-    ReplicatedStorage.RemoteEvents.UpdateBalance.OnClientEvent:Connect(function(balance)
-        self:UpdateBalance(balance)
-    end)
+    local remoteEvents = ReplicatedStorage:FindFirstChild("RemoteEvents")
+    if remoteEvents and remoteEvents:FindFirstChild("UpdateBalance") then
+        remoteEvents.UpdateBalance.OnClientEvent:Connect(function(balance)
+            self:UpdateBalance(balance)
+        end)
+    else
+        warn("CurrencyUI: RemoteEvents.UpdateBalance not found")
+    end
     
     -- Handle purchase button click
     self.ui.MainFrame.PurchaseButton.MouseButton1Click:Connect(function()
@@ -110,7 +115,7 @@ function CurrencyUI:ShowPurchaseMenu()
     purchaseMenu.Name = "PurchaseMenu"
     purchaseMenu.Size = UDim2.new(0, 300, 0, 400)
     purchaseMenu.Position = UDim2.new(0.5, -150, 0.5, -200)
-    purchaseMenu.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    purchaseMenu.BackgroundColor3 = Constants.UI_COLORS.SECONDARY
     purchaseMenu.BorderSizePixel = 0
     purchaseMenu.Parent = self.ui
     
@@ -119,7 +124,7 @@ function CurrencyUI:ShowPurchaseMenu()
     title.Name = "Title"
     title.Size = UDim2.new(1, 0, 0, 50)
     title.BackgroundTransparency = 1
-    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextColor3 = Constants.UI_COLORS.TEXT
     title.TextSize = 24
     title.Font = Enum.Font.GothamBold
     title.Text = "Purchase Coins"
@@ -130,9 +135,9 @@ function CurrencyUI:ShowPurchaseMenu()
     closeButton.Name = "CloseButton"
     closeButton.Size = UDim2.new(0, 30, 0, 30)
     closeButton.Position = UDim2.new(1, -40, 0, 10)
-    closeButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+    closeButton.BackgroundColor3 = Constants.UI_COLORS.ERROR
     closeButton.BorderSizePixel = 0
-    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.TextColor3 = Constants.UI_COLORS.TEXT
     closeButton.TextSize = 20
     closeButton.Font = Enum.Font.GothamBold
     closeButton.Text = "X"
@@ -166,7 +171,7 @@ function CurrencyUI:CreatePurchaseOption(product, yOffset)
     coinAmount.Name = "CoinAmount"
     coinAmount.Size = UDim2.new(0.6, 0, 1, 0)
     coinAmount.BackgroundTransparency = 1
-    coinAmount.TextColor3 = Color3.fromRGB(255, 255, 255)
+    coinAmount.TextColor3 = Constants.UI_COLORS.TEXT
     coinAmount.TextSize = 20
     coinAmount.Font = Enum.Font.GothamBold
     coinAmount.Text = tostring(product.coins) .. " Coins"
@@ -179,7 +184,7 @@ function CurrencyUI:CreatePurchaseOption(product, yOffset)
     price.Size = UDim2.new(0.4, 0, 1, 0)
     price.Position = UDim2.new(0.6, 0, 0, 0)
     price.BackgroundTransparency = 1
-    price.TextColor3 = Color3.fromRGB(255, 255, 255)
+    price.TextColor3 = Constants.UI_COLORS.TEXT
     price.TextSize = 20
     price.Font = Enum.Font.GothamBold
     price.Text = tostring(product.robux) .. " R$"
@@ -191,9 +196,9 @@ function CurrencyUI:CreatePurchaseOption(product, yOffset)
     purchaseButton.Name = "PurchaseButton"
     purchaseButton.Size = UDim2.new(1, 0, 0, 30)
     purchaseButton.Position = UDim2.new(0, 0, 1, 10)
-    purchaseButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    purchaseButton.BackgroundColor3 = Constants.UI_COLORS.PRIMARY
     purchaseButton.BorderSizePixel = 0
-    purchaseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    purchaseButton.TextColor3 = Constants.UI_COLORS.TEXT
     purchaseButton.TextSize = 18
     purchaseButton.Font = Enum.Font.GothamBold
     purchaseButton.Text = "Purchase"

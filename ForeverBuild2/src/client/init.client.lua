@@ -1,9 +1,12 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local CurrencyUI = require(script.Parent.CurrencyUI)
+-- Load core modules
+local CurrencyUI = require(ReplicatedStorage.shared.core.ui.CurrencyUI)
 
 -- Initialize UI
 local currencyUI = CurrencyUI.new()
+
+print("Client initialized successfully")
 
 -- ... existing code ... 

@@ -48,7 +48,9 @@ local Constants = {
     GAME = {
         MAX_INVENTORY_SLOTS = 50,
         PLACEMENT_COOLDOWN = 0.5,
-        MAX_PLACEMENTS_PER_PLAYER = 1000
+        MAX_PLACEMENTS_PER_PLAYER = 1000,
+        STARTING_CURRENCY = 1000,
+        MAX_PLACED_ITEMS = 100
     },
     
     -- Item Actions
@@ -57,7 +59,23 @@ local Constants = {
         MOVE = "move",
         ROTATE = "rotate",
         COLOR = "color",
-        DESTROY = "destroy"
+        DESTROY = "destroy",
+        clone = {
+            cost = 50,
+            description = "Create a copy of this item"
+        },
+        move = {
+            cost = 25,
+            description = "Move this item to a new location"
+        },
+        rotate = {
+            cost = 10,
+            description = "Rotate this item"
+        },
+        destroy = {
+            cost = 0,
+            description = "Remove this item"
+        }
     },
 
     ITEM_PRICING = {
@@ -69,6 +87,38 @@ local Constants = {
         move = 2,         -- Fee for moving
         destroy = 1,      -- Fee for destroying
         rotate = 1        -- Fee for rotating
+    },
+
+    -- Item definitions
+    ITEMS = {
+        basic_cube = {
+            name = "Basic Cube",
+            description = "A simple cube for building",
+            price = 100,
+            icon = "rbxassetid://0", -- Replace with actual icon
+            category = "basic"
+        },
+        premium_cube = {
+            name = "Premium Cube",
+            description = "A fancy cube with special effects",
+            price = 500,
+            icon = "rbxassetid://0", -- Replace with actual icon
+            category = "premium"
+        },
+        rare_cube = {
+            name = "Rare Cube",
+            description = "An extremely rare cube with unique properties",
+            price = 1000,
+            icon = "rbxassetid://0", -- Replace with actual icon
+            category = "rare"
+        }
+    },
+    
+    -- UI Constants
+    UI = {
+        DIALOG_ANIMATION_DURATION = 0.3,
+        BUTTON_HOVER_DURATION = 0.2,
+        ERROR_DISPLAY_DURATION = 2
     }
 }
 

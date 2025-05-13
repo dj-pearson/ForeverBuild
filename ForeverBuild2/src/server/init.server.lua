@@ -13,7 +13,7 @@ if not ReplicatedStorage:FindFirstChild("RemoteEvents") then
     remoteEvents.Parent = ReplicatedStorage
 end
 
--- Create remote events
+-- Create remote events and functions
 local remoteEvents = ReplicatedStorage.RemoteEvents
 local events = {
     "BuyItem",
@@ -22,21 +22,35 @@ local events = {
     "RotateItem",
     "ChangeColor",
     "RemoveItem",
-    "GetInventory",
-    "GetItemData",
     "InteractWithItem",
-    "GetAvailableInteractions",
     "AddToInventory",
     "ApplyItemEffect",
     "ShowItemDescription",
-    "NotifyPlayer"
+    "NotifyPlayer",
+    "UpdateBalance"
 }
 
+local functions = {
+    "GetInventory",
+    "GetItemData",
+    "GetAvailableInteractions"
+}
+
+-- Create RemoteEvents
 for _, eventName in ipairs(events) do
     if not remoteEvents:FindFirstChild(eventName) then
         local event = Instance.new("RemoteEvent")
         event.Name = eventName
         event.Parent = remoteEvents
+    end
+end
+
+-- Create RemoteFunctions
+for _, functionName in ipairs(functions) do
+    if not remoteEvents:FindFirstChild(functionName) then
+        local func = Instance.new("RemoteFunction")
+        func.Name = functionName
+        func.Parent = remoteEvents
     end
 end
 
@@ -134,14 +148,6 @@ end)
 
 remoteEvents.ApplyItemEffect.OnServerEvent:Connect(function(player, itemId, placement)
     gameManager:ApplyItemEffect(player, itemId, placement)
-end)
-
-remoteEvents.ShowItemDescription.OnClientEvent:Connect(function(player, description)
-    -- This is handled by the client
-end)
-
-remoteEvents.NotifyPlayer.OnClientEvent:Connect(function(player, message)
-    -- This is handled by the client
 end)
 
 print("Server initialized successfully") 

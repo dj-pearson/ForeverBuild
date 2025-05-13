@@ -1,0 +1,46 @@
+-- Script to add "item" attribute to models based on their folder location
+-- Place this script in ServerScriptService and run it
+
+local Workspace = game:GetService("Workspace")
+
+-- Function to recursively process folders and add attributes to models
+local function processFolder(folder, attributeValue)
+    for _, child in pairs(folder:GetChildren()) do
+        if child:IsA("Model") then
+            -- Add the "item" attribute to the model
+            child:SetAttribute("item", attributeValue)
+            print(string.format("Added attribute 'item' = '%s' to model: %s", attributeValue, child.Name))
+        elseif child:IsA("Folder") then
+            -- Recursively process subfolders
+            -- Use the immediate parent folder name as the attribute value
+            local parentName = child.Name:lower()
+            processFolder(child, parentName)
+        end
+    end
+end
+
+-- Main function to start the process
+local function addItemAttributes()
+    local itemsFolder = Workspace:FindFirstChild("Items")
+    
+    if not itemsFolder then
+        warn("Items folder not found in Workspace!")
+        return
+    end
+    
+    print("Starting to add item attributes...")
+    
+    -- Process each main folder in Items
+    for _, folder in pairs(itemsFolder:GetChildren()) do
+        if folder:IsA("Folder") then
+            local folderName = folder.Name:lower()
+            print(string.format("Processing folder: %s", folder.Name))
+            processFolder(folder, folderName)
+        end
+    end
+    
+    print("Finished adding item attributes!")
+end
+
+-- Run the script
+addItemAttributes()

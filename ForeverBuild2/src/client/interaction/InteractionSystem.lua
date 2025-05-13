@@ -13,6 +13,7 @@ function InteractionSystem.new()
     self.currentTarget = nil
     self.interactionDistance = 10 -- Maximum distance for interaction
     self.ui = nil
+    self.remoteEvents = ReplicatedStorage.RemoteEvents
     return self
 end
 
@@ -27,6 +28,9 @@ function InteractionSystem:Initialize()
     
     -- Set up mouse movement
     self:SetupMouseHandling()
+    
+    -- Set up event handlers
+    self:SetupEventHandlers()
 end
 
 function InteractionSystem:CreateUI()
@@ -147,7 +151,26 @@ function InteractionSystem:ShowInteractionUI(placedItem)
     for _, child in ipairs(list:GetChildren()) do
         child:Destroy()
     end
-    
+
+    -- Get the item model from Workspace > Items
+    local itemsFolder = workspace:FindFirstChild("Items")
+    local itemModel = nil
+    if itemsFolder then
+        for _, model in ipairs(itemsFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("item") and model.Name == placedItem.id then
+                itemModel = model
+                break
+            end
+        end
+    end
+
+    -- Get tier and price
+    local tier = itemModel and itemModel:GetAttribute("item") or "basic"
+    local price = Constants.ITEM_PRICING[tier] or 0
+
+    -- Update tooltip title to show tier and price
+    tooltip.Title.Text = string.format("%s (%s) - %d Robux", placedItem.id, tier:gsub("^%l", string.upper), price)
+
     -- Get available interactions
     local interactions = self:GetAvailableInteractions(placedItem)
     
@@ -217,6 +240,41 @@ end
 function InteractionSystem:ShowInteractionMenu(interactions)
     -- Use the same UI as ShowInteractionUI
     self:ShowInteractionUI(self.currentTarget)
+end
+
+function InteractionSystem:SetupEventHandlers()
+    -- Handle interaction responses
+    self.remoteEvents.NotifyPlayer.OnClientEvent:Connect(function(message)
+        self:ShowNotification(message)
+    end)
+end
+
+function InteractionSystem:ShowNotification(message)
+    -- Create notification UI
+    local notification = Instance.new("ScreenGui")
+    notification.Name = "Notification"
+    notification.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+    
+    local frame = Instance.new("Frame")
+    frame.Name = "NotificationFrame"
+    frame.Size = UDim2.new(0, 300, 0, 50)
+    frame.Position = UDim2.new(0.5, -150, 0.1, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    frame.BorderSizePixel = 0
+    frame.Parent = notification
+    
+    local label = Instance.new("TextLabel")
+    label.Name = "MessageLabel"
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 18
+    label.Font = Enum.Font.GothamBold
+    label.Text = message
+    label.Parent = frame
+    
+    -- Animate and destroy
+    game:GetService("Debris"):AddItem(notification, 3)
 end
 
 return InteractionSystem 

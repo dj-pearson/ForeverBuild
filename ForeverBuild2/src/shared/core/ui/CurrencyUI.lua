@@ -48,7 +48,7 @@ function CurrencyUI:CreateUI()
     coinIcon.Size = UDim2.new(0, 30, 0, 30)
     coinIcon.Position = UDim2.new(0, 10, 0.5, -15)
     coinIcon.BackgroundTransparency = 1
-    coinIcon.Image = "rbxassetid://YOUR_COIN_ICON_ID" -- TODO: Add coin icon
+    coinIcon.Image = "rbxassetid://101567167458494" -- TODO: Add coin icon
     coinIcon.Parent = frame
     
     -- Create balance label

@@ -14,6 +14,4 @@ starterGui:Init()
 local interactionSystem = InteractionSystem.new()
 interactionSystem:Initialize()
 
-print("Client initialized successfully")
-
--- ... existing code ... 
+print("Client initialized successfully") 

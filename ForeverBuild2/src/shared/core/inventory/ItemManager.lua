@@ -40,16 +40,28 @@ function ItemManager:IsAdmin(player)
 end
 
 function ItemManager:IsItemFree(itemId, player)
-    local item = self:GetItemData(itemId)
-    return item and item.price == 0
+    -- Use the new pricing logic
+    local price = self:GetActionPrice(itemId, Constants.ITEM_ACTIONS.BUY, player)
+    return price == 0
 end
 
 function ItemManager:GetActionPrice(itemId, action, player)
+    -- Look for the item model in Workspace > Items
+    local itemsFolder = workspace:FindFirstChild("Items")
+    if itemsFolder then
+        for _, model in ipairs(itemsFolder:GetChildren()) do
+            if model:IsA("Model") and model:GetAttribute("item") and model.Name == itemId then
+                local tier = model:GetAttribute("item")
+                local price = Constants.ITEM_PRICING[tier]
+                if price then
+                    return price
+                end
+            end
+        end
+    end
+    -- Fallback to old logic if not found
     local item = self:GetItemData(itemId)
-    if not item then return nil end
-    
-    -- TODO: Implement different prices for different actions
-    return item.price
+    return item and item.price or nil
 end
 
 function ItemManager:GetItemData(itemId)

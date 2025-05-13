@@ -58,6 +58,13 @@ local Constants = {
         ROTATE = "rotate",
         COLOR = "color",
         DESTROY = "destroy"
+    },
+
+    ITEM_PRICING = {
+        basic = 5,        -- 5 Robux
+        secondary = 20,   -- 20 Robux
+        rare = 100,       -- 100 Robux
+        exclusive = 500   -- 500 Robux
     }
 }
 

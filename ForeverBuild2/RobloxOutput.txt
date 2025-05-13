@@ -1,32 +1,38 @@
-  21:29:55.047  Path must begin with either './' or '../', received '@rbxts/types'  -  Server - Constants:1
-  21:29:55.047  Stack Begin  -  Studio
-  21:29:55.047  Script 'ReplicatedStorage.shared.core.Constants', Line 1  -  Studio - Constants:1
-  21:29:55.047  Stack End  -  Studio
-  21:29:55.047  Requested module experienced an error while loading  -  Server - GameManager:4
-  21:29:55.047  Stack Begin  -  Studio
-  21:29:55.047  Script 'ReplicatedStorage.shared.core.GameManager', Line 4  -  Studio - GameManager:4
-  21:29:55.048  Stack End  -  Studio
-  21:29:55.048  Requested module experienced an error while loading  -  Server - server:5
-  21:29:55.048  Stack Begin  -  Studio
-  21:29:55.048  Script 'ServerScriptService.server', Line 5  -  Studio - server:5
-  21:29:55.048  Stack End  -  Studio
-  21:29:55.209  Path must begin with either './' or '../', received '@rbxts/types'  -  Client - Constants:1
-  21:29:55.209  Stack Begin  -  Studio
-  21:29:55.209  Script 'ReplicatedStorage.shared.core.Constants', Line 1  -  Studio - Constants:1
-  21:29:55.209  Stack End  -  Studio
-  21:29:55.209  Requested module experienced an error while loading  -  Client - CurrencyUI:5
-  21:29:55.210  Stack Begin  -  Studio
-  21:29:55.210  Script 'ReplicatedStorage.shared.core.ui.CurrencyUI', Line 5  -  Studio - CurrencyUI:5
-  21:29:55.210  Stack End  -  Studio
-  21:29:55.210  Requested module experienced an error while loading  -  Client - client:5
-  21:29:55.210  Stack Begin  -  Studio
-  21:29:55.210  Script 'Players.Xdjpearsonx.PlayerScripts.client', Line 5  -  Studio - client:5
-  21:29:55.210  Stack End  -  Studio
-  21:29:56.006  Constants is not a valid member of ModuleScript "ReplicatedStorage.shared"  -  Client - shared:11
-  21:29:56.006  Stack Begin  -  Studio
-  21:29:56.006  Script 'ReplicatedStorage.shared', Line 11  -  Studio - shared:11
-  21:29:56.006  Stack End  -  Studio
-  21:29:56.006  Requested module experienced an error while loading  -  Client - StarterGui:12
-  21:29:56.007  Stack Begin  -  Studio
-  21:29:56.007  Script 'Players.Xdjpearsonx.PlayerGui.StarterGui', Line 12  -  Studio - StarterGui:12
-  21:29:56.007  Stack End  -  Studio
+  22:00:44.920  Initializing game systems...  -  Server - GameManager:44
+  22:00:44.920  ItemManager initialized  -  Server - ItemManager:15
+  22:00:44.921  InventoryManager initialized  -  Server - InventoryManager:14
+  22:00:44.921  PlacementManager initialized  -  Server - PlacementManager:16
+  22:00:44.921  InteractionManager initialized  -  Server - InteractionManager:14
+  22:00:44.921  Game systems initialized successfully  -  Server - GameManager:62
+  22:00:44.921  InteractionManager initialized  -  Server - InteractionManager:14
+  22:00:44.921  Server initialized successfully  -  Server - server:153
+  22:00:44.980  Player joined: Xdjpearsonx  -  Server - GameManager:80
+  22:00:45.017  interaction is not a valid member of PlayerScripts "Players.Xdjpearsonx.PlayerScripts"  -  Client - client:6
+  22:00:45.017  Stack Begin  -  Studio
+  22:00:45.017  Script 'Players.Xdjpearsonx.PlayerScripts.client', Line 6  -  Studio - client:6
+  22:00:45.017  Stack End  -  Studio
+  22:00:45.177   ▶ DataStoreService: StudioAccessToApisNotAllowed: Studio access to APIs is not allowed. API: GetAsync, Data Store: PlayerCurrency (x2)  -  Studio
+  22:00:45.925  === Enhanced Glow Manager Starting ===  -  Server - NeonGlowManager:7
+  22:00:45.925  Found 6 glow models  -  Server - NeonGlowManager:145
+  22:00:45.925  Processing: Glow_Green_Cube (Color: Green)  -  Server - NeonGlowManager:153
+  22:00:45.925    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  22:00:45.926    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  22:00:45.927  Processing: Glow_Blue_Cube (Color: Blue)  -  Server - NeonGlowManager:153
+  22:00:45.927    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  22:00:45.927    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  22:00:45.927  Processing: Glow_Yellow_Cube (Color: Yellow)  -  Server - NeonGlowManager:153
+  22:00:45.928    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  22:00:45.928    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  22:00:45.928  Processing: Glow_White_Cube (Color: White)  -  Server - NeonGlowManager:153
+  22:00:45.928    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  22:00:45.929    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  22:00:45.929  Processing: Glow_Red_Cube (Color: Red)  -  Server - NeonGlowManager:153
+  22:00:45.929    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  22:00:45.929    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  22:00:45.929  Processing: Glow_Purple_Cube (Color: Purple)  -  Server - NeonGlowManager:153
+  22:00:45.929    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  22:00:45.930    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  22:00:45.930  === Enhanced Glow Manager Complete! ===  -  Server - NeonGlowManager:166
+  22:01:33.770  Disconnect from ::ffff:127.0.0.1|57544  -  Studio
+  22:01:33.773  Player leaving: Xdjpearsonx  -  Server - GameManager:91
+  22:01:33.828   ▶ DataStoreService: StudioAccessToApisNotAllowed: Cannot write to DataStore from studio if API access is not enabled. API: SetAsync, Data Store: PlayerCurrency (x2)  -  Studio

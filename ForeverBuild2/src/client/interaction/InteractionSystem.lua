@@ -151,7 +151,7 @@ end
 function InteractionSystem:ShowInteractionUI(placedItem)
     local tooltip = self.ui.Tooltip
     local list = tooltip.InteractionList
-    
+    tooltip.Visible = true -- Ensure tooltip is visible
     -- Clear existing interactions
     for _, child in ipairs(list:GetChildren()) do
         child:Destroy()
@@ -289,10 +289,8 @@ function InteractionSystem:OpenInventory()
         InventoryUI.ShowError("Your inventory is empty.")
         return
     end
-    InventoryUI.new(inventory.inventory, function(item)
-        -- TODO: Place or use the item
-        print("Selected item from inventory:", item.id)
-    end)
+    InventoryUI.Show()
+    -- Add logic to update inventory display if needed
 end
 
 return InteractionSystem 

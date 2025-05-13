@@ -88,7 +88,7 @@ end
 -- Set up event handling
 function CurrencyUI:SetupEventHandling()
     -- Handle balance updates
-    ReplicatedStorage.RemoteEvents.UpdateBalance.OnClientEvent:Connect(function(balance)
+    ReplicatedStorage.Remotes.UpdateBalance.OnClientEvent:Connect(function(balance)
         self:UpdateBalance(balance)
     end)
     

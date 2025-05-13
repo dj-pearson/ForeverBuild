@@ -7,13 +7,14 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
 -- Core modules
-local GameManager = require(ReplicatedStorage.shared.core.GameManager)
-local Constants = GameManager.Constants
+local SharedModule = require(ReplicatedStorage.shared)
+local GameManager = SharedModule.GameManager
+local Constants = SharedModule.Constants
 
 -- UI Modules
-local PurchaseDialog = require(ReplicatedStorage.shared.core.ui.PurchaseDialog)
-local InventoryUI = require(ReplicatedStorage.shared.core.ui.InventoryUI)
-local PlacedItemDialog = require(ReplicatedStorage.shared.core.ui.PlacedItemDialog)
+local PurchaseDialog = SharedModule.UI.PurchaseDialog
+local InventoryUI = SharedModule.UI.InventoryUI
+local PlacedItemDialog = SharedModule.UI.PlacedItemDialog
 
 -- Remote events/functions
 local Remotes = GameManager.Remotes
@@ -82,17 +83,17 @@ local function createInventoryButton(parent)
     -- Set up click handler
     button.MouseButton1Click:Connect(function()
         if lastError then
-            InventoryUI.ShowError(lastError)
+            inventoryUI:ShowError(lastError)
             return
         end
         local result = safeInvoke(RequestInventory)
         if result.success then
             currentInventory = result.inventory
             currentCurrency = result.currency
-            InventoryUI.UpdateInventory(currentInventory, currentCurrency)
-            InventoryUI.Show()
+            inventoryUI:UpdateInventory(currentInventory, currentCurrency)
+            inventoryUI:Show()
         else
-            InventoryUI.ShowError(result.message)
+            inventoryUI:ShowError(result.message)
         end
     end)
     
@@ -111,31 +112,33 @@ local function initializeUI()
     createInventoryButton(uiContainer)
     
     -- Initialize UI modules
-    PurchaseDialog.Initialize(uiContainer)
-    InventoryUI.Initialize(uiContainer)
-    PlacedItemDialog.Initialize(uiContainer)
+    local purchaseDialog = PurchaseDialog.new()
+    purchaseDialog:Initialize(uiContainer)
+
+    local inventoryUI = InventoryUI.new()
+    inventoryUI:Initialize(uiContainer)
+
+    local placedItemDialog = PlacedItemDialog.new()
+    placedItemDialog:Initialize(uiContainer)
     
     -- Set up item selection
-    InventoryUI.OnItemSelected = function(itemName)
+    inventoryUI.OnItemSelected = function(itemName)
         if lastError then
-            InventoryUI.ShowError(lastError)
+            inventoryUI:ShowError(lastError)
             return
         end
         if not currentInventory[itemName] or currentInventory[itemName] <= 0 then
-            InventoryUI.ShowError("You do not own this item.")
+            inventoryUI:ShowError("You do not own this item.")
             return
         end
-        
         -- Start placement mode
         isPlacingItem = true
         selectedItem = itemName
-        InventoryUI.Hide()
-        
+        inventoryUI:Hide()
         -- Create placement preview
         if placementPreview then
             placementPreview:Destroy()
         end
-        
         -- TODO: Create actual preview model based on item
         placementPreview = Instance.new("Part")
         placementPreview.Name = "PlacementPreview"
@@ -148,7 +151,7 @@ local function initializeUI()
     end
     
     -- Set up placed item interaction
-    PlacedItemDialog.OnActionSelected = function(itemId, action)
+    placedItemDialog.OnActionSelected = function(itemId, action)
         PlacedItemAction:FireServer(itemId, action)
     end
 end
@@ -171,19 +174,19 @@ local function setupProximityPrompts()
             
             prompt.Triggered:Connect(function()
                 if lastError then
-                    PurchaseDialog.ShowError(lastError)
+                    purchaseDialog:ShowError(lastError)
                     return
                 end
                 local itemName = item:GetAttribute("item")
                 if itemName then
-                    PurchaseDialog.Show(itemName, function(quantity)
+                    purchaseDialog:Show(itemName, function(quantity)
                         local result = safeInvoke(PurchaseItem, itemName, quantity)
                         if result.success then
                             currentInventory = result.newInventory
                             currentCurrency = result.newCurrency
-                            InventoryUI.UpdateInventory(currentInventory, currentCurrency)
+                            inventoryUI:UpdateInventory(currentInventory, currentCurrency)
                         else
-                            PurchaseDialog.ShowError(result.message)
+                            purchaseDialog:ShowError(result.message)
                         end
                     end)
                 end
@@ -273,7 +276,7 @@ local result = safeInvoke(RequestInventory)
 if result.success then
     currentInventory = result.inventory
     currentCurrency = result.currency
-    InventoryUI.UpdateInventory(currentInventory, currentCurrency)
+    inventoryUI:UpdateInventory(currentInventory, currentCurrency)
 else
-    InventoryUI.ShowError(result.message)
+    inventoryUI:ShowError(result.message)
 end 

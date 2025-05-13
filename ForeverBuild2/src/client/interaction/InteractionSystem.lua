@@ -6,10 +6,10 @@ local UserInputService = game:GetService("UserInputService")
 print("InteractionSystem module loading...")
 
 local Constants = require(ReplicatedStorage.shared.core.Constants)
--- Fix path references to point to sibling modules in the same directory
-local PurchaseDialog = require(script.Parent.PurchaseDialog)
-local InventoryUI = require(script.Parent.InventoryUI)
-local PlacedItemDialog = require(script.Parent.PlacedItemDialog)
+-- Fix path references to use ReplicatedStorage.shared.core.ui
+local PurchaseDialog = require(ReplicatedStorage.shared.core.ui.PurchaseDialog)
+local InventoryUI = require(ReplicatedStorage.shared.core.ui.InventoryUI)
+local PlacedItemDialog = require(ReplicatedStorage.shared.core.ui.PlacedItemDialog)
 
 local InteractionSystem = {}
 InteractionSystem.__index = InteractionSystem
@@ -21,7 +21,7 @@ function InteractionSystem.new()
     self.currentTarget = nil
     self.interactionDistance = 10 -- Maximum distance for interaction
     self.ui = nil
-    self.remoteEvents = ReplicatedStorage.RemoteEvents
+    self.remoteEvents = ReplicatedStorage.Remotes
     return self
 end
 
@@ -175,23 +175,29 @@ function InteractionSystem:ShowInteractionUI(placedItem)
 
     -- If this is a main item (not a placed item), show the purchase dialog
     if not placedItem.model:GetAttribute("PlacedByPlayer") then
-        PurchaseDialog.new(placedItem.id, tier, price, function(itemId, tier, price, quantity)
-            -- Fire remote event to server to buy the item
-            ReplicatedStorage.RemoteEvents.BuyItem:FireServer(itemId, quantity)
+        PurchaseDialog.Show(placedItem.id, function(quantity)
+            local result = ReplicatedStorage.Remotes.BuyItem:InvokeServer(placedItem.id, quantity)
+            if not result or not result.success then
+                if result and result.message then
+                    PurchaseDialog.ShowError(result.message)
+                else
+                    PurchaseDialog.ShowError("Purchase failed.")
+                end
+            end
         end)
         return
     end
 
     -- Otherwise, show the placed item dialog
-    PlacedItemDialog.new(placedItem.id, tier, function(action)
+    PlacedItemDialog.Show(placedItem.id, placedItem.model:GetAttribute("item"), function(action)
         if action == "clone" then
-            ReplicatedStorage.RemoteEvents.CloneItem:FireServer(placedItem)
+            ReplicatedStorage.Remotes.CloneItem:FireServer(placedItem)
         elseif action == "move" then
-            ReplicatedStorage.RemoteEvents.MoveItem:FireServer(placedItem)
+            ReplicatedStorage.Remotes.MoveItem:FireServer(placedItem)
         elseif action == "destroy" then
-            ReplicatedStorage.RemoteEvents.RemoveItem:FireServer(placedItem)
+            ReplicatedStorage.Remotes.RemoveItem:FireServer(placedItem)
         elseif action == "rotate" then
-            ReplicatedStorage.RemoteEvents.RotateItem:FireServer(placedItem)
+            ReplicatedStorage.Remotes.RotateItem:FireServer(placedItem)
         end
     end)
 end
@@ -219,12 +225,12 @@ end
 
 function InteractionSystem:GetAvailableInteractions(placedItem)
     -- Request available interactions from server
-    return ReplicatedStorage.RemoteEvents.GetAvailableInteractions:InvokeServer(placedItem)
+    return ReplicatedStorage.Remotes.GetAvailableInteractions:InvokeServer(placedItem)
 end
 
 function InteractionSystem:PerformInteraction(placedItem, interactionType)
     -- Send interaction request to server
-    ReplicatedStorage.RemoteEvents.InteractWithItem:FireServer(placedItem, interactionType)
+    ReplicatedStorage.Remotes.InteractWithItem:FireServer(placedItem, interactionType)
 end
 
 function InteractionSystem:ShowInteractionMenu(interactions)
@@ -278,8 +284,12 @@ end
 
 function InteractionSystem:OpenInventory()
     -- Fetch inventory from server
-    local inventory = ReplicatedStorage.RemoteEvents.GetInventory:InvokeServer()
-    InventoryUI.new(inventory, function(item)
+    local inventory = ReplicatedStorage.Remotes.GetInventory:InvokeServer()
+    if not inventory or not inventory.success or not inventory.inventory or next(inventory.inventory) == nil then
+        InventoryUI.ShowError("Your inventory is empty.")
+        return
+    end
+    InventoryUI.new(inventory.inventory, function(item)
         -- TODO: Place or use the item
         print("Selected item from inventory:", item.id)
     end)

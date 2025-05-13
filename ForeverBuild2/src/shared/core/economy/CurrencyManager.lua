@@ -191,7 +191,7 @@ function CurrencyManager:UpdatePlayerBalance(player)
     player:SetAttribute("Coins", balance.coins)
     
     -- Fire client event
-    ReplicatedStorage.RemoteEvents.UpdateBalance:FireClient(player, balance.coins)
+    ReplicatedStorage.Remotes.UpdateBalance:FireClient(player, balance.coins)
 end
 
 -- Get player balance

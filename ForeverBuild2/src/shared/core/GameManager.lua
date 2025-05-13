@@ -14,41 +14,36 @@ if IS_SERVER then
     local DataStoreService = game:GetService("DataStoreService")
     local Players = game:GetService("Players")
     
+    -- Player data cache
+    local playerData = {}
+    
     -- DataStores
     local PlayerCurrencyStore = DataStoreService:GetDataStore("PlayerCurrency")
     local PlayerInventoryStore = DataStoreService:GetDataStore("PlayerInventory")
     local PlacedItemsStore = DataStoreService:GetDataStore("PlacedItems")
     
-    -- Player data cache
-    local playerData = {}
+    -- Helper: skip DataStore in Studio
+    local function canUseDataStore()
+        return not RunService:IsStudio()
+    end
     
     -- Initialize player data
     local function initializePlayerData(player)
-        print("Initializing data for player:", player.Name)
         playerData[player.UserId] = {
             currency = Constants.GAME.STARTING_CURRENCY,
             inventory = {},
             placedItems = {}
         }
-        
-        -- Try to load saved data
-        local success, result = pcall(function()
-            -- Only try to load in production
-            if game:GetService("RunService"):IsStudio() then
-                return
-            end
-            
-            local currency = PlayerCurrencyStore:GetAsync(player.UserId)
-            local inventory = PlayerInventoryStore:GetAsync(player.UserId)
-            local placedItems = PlacedItemsStore:GetAsync(player.UserId)
-            
-            if currency then playerData[player.UserId].currency = currency end
-            if inventory then playerData[player.UserId].inventory = inventory end
-            if placedItems then playerData[player.UserId].placedItems = placedItems end
-        end)
-        
-        if not success then
-            warn("Failed to load data for", player.Name, ":", result)
+        if canUseDataStore() then
+            local success, result = pcall(function()
+                local currency = PlayerCurrencyStore:GetAsync(player.UserId)
+                local inventory = PlayerInventoryStore:GetAsync(player.UserId)
+                local placedItems = PlacedItemsStore:GetAsync(player.UserId)
+                if currency then playerData[player.UserId].currency = currency end
+                if inventory then playerData[player.UserId].inventory = inventory end
+                if placedItems then playerData[player.UserId].placedItems = placedItems end
+            end)
+            if not success then warn("Failed to load data for", player.Name, ":", result) end
         end
     end
     
@@ -56,57 +51,118 @@ if IS_SERVER then
     local function savePlayerData(player)
         local userId = player.UserId
         if not playerData[userId] then return end
-        
-        -- Only try to save in production
-        if game:GetService("RunService"):IsStudio() then
-            return
-        end
-        
-        local success, result = pcall(function()
-            PlayerCurrencyStore:SetAsync(userId, playerData[userId].currency)
-            PlayerInventoryStore:SetAsync(userId, playerData[userId].inventory)
-            PlacedItemsStore:SetAsync(userId, playerData[userId].placedItems)
-        end)
-        
-        if not success then
-            warn("Failed to save data for", player.Name, ":", result)
+        if canUseDataStore() then
+            local success, result = pcall(function()
+                PlayerCurrencyStore:SetAsync(userId, playerData[userId].currency)
+                PlayerInventoryStore:SetAsync(userId, playerData[userId].inventory)
+                PlacedItemsStore:SetAsync(userId, playerData[userId].placedItems)
+            end)
+            if not success then warn("Failed to save data for", player.Name, ":", result) end
         end
     end
     
-    -- Handle player joining
-    Players.PlayerAdded:Connect(function(player)
-        print("Player joined:", player.Name)
-        initializePlayerData(player)
-    end)
+    -- Update client UI
+    local function updateClientUI(player)
+        if ReplicatedStorage.Remotes.UpdateBalance then
+            ReplicatedStorage.Remotes.UpdateBalance:FireClient(player, playerData[player.UserId].currency)
+        end
+        -- You can add more remotes for inventory if needed
+    end
     
-    -- Handle player leaving
+    -- Player join/leave
+    Players.PlayerAdded:Connect(function(player)
+        initializePlayerData(player)
+        updateClientUI(player)
+    end)
     Players.PlayerRemoving:Connect(function(player)
         savePlayerData(player)
         playerData[player.UserId] = nil
     end)
     
-    -- Expose functions for server event handlers
+    -- Purchase logic
     function GameManager.HandleBuyItem(player, itemId)
-        warn("HandleBuyItem not implemented!")
+        local userId = player.UserId
+        local pdata = playerData[userId]
+        local itemData = Constants.ITEMS[itemId]
+        if not pdata or not itemData then
+            return { success = false, message = "Invalid item or player." }
+        end
+        if pdata.currency < itemData.price then
+            return { success = false, message = "Not enough currency." }
+        end
+        pdata.currency = pdata.currency - itemData.price
+        pdata.inventory[itemId] = (pdata.inventory[itemId] or 0) + 1
+        savePlayerData(player)
+        updateClientUI(player)
+        return { success = true, message = "Purchase successful!" }
     end
+    
+    -- Placement logic
     function GameManager.HandlePlaceItem(player, itemId, position, rotation)
-        warn("HandlePlaceItem not implemented!")
+        local userId = player.UserId
+        local pdata = playerData[userId]
+        if not pdata or not pdata.inventory[itemId] or pdata.inventory[itemId] <= 0 then
+            return { success = false, message = "You do not have this item in your inventory." }
+        end
+        -- Placement validation (stub: always true)
+        local validPlacement = true -- TODO: add collision/grid checks
+        if not validPlacement then
+            return { success = false, message = "Invalid placement location." }
+        end
+        pdata.inventory[itemId] = pdata.inventory[itemId] - 1
+        -- Add to placedItems (stub: just increment count)
+        local placedId = tostring(os.time()) .. tostring(math.random(1000,9999))
+        pdata.placedItems[placedId] = { id = itemId, position = position, rotation = rotation }
+        savePlayerData(player)
+        updateClientUI(player)
+        return { success = true, message = "Item placed successfully!" }
     end
+    
+    -- Remove item logic
+    function GameManager.HandleRemoveItem(player, itemId)
+        local userId = player.UserId
+        local pdata = playerData[userId]
+        if not pdata or not pdata.placedItems[itemId] then
+            return { success = false, message = "You cannot remove this item." }
+        end
+        pdata.placedItems[itemId] = nil
+        savePlayerData(player)
+        updateClientUI(player)
+        return { success = true, message = "Item removed successfully!" }
+    end
+    -- Move/Rotate logic (stubs)
     function GameManager.HandleMoveItem(player, itemId, newPosition)
-        warn("HandleMoveItem not implemented!")
+        local userId = player.UserId
+        local pdata = playerData[userId]
+        if not pdata or not pdata.placedItems[itemId] then
+            return { success = false, message = "You cannot move this item." }
+        end
+        pdata.placedItems[itemId].position = newPosition
+        savePlayerData(player)
+        updateClientUI(player)
+        return { success = true, message = "Item moved successfully!" }
     end
     function GameManager.HandleRotateItem(player, itemId, newRotation)
-        warn("HandleRotateItem not implemented!")
+        local userId = player.UserId
+        local pdata = playerData[userId]
+        if not pdata or not pdata.placedItems[itemId] then
+            return { success = false, message = "You cannot rotate this item." }
+        end
+        pdata.placedItems[itemId].rotation = newRotation
+        savePlayerData(player)
+        updateClientUI(player)
+        return { success = true, message = "Item rotated successfully!" }
     end
     function GameManager.HandleChangeColor(player, itemId, newColor)
         warn("HandleChangeColor not implemented!")
     end
-    function GameManager.HandleRemoveItem(player, itemId)
-        warn("HandleRemoveItem not implemented!")
-    end
     function GameManager.GetPlayerInventory(player)
-        warn("GetPlayerInventory not implemented!")
-        return { success = false, message = "Not implemented" }
+        local userId = player.UserId
+        local pdata = playerData[userId]
+        if not pdata then
+            return { success = false, message = "Player data not found." }
+        end
+        return { success = true, inventory = pdata.inventory, currency = pdata.currency }
     end
     function GameManager.GetItemData(itemId)
         warn("GetItemData not implemented!")
@@ -131,7 +187,7 @@ end
 
 -- Client-only functionality
 if not IS_SERVER then
-    -- Client will only use RemoteEvents/Functions and Constants
+    -- Client will only use Remotes/Functions and Constants
     GameManager.Remotes = ReplicatedStorage:WaitForChild("Remotes")
     GameManager.Constants = Constants
 end

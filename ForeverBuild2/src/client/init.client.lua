@@ -6,6 +6,21 @@ print("Client script starting...")
 
 -- Load core modules
 local SharedModule = require(ReplicatedStorage.shared)
+SharedModule.Init() -- Ensure all shared systems are initialized
+
+local UI = require(ReplicatedStorage.shared.core.ui)
+local inventoryUI = UI.InventoryUI.new()
+inventoryUI:Initialize(Players.LocalPlayer.PlayerGui)
+
+local purchaseDialog = UI.PurchaseDialog.new()
+purchaseDialog:Initialize(Players.LocalPlayer.PlayerGui)
+
+local currencyUI = UI.CurrencyUI.new()
+currencyUI:Initialize()
+
+local placedItemDialog = UI.PlacedItemDialog.new()
+placedItemDialog:Initialize(Players.LocalPlayer.PlayerGui)
+
 -- The interaction module is a child of this script
 local InteractionSystem = require(script.interaction.InteractionSystem)
 -- Get StarterGui service

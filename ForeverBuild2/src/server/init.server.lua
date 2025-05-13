@@ -1,10 +1,12 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
--- Load core modules
-local GameManager = require(ReplicatedStorage.shared.core.GameManager)
-local CurrencyManager = require(ReplicatedStorage.shared.core.economy.CurrencyManager)
-local InteractionManager = require(ReplicatedStorage.shared.core.interaction.InteractionManager)
+local SharedModule = require(ReplicatedStorage.shared)
+local GameManager = SharedModule.GameManager
+local CurrencyManager = SharedModule.Economy.CurrencyManager
+local InteractionManagerModule = SharedModule.Interaction.Manager
+local interactionManager = InteractionManagerModule.new()
+interactionManager:Initialize()
 
 -- Create Remotes folder if it doesn't exist
 if not ReplicatedStorage:FindFirstChild("Remotes") then
@@ -54,18 +56,15 @@ for _, functionName in ipairs(functions) do
     end
 end
 
--- Initialize managers (assume modules are not classes)
--- Remove .new() and use as modules
+-- Initialize managers
+local currencyManager = CurrencyManager.new()
 -- If you want to use OOP, ensure the module returns a constructor
 -- For now, use as modules
 -- local gameManager = GameManager.new()
--- local currencyManager = CurrencyManager.new()
 -- local interactionManager = InteractionManager.new()
 
--- If these modules have Initialize methods, call them directly
 if GameManager.Initialize then GameManager.Initialize() end
-if CurrencyManager.Initialize then CurrencyManager.Initialize() end
-if InteractionManager.Initialize then InteractionManager.Initialize() end
+-- interactionManager is already initialized above
 
 -- Set up event handlers
 remotes.BuyItem.OnServerEvent:Connect(function(player, itemId)
@@ -120,8 +119,7 @@ remotes.InteractWithItem.OnServerEvent:Connect(function(player, placedItem, inte
     if not GameManager.GetItemPlacement then return end
     local placement = GameManager.GetItemPlacement(placedItem.id)
     if not placement then return end
-    if not InteractionManager.HandleInteraction then return end
-    local success = InteractionManager.HandleInteraction(player, placedItem.id, interactionType, placement)
+    local success = interactionManager:HandleInteraction(player, placedItem.id, interactionType, placement)
     if not success and remotes.NotifyPlayer then
         remotes.NotifyPlayer:FireClient(player, "Cannot interact with this item!")
     end

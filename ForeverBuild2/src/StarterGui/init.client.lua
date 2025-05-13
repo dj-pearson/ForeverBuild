@@ -17,14 +17,14 @@ local SharedModule = require(ReplicatedStorage.shared)
 -- Local references to commonly used modules
 local Constants = SharedModule.Constants
 local GameManager = SharedModule.GameManager
-local CurrencyManager = SharedModule.CurrencyManager
+local CurrencyManager = SharedModule.Economy.CurrencyManager
 
 local StarterGui = {}
 StarterGui.__index = StarterGui
 
 function StarterGui.new()
     local self = setmetatable({}, StarterGui)
-    self.remoteEvents = ReplicatedStorage.RemoteEvents
+    self.remoteEvents = ReplicatedStorage.Remotes
     return self
 end
 
@@ -136,5 +136,8 @@ function StarterGui:ShowNotification(message)
     -- Animate and destroy
     game:GetService("Debris"):AddItem(notification, 3)
 end
+
+-- Add this to self-initialize
+StarterGui.new():Init()
 
 return StarterGui

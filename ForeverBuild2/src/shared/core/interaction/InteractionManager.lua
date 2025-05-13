@@ -49,13 +49,13 @@ function InteractionManager:RegisterDefaultInteractions()
         if not placement or not placement.model then return false end
         
         -- Get player's inventory
-        local inventory = ReplicatedStorage.RemoteEvents.GetInventory:InvokeServer(player)
+        local inventory = ReplicatedStorage.Remotes.GetInventory:InvokeServer(player)
         if not inventory then return false end
         
         -- Check if inventory has space
         if #inventory >= Constants.GAME.MAX_INVENTORY_SIZE then
             -- Notify player inventory is full
-            ReplicatedStorage.RemoteEvents.NotifyPlayer:FireClient(player, "Inventory is full!")
+            ReplicatedStorage.Remotes.NotifyPlayer:FireClient(player, "Inventory is full!")
             return false
         end
         
@@ -63,7 +63,7 @@ function InteractionManager:RegisterDefaultInteractions()
         placement.model:Destroy()
         
         -- Add to inventory
-        ReplicatedStorage.RemoteEvents.AddToInventory:FireServer(player, itemId)
+        ReplicatedStorage.Remotes.AddToInventory:FireServer(player, itemId)
         
         return true
     end)
@@ -74,13 +74,13 @@ function InteractionManager:RegisterDefaultInteractions()
         if not placement or not placement.model then return false end
         
         -- Get item data
-        local itemData = ReplicatedStorage.RemoteEvents.GetItemData:InvokeServer(itemId)
+        local itemData = ReplicatedStorage.Remotes.GetItemData:InvokeServer(itemId)
         if not itemData then return false end
         
         -- Check if item has use effect
         if itemData.useEffect then
             -- Apply effect
-            ReplicatedStorage.RemoteEvents.ApplyItemEffect:FireServer(player, itemId, placement)
+            ReplicatedStorage.Remotes.ApplyItemEffect:FireServer(player, itemId, placement)
         end
         
         return true
@@ -89,11 +89,11 @@ function InteractionManager:RegisterDefaultInteractions()
     -- Examine interaction
     self:RegisterInteraction("default", "examine", function(player, itemId, placement)
         -- Get item data
-        local itemData = ReplicatedStorage.RemoteEvents.GetItemData:InvokeServer(itemId)
+        local itemData = ReplicatedStorage.Remotes.GetItemData:InvokeServer(itemId)
         if not itemData then return false end
         
         -- Show item description
-        ReplicatedStorage.RemoteEvents.ShowItemDescription:FireClient(player, itemData.description)
+        ReplicatedStorage.Remotes.ShowItemDescription:FireClient(player, itemData.description)
         
         return true
     end)

@@ -1,3 +1,5 @@
+local Color3 = Color3
+
 local Constants = {
     -- Currency
     CURRENCY = {
@@ -59,4 +61,4 @@ local Constants = {
     }
 }
 
-return Constants 
+return Constants

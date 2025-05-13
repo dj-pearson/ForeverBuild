@@ -7,13 +7,13 @@
 
 local SharedModule = {}
 
--- Create references to all sub-modules
-SharedModule.Constants = require(script.Constants)
-SharedModule.GameManager = require(script.GameManager)
-SharedModule.CurrencyManager = require(script.CurrencyManager)
-SharedModule.InventoryManager = require(script.InventoryManager)
-SharedModule.ItemManager = require(script.ItemManager)
-SharedModule.PlacementManager = require(script.PlacementManager)
+-- Create references to all sub-modules in the core folder
+SharedModule.Constants = require(script.core.Constants)
+SharedModule.GameManager = require(script.core.GameManager)
+SharedModule.CurrencyManager = require(script.core.economy.CurrencyManager)
+SharedModule.InventoryManager = require(script.core.inventory.InventoryManager)
+SharedModule.ItemManager = require(script.core.inventory.ItemManager)
+SharedModule.PlacementManager = require(script.core.placement.PlacementManager)
 
 -- Core modules are in a subfolder
 SharedModule.Core = {}

@@ -1,0 +1,12 @@
+std = "roblox"
+
+[lints]
+# Enable all lints
+enable = "all"
+
+# Allow unused variables with specific patterns
+unused_variable = { allow = ["_.*"] }
+
+[config]
+unused_variable = { allow_unused_self = true }
+if_same_then_else = { comments_count = true }

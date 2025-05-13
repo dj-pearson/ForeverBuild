@@ -5,6 +5,9 @@
     It handles loading and setting up all UI components.
 ]]
 
+-- Add debug print to confirm script is running
+print("StarterGui script starting...")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 

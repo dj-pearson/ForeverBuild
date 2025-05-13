@@ -1,7 +1,14 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+
+-- Add debug print to confirm module is loading
+print("InteractionSystem module loading...")
+
 local Constants = require(ReplicatedStorage.shared.core.Constants)
+local PurchaseDialog = require(script.PurchaseDialog)
+local InventoryUI = require(script.InventoryUI)
+local PlacedItemDialog = require(script.PlacedItemDialog)
 
 local InteractionSystem = {}
 InteractionSystem.__index = InteractionSystem
@@ -31,6 +38,9 @@ function InteractionSystem:Initialize()
     
     -- Set up event handlers
     self:SetupEventHandlers()
+    
+    -- Set up inventory key
+    self:SetupInventoryKey()
 end
 
 function InteractionSystem:CreateUI()
@@ -124,22 +134,16 @@ function InteractionSystem:ClearCurrentTarget()
 end
 
 function InteractionSystem:GetPlacedItemFromPart(part)
-    -- Check if part has a PlacedItem attribute
-    if part:GetAttribute("PlacedItemId") then
-        return {
-            id = part:GetAttribute("PlacedItemId"),
-            model = part.Parent
-        }
+    local current = part
+    while current and current ~= workspace do
+        if current:IsA("Model") and current:GetAttribute("item") then
+            return {
+                id = current.Name,
+                model = current
+            }
+        end
+        current = current.Parent
     end
-    
-    -- Check parent for PlacedItem attribute
-    if part.Parent and part.Parent:GetAttribute("PlacedItemId") then
-        return {
-            id = part.Parent:GetAttribute("PlacedItemId"),
-            model = part.Parent
-        }
-    end
-    
     return nil
 end
 
@@ -156,7 +160,7 @@ function InteractionSystem:ShowInteractionUI(placedItem)
     local itemsFolder = workspace:FindFirstChild("Items")
     local itemModel = nil
     if itemsFolder then
-        for _, model in ipairs(itemsFolder:GetChildren()) do
+        for _, model in ipairs(itemsFolder:GetDescendants()) do
             if model:IsA("Model") and model:GetAttribute("item") and model.Name == placedItem.id then
                 itemModel = model
                 break
@@ -168,42 +172,27 @@ function InteractionSystem:ShowInteractionUI(placedItem)
     local tier = itemModel and itemModel:GetAttribute("item") or "basic"
     local price = Constants.ITEM_PRICING[tier] or 0
 
-    -- Update tooltip title to show tier and price
-    tooltip.Title.Text = string.format("%s (%s) - %d Robux", placedItem.id, tier:gsub("^%l", string.upper), price)
-
-    -- Get available interactions
-    local interactions = self:GetAvailableInteractions(placedItem)
-    
-    -- Create interaction buttons
-    local yOffset = 0
-    for _, interactionType in ipairs(interactions) do
-        local button = Instance.new("TextButton")
-        button.Name = interactionType
-        button.Size = UDim2.new(1, -20, 0, 30)
-        button.Position = UDim2.new(0, 10, 0, yOffset)
-        button.BackgroundColor3 = Constants.UI_COLORS.PRIMARY
-        button.TextColor3 = Constants.UI_COLORS.TEXT
-        button.TextSize = 16
-        button.Font = Enum.Font.GothamBold
-        button.Text = interactionType:gsub("^%l", string.upper)
-        button.Parent = list
-        
-        button.MouseButton1Click:Connect(function()
-            self:PerformInteraction(placedItem, interactionType)
+    -- If this is a main item (not a placed item), show the purchase dialog
+    if not placedItem.model:GetAttribute("PlacedByPlayer") then
+        PurchaseDialog.new(placedItem.id, tier, price, function(itemId, tier, price, quantity)
+            -- Fire remote event to server to buy the item
+            ReplicatedStorage.RemoteEvents.BuyItem:FireServer(itemId, quantity)
         end)
-        
-        yOffset = yOffset + 35
+        return
     end
-    
-    -- Update tooltip size
-    tooltip.Size = UDim2.new(0, 200, 0, 30 + (yOffset))
-    
-    -- Position tooltip near mouse
-    local mousePos = self.mouse.X, self.mouse.Y
-    tooltip.Position = UDim2.new(0, mousePos + Vector2.new(20, 20))
-    
-    -- Show tooltip
-    tooltip.Visible = true
+
+    -- Otherwise, show the placed item dialog
+    PlacedItemDialog.new(placedItem.id, tier, function(action)
+        if action == "clone" then
+            ReplicatedStorage.RemoteEvents.CloneItem:FireServer(placedItem)
+        elseif action == "move" then
+            ReplicatedStorage.RemoteEvents.MoveItem:FireServer(placedItem)
+        elseif action == "destroy" then
+            ReplicatedStorage.RemoteEvents.RemoveItem:FireServer(placedItem)
+        elseif action == "rotate" then
+            ReplicatedStorage.RemoteEvents.RotateItem:FireServer(placedItem)
+        end
+    end)
 end
 
 function InteractionSystem:HideInteractionUI()
@@ -275,6 +264,24 @@ function InteractionSystem:ShowNotification(message)
     
     -- Animate and destroy
     game:GetService("Debris"):AddItem(notification, 3)
+end
+
+function InteractionSystem:SetupInventoryKey()
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        if input.KeyCode == Enum.KeyCode.I then
+            self:OpenInventory()
+        end
+    end)
+end
+
+function InteractionSystem:OpenInventory()
+    -- Fetch inventory from server
+    local inventory = ReplicatedStorage.RemoteEvents.GetInventory:InvokeServer()
+    InventoryUI.new(inventory, function(item)
+        -- TODO: Place or use the item
+        print("Selected item from inventory:", item.id)
+    end)
 end
 
 return InteractionSystem 

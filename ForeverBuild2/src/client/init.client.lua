@@ -1,14 +1,19 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
+-- Add debug print to confirm script is running
+print("Client script starting...")
+
 -- Load core modules
 local SharedModule = require(ReplicatedStorage.shared)
-local InteractionSystem = require(script.Parent.interaction.InteractionSystem)
-local StarterGui = require(script.Parent.StarterGui)
+-- The interaction module is a child of this script
+local InteractionSystem = require(script.interaction.InteractionSystem)
+-- Get StarterGui service
+local StarterGui = game:GetService("StarterGui")
 
 -- Initialize UI
-local starterGui = StarterGui.new()
-starterGui:Init()
+-- StarterGui should already have UI elements from Roblox Studio
+-- We don't need to explicitly initialize it here as those scripts will run automatically
 
 -- Initialize interaction system
 local interactionSystem = InteractionSystem.new()

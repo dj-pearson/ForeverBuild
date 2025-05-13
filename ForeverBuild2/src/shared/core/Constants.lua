@@ -64,7 +64,11 @@ local Constants = {
         basic = 5,        -- 5 Robux
         secondary = 20,   -- 20 Robux
         rare = 100,       -- 100 Robux
-        exclusive = 500   -- 500 Robux
+        exclusive = 500,  -- 500 Robux
+        clone = 10,       -- Fee for cloning
+        move = 2,         -- Fee for moving
+        destroy = 1,      -- Fee for destroying
+        rotate = 1        -- Fee for rotating
     }
 }
 

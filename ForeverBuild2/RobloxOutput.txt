@@ -1,42 +1,40 @@
-  23:02:22.363  Initializing game systems...  -  Server - GameManager:176
-  23:02:22.364  ItemManager is not a valid member of Script "ServerScriptService.server"  -  Server - GameManager:177
-  23:02:22.364  Stack Begin  -  Studio
-  23:02:22.364  Script 'ReplicatedStorage.shared.core.GameManager', Line 177  -  Studio - GameManager:177
-  23:02:22.364  Stack End  -  Studio
-  23:02:22.364  Requested module experienced an error while loading  -  Server - server:5
-  23:02:22.365  Stack Begin  -  Studio
-  23:02:22.365  Script 'ServerScriptService.server', Line 5  -  Studio - server:5
-  23:02:22.365  Stack End  -  Studio
-  23:02:22.499  Client script starting...  -  Client - client:5
-  23:02:22.500  InteractionSystem module loading...  -  Client - InteractionSystem:6
-  23:02:22.501  PurchaseDialog is not a valid member of ModuleScript "Players.Xdjpearsonx.PlayerScripts.client.interaction.InteractionSystem"  -  Client - InteractionSystem:9
-  23:02:22.501  Stack Begin  -  Studio
-  23:02:22.501  Script 'Players.Xdjpearsonx.PlayerScripts.client.interaction.InteractionSystem', Line 9  -  Studio - InteractionSystem:9
-  23:02:22.501  Stack End  -  Studio
-  23:02:22.502  Requested module experienced an error while loading  -  Client - client:10
-  23:02:22.502  Stack Begin  -  Studio
-  23:02:22.502  Script 'Players.Xdjpearsonx.PlayerScripts.client', Line 10  -  Studio - client:10
-  23:02:22.502  Stack End  -  Studio
-  23:02:23.115  StarterGui script starting...  -  Client - StarterGui:9
-  23:02:23.379  === Enhanced Glow Manager Starting ===  -  Server - NeonGlowManager:7
-  23:02:23.379  Found 6 glow models  -  Server - NeonGlowManager:145
-  23:02:23.379  Processing: Glow_Green_Cube (Color: Green)  -  Server - NeonGlowManager:153
-  23:02:23.379    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
-  23:02:23.379    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
-  23:02:23.379  Processing: Glow_Blue_Cube (Color: Blue)  -  Server - NeonGlowManager:153
-  23:02:23.379    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
-  23:02:23.379    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
-  23:02:23.379  Processing: Glow_Yellow_Cube (Color: Yellow)  -  Server - NeonGlowManager:153
-  23:02:23.379    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
-  23:02:23.380    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
-  23:02:23.380  Processing: Glow_White_Cube (Color: White)  -  Server - NeonGlowManager:153
-  23:02:23.380    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
-  23:02:23.380    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
-  23:02:23.380  Processing: Glow_Red_Cube (Color: Red)  -  Server - NeonGlowManager:153
-  23:02:23.380    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
-  23:02:23.380    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
-  23:02:23.380  Processing: Glow_Purple_Cube (Color: Purple)  -  Server - NeonGlowManager:153
-  23:02:23.380    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
-  23:02:23.380    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
-  23:02:23.380  === Enhanced Glow Manager Complete! ===  -  Server - NeonGlowManager:166
-  23:02:35.001  Disconnect from ::ffff:127.0.0.1|50501  -  Studio
+  23:08:04.726  Initializing game systems...  -  Server - GameManager:191
+  23:08:04.726  Game systems initialized successfully  -  Server - GameManager:193
+  23:08:04.727  ServerScriptService.server:58: attempt to call a nil value  -  Server - server:58
+  23:08:04.727  Stack Begin  -  Studio
+  23:08:04.727  Script 'ServerScriptService.server', Line 58  -  Studio - server:58
+  23:08:04.727  Stack End  -  Studio
+  23:08:04.801  Player joined: Xdjpearsonx  -  Server - GameManager:102
+  23:08:04.801  Initializing data for player: Xdjpearsonx  -  Server - GameManager:51
+  23:08:04.868  Client script starting...  -  Client - client:5
+  23:08:04.869  InteractionSystem module loading...  -  Client - InteractionSystem:6
+  23:08:04.869  PurchaseDialog is not a valid member of ModuleScript "Players.Xdjpearsonx.PlayerScripts.client.interaction.InteractionSystem"  -  Client - InteractionSystem:9
+  23:08:04.869  Stack Begin  -  Studio
+  23:08:04.870  Script 'Players.Xdjpearsonx.PlayerScripts.client.interaction.InteractionSystem', Line 9  -  Studio - InteractionSystem:9
+  23:08:04.870  Stack End  -  Studio
+  23:08:04.870  Requested module experienced an error while loading  -  Client - client:10
+  23:08:04.870  Stack Begin  -  Studio
+  23:08:04.870  Script 'Players.Xdjpearsonx.PlayerScripts.client', Line 10  -  Studio - client:10
+  23:08:04.870  Stack End  -  Studio
+  23:08:05.440  StarterGui script starting...  -  Client - StarterGui:9
+  23:08:05.731  === Enhanced Glow Manager Starting ===  -  Server - NeonGlowManager:7
+  23:08:05.731  Found 6 glow models  -  Server - NeonGlowManager:145
+  23:08:05.731  Processing: Glow_Green_Cube (Color: Green)  -  Server - NeonGlowManager:153
+  23:08:05.731    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  23:08:05.732    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  23:08:05.732  Processing: Glow_Blue_Cube (Color: Blue)  -  Server - NeonGlowManager:153
+  23:08:05.732    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  23:08:05.732    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  23:08:05.732  Processing: Glow_Yellow_Cube (Color: Yellow)  -  Server - NeonGlowManager:153
+  23:08:05.733    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  23:08:05.733    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  23:08:05.733  Processing: Glow_White_Cube (Color: White)  -  Server - NeonGlowManager:153
+  23:08:05.733    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  23:08:05.733    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  23:08:05.733  Processing: Glow_Red_Cube (Color: Red)  -  Server - NeonGlowManager:153
+  23:08:05.734    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  23:08:05.734    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  23:08:05.734  Processing: Glow_Purple_Cube (Color: Purple)  -  Server - NeonGlowManager:153
+  23:08:05.734    Enhancing glow for SmoothCube (UnionOperation)  -  Server - NeonGlowManager:85
+  23:08:05.734    ✓ Enhanced glow applied to SmoothCube  -  Server - NeonGlowManager:140
+  23:08:05.735  === Enhanced Glow Manager Complete! ===  -  Server - NeonGlowManager:166

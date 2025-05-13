@@ -6,9 +6,10 @@ local UserInputService = game:GetService("UserInputService")
 print("InteractionSystem module loading...")
 
 local Constants = require(ReplicatedStorage.shared.core.Constants)
-local PurchaseDialog = require(script.PurchaseDialog)
-local InventoryUI = require(script.InventoryUI)
-local PlacedItemDialog = require(script.PlacedItemDialog)
+-- Fix path references to point to sibling modules in the same directory
+local PurchaseDialog = require(script.Parent.PurchaseDialog)
+local InventoryUI = require(script.Parent.InventoryUI)
+local PlacedItemDialog = require(script.Parent.PlacedItemDialog)
 
 local InteractionSystem = {}
 InteractionSystem.__index = InteractionSystem

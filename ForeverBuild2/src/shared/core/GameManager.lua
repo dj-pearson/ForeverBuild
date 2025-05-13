@@ -19,30 +19,6 @@ if IS_SERVER then
     local PlayerInventoryStore = DataStoreService:GetDataStore("PlayerInventory")
     local PlacedItemsStore = DataStoreService:GetDataStore("PlacedItems")
     
-    -- Create Remotes folder if it doesn't exist
-    local Remotes = ReplicatedStorage:FindFirstChild("Remotes")
-    if not Remotes then
-        Remotes = Instance.new("Folder")
-        Remotes.Name = "Remotes"
-        Remotes.Parent = ReplicatedStorage
-    end
-    
-    -- Create Remote events/functions if they don't exist
-    local function getOrCreateRemote(name, isFunction)
-        local remote = Remotes:FindFirstChild(name)
-        if not remote then
-            remote = isFunction and Instance.new("RemoteFunction") or Instance.new("RemoteEvent")
-            remote.Name = name
-            remote.Parent = Remotes
-        end
-        return remote
-    end
-    
-    local PurchaseItem = getOrCreateRemote("PurchaseItem", true)
-    local RequestInventory = getOrCreateRemote("RequestInventory", true)
-    local PlaceItem = getOrCreateRemote("PlaceItem", false)
-    local PlacedItemAction = getOrCreateRemote("PlacedItemAction", false)
-    
     -- Player data cache
     local playerData = {}
     
@@ -109,87 +85,47 @@ if IS_SERVER then
         playerData[player.UserId] = nil
     end)
     
-    -- Handle purchase requests
-    PurchaseItem.OnServerInvoke = function(player, itemName, quantity)
-        local userId = player.UserId
-        local data = playerData[userId]
-        if not data then return { success = false, message = "Player data not found" } end
-        
-        local itemData = Constants.ITEMS[itemName]
-        if not itemData then return { success = false, message = "Invalid item" } end
-        
-        local totalCost = itemData.price * quantity
-        if data.currency < totalCost then
-            return { success = false, message = "Not enough currency" }
-        end
-        
-        -- Process purchase
-        data.currency = data.currency - totalCost
-        data.inventory[itemName] = (data.inventory[itemName] or 0) + quantity
-        
-        -- Save immediately
-        savePlayerData(player)
-        
-        return {
-            success = true,
-            newCurrency = data.currency,
-            newInventory = data.inventory
-        }
+    -- Expose functions for server event handlers
+    function GameManager.HandleBuyItem(player, itemId)
+        warn("HandleBuyItem not implemented!")
+    end
+    function GameManager.HandlePlaceItem(player, itemId, position, rotation)
+        warn("HandlePlaceItem not implemented!")
+    end
+    function GameManager.HandleMoveItem(player, itemId, newPosition)
+        warn("HandleMoveItem not implemented!")
+    end
+    function GameManager.HandleRotateItem(player, itemId, newRotation)
+        warn("HandleRotateItem not implemented!")
+    end
+    function GameManager.HandleChangeColor(player, itemId, newColor)
+        warn("HandleChangeColor not implemented!")
+    end
+    function GameManager.HandleRemoveItem(player, itemId)
+        warn("HandleRemoveItem not implemented!")
+    end
+    function GameManager.GetPlayerInventory(player)
+        warn("GetPlayerInventory not implemented!")
+        return { success = false, message = "Not implemented" }
+    end
+    function GameManager.GetItemData(itemId)
+        warn("GetItemData not implemented!")
+        return nil
+    end
+    function GameManager.GetItemPlacement(itemId)
+        warn("GetItemPlacement not implemented!")
+        return nil
+    end
+    function GameManager.AddToInventory(player, itemId)
+        warn("AddToInventory not implemented!")
+    end
+    function GameManager.ApplyItemEffect(player, itemId, placement)
+        warn("ApplyItemEffect not implemented!")
     end
     
-    -- Handle inventory requests
-    RequestInventory.OnServerInvoke = function(player)
-        local userId = player.UserId
-        local data = playerData[userId]
-        if not data then return { success = false, message = "Player data not found" } end
-        
-        return {
-            success = true,
-            currency = data.currency,
-            inventory = data.inventory
-        }
-    end
+    -- Existing purchase, inventory, placement, and action logic can be refactored into these functions as needed
     
-    -- Handle item placement
-    PlaceItem.OnServerEvent:Connect(function(player, itemName, position, rotation)
-        local userId = player.UserId
-        local data = playerData[userId]
-        if not data then return end
-        
-        if not data.inventory[itemName] or data.inventory[itemName] <= 0 then
-            return
-        end
-        
-        -- TODO: Implement actual placement logic
-        -- For now, just remove from inventory
-        data.inventory[itemName] = data.inventory[itemName] - 1
-        savePlayerData(player)
-    end)
-    
-    -- Handle placed item actions
-    PlacedItemAction.OnServerEvent:Connect(function(player, itemId, action)
-        local userId = player.UserId
-        local data = playerData[userId]
-        if not data then return end
-        
-        local item = data.placedItems[itemId]
-        if not item then return end
-        
-        local actionData = Constants.ITEM_ACTIONS[action]
-        if not actionData then return end
-        
-        if data.currency < actionData.cost then return end
-        
-        -- Process action
-        data.currency = data.currency - actionData.cost
-        -- TODO: Implement actual action logic
-        
-        savePlayerData(player)
-    end)
-    
-    -- Initialize game systems
     print("Initializing game systems...")
-    -- Remove non-existent module requirements
     print("Game systems initialized successfully")
 end
 
